@@ -105,8 +105,9 @@
 
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="409dp"
-        android:layout_height="503dp"
+        android:layout_height="0dp"
         android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -937,4 +938,14 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_marginBottom="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
 </androidx.constraintlayout.widget.ConstraintLayout>

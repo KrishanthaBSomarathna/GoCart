@@ -13,7 +13,10 @@
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
         <activity
-            android:name=".Home"
+            android:name=".UserCreate.RetailShopCreate"
+            android:exported="false" />
+        <activity
+            android:name=".UserCreate.DeliveryRiderCreate"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +24,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".UserCreate.DeliveryRepCreate"
+            android:exported="true" >
 
+        </activity>
+        <activity
+            android:name=".UserCreate.AdminCreate"
+            android:exported="true" >
+
+        </activity>
+
+        <activity
+            android:name=".Manager.Manager"
+            android:exported="false" />
+        <activity
+            android:name=".Manager.AdminManage"
+            android:exported="false" />
+        <activity
+            android:name=".UserLogin"
+            android:exported="true" >
+
+        </activity>
+        <activity
+            android:name=".MobileAuth"
+            android:exported="true" />
+        <activity
+            android:name=".Register"
+            android:exported="true" />
+        <activity
+            android:name=".Login"
+            android:exported="true" />
+        <activity
+            android:name=".Home"
+            android:exported="true" />
         <activity
             android:name=".Onboading3"
             android:exported="false" />
@@ -30,14 +66,10 @@
             android:exported="false" />
         <activity
             android:name=".Onboading1"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".SplashScreen"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />
