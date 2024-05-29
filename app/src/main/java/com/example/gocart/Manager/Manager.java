@@ -1,6 +1,8 @@
 package com.example.gocart.Manager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.R;
+import com.example.gocart.UserCreate.DeliveryRepCreate;
+import com.example.gocart.UserCreate.DeliveryRiderCreate;
+import com.example.gocart.UserCreate.Retail.RetailShopCreate;
+import com.example.gocart.UserListView.Admin.AdminList;
 
 public class Manager extends AppCompatActivity {
 
@@ -17,10 +23,51 @@ public class Manager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_manager);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        findViewById(R.id.administrators_card).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Manager.this, AdminList.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.delivery_rep_card).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Manager.this, DeliveryRepCreate.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.delivery_riders_card).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Manager.this, DeliveryRiderCreate.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.retail_shops_card).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Manager.this, RetailShopCreate.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.organization_structure_card).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Manager.this, Manager.class);
+                startActivity(intent);
+            }
         });
     }
 }

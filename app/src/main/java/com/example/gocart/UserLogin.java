@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.Manager.Manager;
+import com.example.gocart.RetailShop.RetailShopOwnerDashboard;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -86,15 +87,23 @@ public class UserLogin extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String role = dataSnapshot.child("role").getValue(String.class);
                 if (selectedRole.equals(role)) {
-                    if ("admin".equals(role)) {
-                        Toast.makeText(UserLogin.this, "Admin login successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(UserLogin.this, Manager.class));
-                    } else if ("Delivery Representative".equals(role)) {
-                        Toast.makeText(UserLogin.this, "Delivery Representative login successful", Toast.LENGTH_SHORT).show();
-                        // Add intent to navigate to the delivery representative dashboard
-                    } else {
-                        Toast.makeText(UserLogin.this, "Login successful", Toast.LENGTH_SHORT).show();
-                        // Add intent to navigate to the respective dashboard for other roles if necessary
+                    switch (role) {
+                        case "Admin":
+                            Toast.makeText(UserLogin.this, "Admin login successful", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(UserLogin.this, Manager.class));
+                            break;
+                        case "Delivery Representative":
+                            Toast.makeText(UserLogin.this, "Delivery Representative login successful", Toast.LENGTH_SHORT).show();
+                            // Add intent to navigate to the delivery representative dashboard
+                            break;
+                        case "Shop Owner":
+                            Toast.makeText(UserLogin.this, "Shop Owner login successful", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(UserLogin.this, RetailShopOwnerDashboard.class));
+                            break;
+                        default:
+                            Toast.makeText(UserLogin.this, "Login successful", Toast.LENGTH_SHORT).show();
+                            // Add intent to navigate to the respective dashboard for other roles if necessary
+                            break;
                     }
                 } else {
                     Toast.makeText(UserLogin.this, "You are not authorized to login as " + selectedRole, Toast.LENGTH_SHORT).show();

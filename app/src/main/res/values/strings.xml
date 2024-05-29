@@ -14,4 +14,7 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="google_maps_key">AIzaSyD_-WWgpw7jG6H9yfj3zR7mvJV9baKPVMQ</string>
 </resources>

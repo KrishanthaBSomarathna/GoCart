@@ -1,4 +1,4 @@
-package com.example.gocart.UserCreate;
+package com.example.gocart.RetailShop;
 
 import android.os.Bundle;
 
@@ -10,13 +10,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.R;
 
-public class RetailShopCreate extends AppCompatActivity {
+public class RetailShopOwnerDashboard extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_retail_shop_create);
+        setContentView(R.layout.activity_retail_shop_owner_dashboard);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
