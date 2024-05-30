@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/otpbg"
-    tools:context=".MobileAuth">
+    tools:context=".Authentication.CustomerAuth.MobileAuth">
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/sentOtp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -56,7 +56,8 @@
     </RelativeLayout>
 
 
-        <RelativeLayout
+    <RelativeLayout
+        android:id="@+id/verifyOtp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -110,6 +111,7 @@
             android:gravity="center" />
 
         <ImageView
+            android:id="@+id/verifyButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignBottom="@+id/imageView16"
@@ -122,6 +124,7 @@
             android:background="@drawable/verifybtn" />
 
         <TextView
+            android:id="@+id/resendTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/imageView16"

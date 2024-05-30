@@ -1,9 +1,8 @@
-package com.example.gocart.UserCreate.Retail;
+package com.example.gocart.Authentication.RetailerAuth;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;

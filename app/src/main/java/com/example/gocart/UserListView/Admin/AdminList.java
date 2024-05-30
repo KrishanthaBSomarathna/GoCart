@@ -3,7 +3,6 @@ package com.example.gocart.UserListView.Admin;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
@@ -16,9 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gocart.R;
-import com.example.gocart.UserCreate.AdminCreate;
-import com.example.gocart.UserListView.Admin.Admin;
-import com.example.gocart.UserListView.Admin.AdminAdapter;
+import com.example.gocart.Authentication.EmployeeCreate.AdminCreate;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,7 +30,8 @@ public class AdminList extends AppCompatActivity {
     private AdminAdapter adminAdapter;
     private List<Admin> adminList;
     private ProgressBar progressBar;
-    private ImageButton newAdminButton;
+
+    private FloatingActionButton newAdminButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

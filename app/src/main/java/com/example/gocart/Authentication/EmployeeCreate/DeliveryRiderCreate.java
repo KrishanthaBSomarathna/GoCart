@@ -1,9 +1,8 @@
-package com.example.gocart.UserCreate;
+package com.example.gocart.Authentication.EmployeeCreate;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;

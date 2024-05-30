@@ -1,4 +1,4 @@
-package com.example.gocart.UserCreate.Retail;
+package com.example.gocart.Authentication.RetailerAuth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 import com.example.gocart.R;
+import com.example.gocart.UserLogin;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +31,7 @@ import java.util.List;
 public class RetailShopCreate extends AppCompatActivity {
     private EditText nameEditText, emailEditText, phoneEditText, passwordEditText, confirmPasswordEditText, latitudeEditText, longitudeEditText;
     private AutoCompleteTextView representativeAutoCompleteTextView;
-    private ImageButton setLocationButton, createButton;
+    private ImageButton setLocationButton, createButton, loginButton;
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private double latitude, longitude;
@@ -56,6 +58,7 @@ public class RetailShopCreate extends AppCompatActivity {
         representativeAutoCompleteTextView = findViewById(R.id.Representative);
         setLocationButton = findViewById(R.id.setlocation);
         createButton = findViewById(R.id.createButton);
+        loginButton = findViewById(R.id.loginButton);
 
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -96,6 +99,8 @@ public class RetailShopCreate extends AppCompatActivity {
         });
 
         createButton.setOnClickListener(view -> registerShop());
+
+        loginButton.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), UserLogin.class)));
     }
 
     private void registerShop() {

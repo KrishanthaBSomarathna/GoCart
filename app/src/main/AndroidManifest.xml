@@ -17,6 +17,19 @@
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
         <activity
+            android:name=".Authentication.RetailerAuth.RetailerLogin"
+            android:exported="true" >
+
+        </activity>
+        <activity
+            android:name=".RetailerAuth.RetailerRegister"
+            android:exported="false" />
+        <activity
+            android:name=".Authentication.CustomerAuth.CustomerLogin"
+            android:exported="true">
+
+        </activity>
+        <activity
             android:name=".UserSelect"
             android:exported="true" >
             <intent-filter>
@@ -29,7 +42,7 @@
             android:name=".RetailShop.RetailShopOwnerDashboard"
             android:exported="false" />
         <activity
-            android:name=".UserCreate.Retail.SetLocation"
+            android:name=".Authentication.RetailerAuth.SetLocation"
             android:exported="false" />
 
         <meta-data
@@ -37,7 +50,7 @@
             android:value="AIzaSyD_-WWgpw7jG6H9yfj3zR7mvJV9baKPVMQ" />
 
         <activity
-            android:name=".UserCreate.SelectLocationActivity"
+            android:name=".EmployeeCreate.SelectLocationActivity"
             android:exported="false" />
         <activity
             android:name=".UserListView.Admin.AdminList"
@@ -46,35 +59,33 @@
             android:name=".MainActivity2"
             android:exported="true" />
         <activity
-            android:name=".UserCreate.Retail.RetailShopCreate"
-            android:exported="true">
-
-        </activity>
-        <activity
-            android:name=".UserCreate.DeliveryRiderCreate"
+            android:name=".Authentication.RetailerAuth.RetailShopCreate"
             android:exported="true" />
         <activity
-            android:name=".UserCreate.DeliveryRepCreate"
+            android:name=".Authentication.EmployeeCreate.DeliveryRiderCreate"
             android:exported="true" />
         <activity
-            android:name=".UserCreate.AdminCreate"
+            android:name=".Authentication.EmployeeCreate.DeliveryRepCreate"
+            android:exported="true" />
+        <activity
+            android:name=".Authentication.EmployeeCreate.AdminCreate"
             android:exported="true" />
         <activity
             android:name=".Manager.Manager"
-            android:exported="true" />
+            android:exported="true" >
+
+        </activity>
         <activity
             android:name=".Manager.AdminManage"
             android:exported="false" />
         <activity
             android:name=".UserLogin"
-            android:exported="true">
-
-        </activity>
-        <activity
-            android:name=".MobileAuth"
             android:exported="true" />
         <activity
-            android:name=".CustomerRegister"
+            android:name=".Authentication.CustomerAuth.MobileAuth"
+            android:exported="true" />
+        <activity
+            android:name=".Authentication.CustomerAuth.CustomerRegister"
             android:exported="true" />
         <activity
             android:name=".Login"
@@ -93,9 +104,7 @@
             android:exported="true" />
         <activity
             android:name=".SplashScreen"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />

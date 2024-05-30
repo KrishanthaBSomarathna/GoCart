@@ -11,9 +11,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.R;
-import com.example.gocart.UserCreate.DeliveryRepCreate;
-import com.example.gocart.UserCreate.DeliveryRiderCreate;
-import com.example.gocart.UserCreate.Retail.RetailShopCreate;
+import com.example.gocart.Authentication.EmployeeCreate.DeliveryRepCreate;
+import com.example.gocart.Authentication.EmployeeCreate.DeliveryRiderCreate;
+import com.example.gocart.Authentication.RetailerAuth.RetailShopCreate;
 import com.example.gocart.UserListView.Admin.AdminList;
 
 public class Manager extends AppCompatActivity {

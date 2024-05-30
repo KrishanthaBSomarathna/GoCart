@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserCreate.Retail.RetailShopCreate">
+    tools:context=".Authentication.RetailerAuth.RetailShopCreate">
 
     <TextView
         android:id="@+id/textView5"
@@ -170,4 +170,13 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText14" />
+    <ImageButton
+        android:id="@+id/loginButton"
+        android:layout_width="293dp"
+        android:layout_height="18dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/loggo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

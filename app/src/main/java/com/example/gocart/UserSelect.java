@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,11 +15,13 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
-import com.example.gocart.UserCreate.Retail.RetailShopCreate;
+import com.example.gocart.Authentication.CustomerAuth.CustomerRegister;
+import com.example.gocart.Authentication.RetailerAuth.RetailShopCreate;
 
 public class UserSelect extends AppCompatActivity {
 
     ImageButton customerbtn,retailerbtn;
+    TextView manage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +43,19 @@ public class UserSelect extends AppCompatActivity {
 
         customerbtn = findViewById(R.id.customerbtn);
         retailerbtn = findViewById(R.id.retailerbtn);
+        manage = findViewById(R.id.manage);
+
+        manage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), UserLogin.class));
+            }
+        });
 
         customerbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(UserSelect.this,CustomerRegister.class));
+                startActivity(new Intent(UserSelect.this, CustomerRegister.class));
             }
         });
         retailerbtn.setOnClickListener(new View.OnClickListener() {
