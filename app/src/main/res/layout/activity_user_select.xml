@@ -8,7 +8,7 @@
     android:background="@drawable/selectbg"
 
     app:layoutDescription="@xml/activity_user_select_scene"
-    tools:context=".UserSelect">
+    tools:context=".Authentication.UserSelect">
 
     <TextView
         android:id="@+id/manage"
@@ -36,22 +36,22 @@
         android:id="@+id/customerbtn"
         android:layout_width="280dp"
         android:layout_height="62dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="364dp"
         android:layout_marginEnd="5dp"
-        android:background="@drawable/customer"
+        android:background="@drawable/customerbtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/retailerbtn"
-        android:layout_width="298dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/seller"
+        android:layout_width="280dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/retailerbtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.053"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/customerbtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

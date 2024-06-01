@@ -52,14 +52,14 @@
         app:layout_constraintTop_toBottomOf="@+id/editText9" />
 
     <AutoCompleteTextView
-        android:id="@+id/Representative"
+        android:id="@+id/divisional_secretariat"
         android:layout_width="match_parent"
         android:layout_height="62dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/logbgg"
-        android:hint="Delivery Representative"
+        android:hint="Divisional Secretariat"
         android:padding="20dp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +80,7 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Representative" />
+        app:layout_constraintTop_toBottomOf="@+id/divisional_secretariat" />
 
     <LinearLayout
         android:id="@+id/locationLayout"

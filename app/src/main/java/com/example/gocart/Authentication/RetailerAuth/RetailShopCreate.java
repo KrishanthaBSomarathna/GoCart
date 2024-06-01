@@ -16,7 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.R;
-import com.example.gocart.UserLogin;
+import com.example.gocart.Authentication.UserLogin;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,13 +29,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RetailShopCreate extends AppCompatActivity {
-    private EditText nameEditText, emailEditText, phoneEditText, passwordEditText, confirmPasswordEditText, latitudeEditText, longitudeEditText;
-    private AutoCompleteTextView representativeAutoCompleteTextView;
+    private EditText nameEditText, emailEditText, phoneEditText, passwordEditText, confirmPasswordEditText;
+    private AutoCompleteTextView locationAutoCompleteTextView;
     private ImageButton setLocationButton, createButton, loginButton;
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private double latitude, longitude;
-    private List<String> representativesList;
+    private List<String> locationsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +53,7 @@ public class RetailShopCreate extends AppCompatActivity {
         phoneEditText = findViewById(R.id.editText);
         passwordEditText = findViewById(R.id.editText13);
         confirmPasswordEditText = findViewById(R.id.editText14);
-        latitudeEditText = findViewById(R.id.latitude);
-        longitudeEditText = findViewById(R.id.longitude);
-        representativeAutoCompleteTextView = findViewById(R.id.Representative);
+        locationAutoCompleteTextView = findViewById(R.id.divisional_secretariat);
         setLocationButton = findViewById(R.id.setlocation);
         createButton = findViewById(R.id.createButton);
         loginButton = findViewById(R.id.loginButton);
@@ -63,32 +61,29 @@ public class RetailShopCreate extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        representativesList = new ArrayList<>();
+        locationsList = new ArrayList<>();
 
-        FirebaseDatabase.getInstance().getReference("users")
+        FirebaseDatabase.getInstance().getReference("locations")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            String role = snapshot.child("role").getValue(String.class);
-                            if (role != null && role.equals("Delivery Representative")) {
-                                String name = snapshot.child("name").getValue(String.class);
-                                if (name != null) {
-                                    representativesList.add(name);
-                                }
+                            String location = snapshot.getValue(String.class);
+                            if (location != null) {
+                                locationsList.add(location);
                             }
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                                 RetailShopCreate.this,
                                 android.R.layout.simple_dropdown_item_1line,
-                                representativesList);
-                        representativeAutoCompleteTextView.setAdapter(adapter);
+                                locationsList);
+                        locationAutoCompleteTextView.setAdapter(adapter);
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Toast.makeText(RetailShopCreate.this,
-                                "Failed to retrieve delivery representatives",
+                                "Failed to retrieve locations",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -109,13 +104,10 @@ public class RetailShopCreate extends AppCompatActivity {
         String phone = phoneEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
-        String representative = representativeAutoCompleteTextView.getText().toString().trim();
-        String latitudeStr = latitudeEditText.getText().toString().trim();
-        String longitudeStr = longitudeEditText.getText().toString().trim();
-        String role = "shop";
+        String location = locationAutoCompleteTextView.getText().toString().trim();
 
         if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() ||
-                representative.isEmpty() || latitudeStr.isEmpty() || longitudeStr.isEmpty()) {
+                location.isEmpty()) {
             Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -131,16 +123,11 @@ public class RetailShopCreate extends AppCompatActivity {
                         FirebaseUser firebaseUser = mAuth.getCurrentUser();
                         if (firebaseUser != null) {
                             String uid = firebaseUser.getUid();
-                            double latitude = Double.parseDouble(latitudeStr);
-                            double longitude = Double.parseDouble(longitudeStr);
                             DatabaseReference userRef = databaseReference.child("users").child(uid);
                             userRef.child("name").setValue(name);
                             userRef.child("email").setValue(email);
                             userRef.child("phone").setValue(phone);
-                            userRef.child("latitude").setValue(latitude);
-                            userRef.child("longitude").setValue(longitude);
-                            userRef.child("role").setValue("Shop Owner");
-                            userRef.child("representative").setValue(representative);
+                            userRef.child("location").setValue(location);
                             Toast.makeText(this, "Shop registered successfully", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(this, "Failed to create user", Toast.LENGTH_SHORT).show();
@@ -157,8 +144,6 @@ public class RetailShopCreate extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             latitude = data.getDoubleExtra("latitude", 0);
             longitude = data.getDoubleExtra("longitude", 0);
-            latitudeEditText.setText(String.valueOf(latitude));
-            longitudeEditText.setText(String.valueOf(longitude));
         }
     }
 }

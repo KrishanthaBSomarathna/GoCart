@@ -1,4 +1,4 @@
-package com.example.gocart;
+package com.example.gocart.Authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.example.gocart.Authentication.CustomerAuth.CustomerRegister;
 import com.example.gocart.Authentication.RetailerAuth.RetailShopCreate;
+import com.example.gocart.R;
 
 public class UserSelect extends AppCompatActivity {
 

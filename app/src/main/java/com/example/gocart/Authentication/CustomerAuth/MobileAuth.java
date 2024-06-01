@@ -2,8 +2,12 @@ package com.example.gocart.Authentication.CustomerAuth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +33,11 @@ public class MobileAuth extends AppCompatActivity {
     private String name, email, phone, password;
     private EditText otpEditText;
     private ImageView verifyButton;
-    private TextView resendTextView;
+    private TextView resendTextView,phoneNumber1,phoneNumber2;
     private FirebaseAuth mAuth;
     private String verificationId;
+    private RelativeLayout sendOtp,verifyOtp;
+    private ImageButton sendOtpbtn,cancelbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +47,15 @@ public class MobileAuth extends AppCompatActivity {
 
         otpEditText = findViewById(R.id.editText8);
         verifyButton = findViewById(R.id.verifyButton);
-
         resendTextView = findViewById(R.id.resendTextView);
+        sendOtp = findViewById(R.id.sentOtp);
+        verifyOtp = findViewById(R.id.verifyOtp);
+        sendOtpbtn = findViewById(R.id.sendOtpbtn);
+        cancelbtn = findViewById(R.id.cancelbtn);
+        phoneNumber1 = findViewById(R.id.phoneNumber1);
+        phoneNumber2 = findViewById(R.id.phoneNumber2);
+
+        verifyOtp.setVisibility(View.GONE);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -52,7 +65,25 @@ public class MobileAuth extends AppCompatActivity {
         phone = intent.getStringExtra("phone");
         password = intent.getStringExtra("password");
 
-        sendVerificationCode(phone);
+        phoneNumber1.setText(phone);
+        phoneNumber2.setText(phone);
+
+        cancelbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        sendOtpbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendVerificationCode(phone);
+                sendOtp.setVisibility(View.GONE);
+                verifyOtp.setVisibility(View.VISIBLE);
+                Toast.makeText(getApplicationContext(),"Sending OTP...",Toast.LENGTH_LONG).show();
+            }
+        });
 
         verifyButton.setOnClickListener(v -> {
             String code = otpEditText.getText().toString();
@@ -95,13 +126,16 @@ public class MobileAuth extends AppCompatActivity {
 
         @Override
         public void onVerificationFailed(FirebaseException e) {
-            Toast.makeText(MobileAuth.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e("VerificationFailed", "onVerificationFailed: " + e.getMessage());
+            Toast.makeText(MobileAuth.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken token) {
             super.onCodeSent(s, token);
             verificationId = s;
+            sendOtp.setVisibility(View.GONE);
+            verifyOtp.setVisibility(View.VISIBLE);
         }
     };
 
@@ -124,6 +158,8 @@ public class MobileAuth extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 saveUserToDatabase();
+                Toast.makeText(MobileAuth.this,"Email User Created", Toast.LENGTH_LONG).show();
+
             } else {
                 Toast.makeText(MobileAuth.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }

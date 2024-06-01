@@ -2,8 +2,11 @@ package com.example.gocart.Authentication.CustomerAuth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -13,11 +16,18 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class CustomerRegister extends AppCompatActivity {
 
     private EditText nameEditText, emailEditText, phoneEditText, passwordEditText, confirmPasswordEditText;
     private ImageView signUpButton;
+    private ImageButton login;
+    private TextView error1, error2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,29 +46,61 @@ public class CustomerRegister extends AppCompatActivity {
         passwordEditText = findViewById(R.id.editText6);
         confirmPasswordEditText = findViewById(R.id.editText7);
         signUpButton = findViewById(R.id.signUpButton);
+        login = findViewById(R.id.login);
+        error1 = findViewById(R.id.error1);
+        error2 = findViewById(R.id.error2);
+
+        error1.setVisibility(View.GONE);
+        error2.setVisibility(View.GONE);
 
         signUpButton.setOnClickListener(v -> {
-            String name = nameEditText.getText().toString();
-            String email = emailEditText.getText().toString();
-            String phone = phoneEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
-            String confirmPassword = confirmPasswordEditText.getText().toString();
+            String name = nameEditText.getText().toString().trim();
+            String email = emailEditText.getText().toString().trim();
+            String phone = phoneEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
+            String confirmPassword = confirmPasswordEditText.getText().toString().trim();
 
-            if (password.equals(confirmPassword)) {
-                Intent intent = new Intent(CustomerRegister.this, MobileAuth.class);
-                intent.putExtra("name", name);
-                intent.putExtra("email", email);
-                intent.putExtra("phone", phone);
-                intent.putExtra("password", password);
-                startActivity(intent);
-                Toast.makeText(CustomerRegister.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                Toast.makeText(CustomerRegister.this, "All fields must be filled!", Toast.LENGTH_SHORT).show();
+            } else if (!password.equals(confirmPassword)) {
+                Toast.makeText(CustomerRegister.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
             } else {
-                // Show an error message: passwords do not match
-                Toast.makeText(CustomerRegister.this, "Registration not", Toast.LENGTH_SHORT).show();
-
+                checkEmailExists(email, name, phone, password);
             }
         });
 
+        login.setOnClickListener(v -> {
+            Intent intent = new Intent(CustomerRegister.this, CustomerLogin.class);
+            startActivity(intent);
+        });
+    }
 
+    private void checkEmailExists(String email, String name, String phone, String password) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    error1.setVisibility(View.VISIBLE);
+                    error2.setVisibility(View.VISIBLE);
+                } else {
+                    proceedToMobileAuth(name, email, phone, password);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(CustomerRegister.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void proceedToMobileAuth(String name, String email, String phone, String password) {
+        Intent intent = new Intent(CustomerRegister.this, MobileAuth.class);
+        intent.putExtra("name", name);
+        intent.putExtra("email", email);
+        intent.putExtra("phone", phone);
+        intent.putExtra("password", password);
+        startActivity(intent);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.gocart;
+package com.example.gocart.Authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.Manager.Manager;
+import com.example.gocart.R;
 import com.example.gocart.RetailShop.RetailShopOwnerDashboard;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
