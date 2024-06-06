@@ -28,7 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.TimeUnit;
 
-public class MobileAuth extends AppCompatActivity {
+public class CustomerMobileAuth extends AppCompatActivity {
 
     private String name, email, phone, password;
     private EditText otpEditText;
@@ -127,7 +127,7 @@ public class MobileAuth extends AppCompatActivity {
         @Override
         public void onVerificationFailed(FirebaseException e) {
             Log.e("VerificationFailed", "onVerificationFailed: " + e.getMessage());
-            Toast.makeText(MobileAuth.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(CustomerMobileAuth.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -149,7 +149,7 @@ public class MobileAuth extends AppCompatActivity {
             if (task.isSuccessful()) {
                 createFirebaseUser();
             } else {
-                Toast.makeText(MobileAuth.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(CustomerMobileAuth.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -158,10 +158,10 @@ public class MobileAuth extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 saveUserToDatabase();
-                Toast.makeText(MobileAuth.this,"Email User Created", Toast.LENGTH_LONG).show();
+                Toast.makeText(CustomerMobileAuth.this,"Email User Created", Toast.LENGTH_LONG).show();
 
             } else {
-                Toast.makeText(MobileAuth.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(CustomerMobileAuth.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -171,10 +171,10 @@ public class MobileAuth extends AppCompatActivity {
         User user = new User(name, email, phone);
         reference.child(mAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(MobileAuth.this, "User registered successfully", Toast.LENGTH_LONG).show();
+                Toast.makeText(CustomerMobileAuth.this, "User registered successfully", Toast.LENGTH_LONG).show();
                 // Redirect to another activity or close
             } else {
-                Toast.makeText(MobileAuth.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(CustomerMobileAuth.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

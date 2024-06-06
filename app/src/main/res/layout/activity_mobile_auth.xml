@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/otpbg"
-    tools:context=".Authentication.CustomerAuth.MobileAuth">
+    tools:context=".Authentication.CustomerAuth.CustomerMobileAuth">
 
     <RelativeLayout
         android:id="@+id/sentOtp"

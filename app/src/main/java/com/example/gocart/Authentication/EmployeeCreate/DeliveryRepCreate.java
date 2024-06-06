@@ -7,6 +7,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -36,6 +37,7 @@ public class DeliveryRepCreate extends AppCompatActivity {
     DatabaseReference databaseReference;
     DatabaseReference locationReference;
     Map<String, List<String>> locationData;
+    TextView error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,11 @@ public class DeliveryRepCreate extends AppCompatActivity {
         passwordEditText = findViewById(R.id.editText13);
         confirmPasswordEditText = findViewById(R.id.editText14);
         createButton = findViewById(R.id.createButton);
+        error = findViewById(R.id.error);
+
+
+        error.setVisibility(View.GONE);
+
 
         locationData = new HashMap<>();
 
@@ -75,7 +82,12 @@ public class DeliveryRepCreate extends AppCompatActivity {
             }
         });
 
-        createButton.setOnClickListener(this::createDeliveryRep);
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkEmailExists(emailEditText.getText().toString());
+            }
+        });
     }
 
     private void loadLocationData() {
@@ -101,8 +113,26 @@ public class DeliveryRepCreate extends AppCompatActivity {
             }
         });
     }
+    private void checkEmailExists(String email) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    error.setVisibility(View.VISIBLE);
+                } else {
+                    createDeliveryRep();
+                }
+            }
 
-    private void createDeliveryRep(View view) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(DeliveryRepCreate.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void createDeliveryRep() {
         String nameText = nameEditText.getText().toString().trim();
         String emailText = emailEditText.getText().toString().trim();
         String districtText = districtTextView.getText().toString().trim();
@@ -114,7 +144,10 @@ public class DeliveryRepCreate extends AppCompatActivity {
             Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        if (passwordText.length() < 6) {
+            Toast.makeText(DeliveryRepCreate.this, "Password must be at least 6 characters long!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (!passwordText.equals(confirmPasswordText)) {
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             return;

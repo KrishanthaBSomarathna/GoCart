@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -13,17 +14,22 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.gocart.Authentication.RetailerAuth.RetailShopCreate;
 import com.example.gocart.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class AdminCreate extends AppCompatActivity {
     EditText name, email, password, confirmPassword;
     ImageButton create;
     DatabaseReference databaseReference;
     FirebaseAuth mAuth;
+    TextView error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +54,32 @@ public class AdminCreate extends AppCompatActivity {
         password = findViewById(R.id.password);
         confirmPassword = findViewById(R.id.ConfirmPassword);
         create = findViewById(R.id.Create);
+        error = findViewById(R.id.error);
+        error.setVisibility(View.GONE);
 
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createAdmin();
+                checkEmailExists(email.getText().toString().trim());
+            }
+        });
+    }
+
+    private void checkEmailExists(String email) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    error.setVisibility(View.VISIBLE);
+                } else {
+                    createAdmin();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(AdminCreate.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -69,8 +96,12 @@ public class AdminCreate extends AppCompatActivity {
             return;
         }
 
+        if (passwordText.length() < 6) {
+            Toast.makeText(AdminCreate.this, "Password must be at least 6 characters long!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (!passwordText.equals(confirmPasswordText)) {
-            Toast.makeText(AdminCreate.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             return;
         }
 

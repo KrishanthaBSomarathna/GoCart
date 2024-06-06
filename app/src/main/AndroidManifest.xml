@@ -17,6 +17,11 @@
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
         <activity
+            android:name=".Authentication.RetailerAuth.RetailerMobileAuth"
+            android:exported="true" >
+
+        </activity>
+        <activity
             android:name=".Authentication.RetailerAuth.RetailerLogin"
             android:exported="true" >
 
@@ -71,7 +76,7 @@
             android:name=".Authentication.EmployeeCreate.AdminCreate"
             android:exported="true" />
         <activity
-            android:name=".Manager.Manager"
+            android:name=".Dashboard.Admin.Admin"
             android:exported="true" >
 
         </activity>
@@ -82,7 +87,7 @@
             android:name=".Authentication.UserLogin"
             android:exported="true" />
         <activity
-            android:name=".Authentication.CustomerAuth.MobileAuth"
+            android:name=".Authentication.CustomerAuth.CustomerMobileAuth"
             android:exported="true" />
         <activity
             android:name=".Authentication.CustomerAuth.CustomerRegister"

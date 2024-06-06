@@ -70,7 +70,10 @@ public class DeliveryRiderCreate extends AppCompatActivity {
             Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        if (passwordText.length() < 6) {
+            Toast.makeText(DeliveryRiderCreate.this, "Password must be at least 6 characters long!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (!passwordText.equals(confirmPasswordText)) {
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             return;

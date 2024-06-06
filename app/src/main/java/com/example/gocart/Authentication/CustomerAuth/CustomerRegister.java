@@ -1,6 +1,9 @@
 package com.example.gocart.Authentication.CustomerAuth;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -59,13 +62,20 @@ public class CustomerRegister extends AppCompatActivity {
             String phone = phoneEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
             String confirmPassword = confirmPasswordEditText.getText().toString().trim();
+            String role = "customer";
 
             if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(CustomerRegister.this, "All fields must be filled!", Toast.LENGTH_SHORT).show();
+            } else if (password.length() < 6) {
+                Toast.makeText(CustomerRegister.this, "Password must be at least 6 characters long!", Toast.LENGTH_SHORT).show();
             } else if (!password.equals(confirmPassword)) {
                 Toast.makeText(CustomerRegister.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
             } else {
-                checkEmailExists(email, name, phone, password);
+                if (isNetworkAvailable()) {
+                    checkEmailExists(email, name, phone, password, role);
+                } else {
+                    Toast.makeText(CustomerRegister.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -75,7 +85,7 @@ public class CustomerRegister extends AppCompatActivity {
         });
     }
 
-    private void checkEmailExists(String email, String name, String phone, String password) {
+    private void checkEmailExists(String email, String name, String phone, String password, String role) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
         databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -96,11 +106,17 @@ public class CustomerRegister extends AppCompatActivity {
     }
 
     private void proceedToMobileAuth(String name, String email, String phone, String password) {
-        Intent intent = new Intent(CustomerRegister.this, MobileAuth.class);
+        Intent intent = new Intent(CustomerRegister.this, CustomerMobileAuth.class);
         intent.putExtra("name", name);
         intent.putExtra("email", email);
         intent.putExtra("phone", phone);
         intent.putExtra("password", password);
         startActivity(intent);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
