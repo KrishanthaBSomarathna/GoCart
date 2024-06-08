@@ -24,6 +24,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AdminCreate extends AppCompatActivity {
     EditText name, email, password, confirmPassword;
     ImageButton create;
@@ -57,12 +60,7 @@ public class AdminCreate extends AppCompatActivity {
         error = findViewById(R.id.error);
         error.setVisibility(View.GONE);
 
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkEmailExists(email.getText().toString().trim());
-            }
-        });
+        create.setOnClickListener(v -> checkEmailExists(email.getText().toString().trim()));
     }
 
     private void checkEmailExists(String email) {
@@ -71,10 +69,15 @@ public class AdminCreate extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    error.setVisibility(View.VISIBLE);
-                } else {
-                    createAdmin();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String role = snapshot.child("role").getValue(String.class);
+                        if ("Admin".equals(role)) {
+                            error.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                    }
                 }
+                createAdmin();
             }
 
             @Override
@@ -83,6 +86,8 @@ public class AdminCreate extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void createAdmin() {
         String emailText = email.getText().toString().trim();
@@ -105,27 +110,44 @@ public class AdminCreate extends AppCompatActivity {
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(emailText, passwordText)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // User is successfully created
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        if (user != null) {
-                            User admin = new User(nameText, emailText, "Admin");
-                            databaseReference.child(user.getUid()).setValue(admin)
-                                    .addOnCompleteListener(task1 -> {
-                                        if (task1.isSuccessful()) {
-                                            Toast.makeText(AdminCreate.this, "Admin created successfully", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(AdminCreate.this, "Database error: " + task1.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(AdminCreate.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        // Check count of existing admin users
+        DatabaseReference adminRef = FirebaseDatabase.getInstance().getReference("users");
+        adminRef.orderByChild("role").equalTo("Admin").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long adminCount = dataSnapshot.getChildrenCount();
+                long newAdminId = adminCount + 1;
+                String adminId = "admin" + newAdminId;
+
+                // Create a new user with email and password
+                mAuth.createUserWithEmailAndPassword(emailText, passwordText)
+                        .addOnCompleteListener(AdminCreate.this, task -> {
+                            if (task.isSuccessful()) {
+                                // User is successfully created
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                if (user != null) {
+                                    User admin = new User(nameText, emailText, "Admin", adminId);
+                                    databaseReference.child(user.getUid()).setValue(admin)
+                                            .addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()) {
+                                                    Toast.makeText(AdminCreate.this, "Admin created successfully", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(AdminCreate.this, "Database error: " + task1.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Toast.makeText(AdminCreate.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(AdminCreate.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // User class to represent admin user
@@ -133,15 +155,17 @@ public class AdminCreate extends AppCompatActivity {
         public String name;
         public String email;
         public String role;
+        public String uid;
 
         public User() {
             // Default constructor required for calls to DataSnapshot.getValue(User.class)
         }
 
-        public User(String name, String email, String role) {
+        public User(String name, String email, String role, String uid) {
             this.name = name;
             this.email = email;
             this.role = role;
+            this.uid = uid;
         }
     }
 }

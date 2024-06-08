@@ -58,6 +58,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/logbgg"
         android:hint="Emial"
+        android:inputType="textEmailAddress"
         android:padding="20dp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
