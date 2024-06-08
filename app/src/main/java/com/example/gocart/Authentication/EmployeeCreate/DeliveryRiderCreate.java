@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -27,6 +28,7 @@ public class DeliveryRiderCreate extends AppCompatActivity {
     Spinner vehicleTypeSpinner;
     ImageButton createButton;
     DatabaseReference databaseReference;
+    TextView error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,8 @@ public class DeliveryRiderCreate extends AppCompatActivity {
         passwordEditText = findViewById(R.id.editText13);
         confirmPasswordEditText = findViewById(R.id.editText14);
         createButton = findViewById(R.id.createButton);
+        error = findViewById(R.id.error);
+        error.setVisibility(View.GONE);
 
         // Set up the options for the vehicle type spinner
         String[] vehicleTypeOptions = {"Bike", "Three-Wheeler"};
@@ -100,6 +104,7 @@ public class DeliveryRiderCreate extends AppCompatActivity {
                                 });
                     } else {
                         Toast.makeText(this, "Error creating user: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        error.setVisibility(View.VISIBLE);
                     }
                 });
     }

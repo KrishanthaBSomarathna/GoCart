@@ -27,9 +27,13 @@ import com.google.firebase.database.ValueEventListener;
 
 public class CustomerRegister extends AppCompatActivity {
 
-    private EditText nameEditText, emailEditText, phoneEditText, passwordEditText, confirmPasswordEditText;
-    private ImageView signUpButton;
-    private ImageButton login;
+    public EditText nameEditText;
+    public EditText emailEditText;
+    public EditText phoneEditText;
+    public EditText passwordEditText;
+    public EditText confirmPasswordEditText;
+    public ImageView signUpButton;
+    public ImageButton login;
     private TextView error1, error2;
 
     @Override
@@ -86,7 +90,7 @@ public class CustomerRegister extends AppCompatActivity {
     }
 
     private void checkEmailExists(String email, String name, String phone, String password, String role) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Customer");
         databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -114,7 +118,7 @@ public class CustomerRegister extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private boolean isNetworkAvailable() {
+    public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();

@@ -17,9 +17,15 @@ import com.example.gocart.Home;
 import com.example.gocart.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class CustomerLogin extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
     private EditText emailField, passwordField;
 
     @Override
@@ -32,6 +38,7 @@ public class CustomerLogin extends AppCompatActivity {
             return insets;
         });
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         emailField = findViewById(R.id.email);
         passwordField = findViewById(R.id.password);
@@ -53,11 +60,37 @@ public class CustomerLogin extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(CustomerLogin.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(CustomerLogin.this, Home.class));
+                        checkUserRole(user);
                     } else {
                         Toast.makeText(CustomerLogin.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void checkUserRole(FirebaseUser user) {
+        if (user != null) {
+            String userId = user.getUid();
+            DatabaseReference userRef = mDatabase.child("Customer").child(userId).child("role");
+
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String role = dataSnapshot.getValue(String.class);
+                    if ("customer".equals(role)) {
+                        // User is a customer, redirect to home screen
+                        startActivity(new Intent(CustomerLogin.this, Home.class));
+                    } else {
+                        // User is not a customer, show error message
+                        mAuth.signOut();
+                        Toast.makeText(CustomerLogin.this, "You are not authorized to access this app.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Toast.makeText(CustomerLogin.this, "Failed to check user role: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

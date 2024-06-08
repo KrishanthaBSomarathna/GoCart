@@ -44,14 +44,18 @@ dependencies {
     implementation libs.navigation.ui
     implementation libs.firebase.database
     implementation libs.firebase.auth
-    testImplementation libs.junit
-    androidTestImplementation libs.ext.junit
-    androidTestImplementation libs.espresso.core
-    implementation 'com.google.firebase:firebase-auth:21.0.1'
-    implementation 'com.google.firebase:firebase-database:20.0.3'
-    implementation 'com.google.android.gms:play-services-maps:18.0.2'
-    implementation 'com.google.android.gms:play-services-location:20.0.0'
-    implementation 'com.google.android.libraries.places:places:3.1.0'
+    implementation libs.core
+
+
+    implementation libs.firebase.auth.v2101
+    implementation libs.firebase.database.v2003
+    implementation libs.play.services.maps
+    implementation libs.play.services.location
+    implementation libs.places
+
+
+
+
 
 
 

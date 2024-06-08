@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -24,8 +25,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -154,42 +158,46 @@ public class RetailerMobileAuth extends AppCompatActivity {
     }
 
     private void createFirebaseUser() {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                saveUserToDatabase();
-                startActivity(new Intent(RetailerMobileAuth.this, RetailerLogin.class));
-                Toast.makeText(RetailerMobileAuth.this, "Email User Created", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(RetailerMobileAuth.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+        DatabaseReference retailerRef = FirebaseDatabase.getInstance().getReference("retailer");
+        retailerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long retailerCount = dataSnapshot.getChildrenCount();
+                long newUserId = retailerCount + 1;
+                String userId = "retailer" + newUserId;
+
+                Map<String, Object> retailerInfo = new HashMap<>();
+                retailerInfo.put("name", name);
+                retailerInfo.put("email", email);
+                retailerInfo.put("phone", phone);
+                retailerInfo.put("latitude", Double.parseDouble(latitude));
+                retailerInfo.put("longitude", Double.parseDouble(longitude));
+                retailerInfo.put("role", "Shop");
+                retailerInfo.put("district", district);
+                retailerInfo.put("division", division);
+
+                retailerRef.child(userId).setValue(retailerInfo).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        mAuth.createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        Toast.makeText(RetailerMobileAuth.this, "Retailer registered successfully", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(RetailerMobileAuth.this, RetailerLogin.class));
+                                    } else {
+                                        Toast.makeText(RetailerMobileAuth.this, "Failed to create user: " + task1.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                    } else {
+                        Toast.makeText(RetailerMobileAuth.this, "Failed to register retailer: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(RetailerMobileAuth.this, "Error retrieving retailer count: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
-
-    private void saveUserToDatabase() {
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            String uid = ((FirebaseUser) firebaseUser).getUid();
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("retailer").child(uid);
-            Map<String, Object> user = new HashMap<>();
-            user.put("name", name);
-            user.put("email", email);
-            user.put("phone", phone);
-            user.put("latitude", Double.parseDouble(latitude));
-            user.put("longitude", Double.parseDouble(longitude));
-            user.put("role", "Shop");
-            user.put("district", district);
-            user.put("division", division);
-
-            userRef.setValue(user).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(RetailerMobileAuth.this, "Shop registered successfully", Toast.LENGTH_LONG).show();
-                    // Redirect to another activity or close
-                } else {
-                    Toast.makeText(RetailerMobileAuth.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-        } else {
-            Toast.makeText(RetailerMobileAuth.this, "Failed to create user", Toast.LENGTH_SHORT).show();
-        }
-    }
 }
+

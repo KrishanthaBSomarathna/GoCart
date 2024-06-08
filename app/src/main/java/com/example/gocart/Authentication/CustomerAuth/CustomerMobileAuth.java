@@ -12,19 +12,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.gocart.Authentication.EmployeeCreate.AdminCreate;
 import com.example.gocart.R;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,11 +39,11 @@ public class CustomerMobileAuth extends AppCompatActivity {
     private String name, email, phone, password;
     private EditText otpEditText;
     private ImageView verifyButton;
-    private TextView resendTextView,phoneNumber1,phoneNumber2;
+    private TextView resendTextView, phoneNumber1, phoneNumber2;
     private FirebaseAuth mAuth;
     private String verificationId;
-    private RelativeLayout sendOtp,verifyOtp;
-    private ImageButton sendOtpbtn,cancelbtn;
+    private RelativeLayout sendOtp, verifyOtp;
+    private ImageButton sendOtpbtn, cancelbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +87,7 @@ public class CustomerMobileAuth extends AppCompatActivity {
                 sendVerificationCode(phone);
                 sendOtp.setVisibility(View.GONE);
                 verifyOtp.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(),"Sending OTP...",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Sending OTP...", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -130,9 +136,12 @@ public class CustomerMobileAuth extends AppCompatActivity {
             Toast.makeText(CustomerMobileAuth.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
-        @Override
-        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken token) {
+
+        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken token,PhoneAuthCredential credential) {
             super.onCodeSent(s, token);
+            String code = credential.getSmsCode();
+
+            otpEditText.setText(code);
             verificationId = s;
             sendOtp.setVisibility(View.GONE);
             verifyOtp.setVisibility(View.VISIBLE);
@@ -140,47 +149,66 @@ public class CustomerMobileAuth extends AppCompatActivity {
     };
 
     private void verifyCode(String code) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-        signInWithPhoneAuthCredential(credential);
+        PhoneAuthProvider.getCredential(verificationId, code);
+        createUserWithEmailAndPassword(email, password);
+
     }
 
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                createFirebaseUser();
-            } else {
-                Toast.makeText(CustomerMobileAuth.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+    private void createUserWithEmailAndPassword(String email, String password) {
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // User is successfully created
+                        createFirebaseUser();
+
+
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(CustomerMobileAuth.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void createFirebaseUser() {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                saveUserToDatabase();
-                Toast.makeText(CustomerMobileAuth.this,"Email User Created", Toast.LENGTH_LONG).show();
+        // Get a reference to the "Customer" node in Firebase
+        DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference("Customer");
 
-            } else {
-                Toast.makeText(CustomerMobileAuth.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+        // Retrieve the count of existing customers
+        customerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long customerCount = dataSnapshot.getChildrenCount();
+
+                // Increment the customer count by 1 to get the new user ID
+                long newUserId = customerCount + 1;
+
+                // Create the new user ID string
+                String userId = "customer" + newUserId;
+
+                // Create the user object
+                User user = new User(name, email, phone);
+
+                // Store the user in Firebase using the generated user ID
+                customerRef.child(userId).setValue(user).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(CustomerMobileAuth.this, "User registered successfully", Toast.LENGTH_LONG).show();
+                        // Redirect to another activity or close
+                    } else {
+                        Toast.makeText(CustomerMobileAuth.this, "Failed to register user: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
-        });
-    }
 
-    private void saveUserToDatabase() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Customer");
-        User user = new User(name, email, phone);
-        reference.child(mAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(CustomerMobileAuth.this, "User registered successfully", Toast.LENGTH_LONG).show();
-                // Redirect to another activity or close
-            } else {
-                Toast.makeText(CustomerMobileAuth.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(CustomerMobileAuth.this, "Error retrieving customer count: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     public static class User {
-        public String name, email, phone;
+        public String name, email, phone,role;
 
         public User() {
         }
@@ -189,6 +217,7 @@ public class CustomerMobileAuth extends AppCompatActivity {
             this.name = name;
             this.email = email;
             this.phone = phone;
+            this.role = "customer";
         }
     }
 }
