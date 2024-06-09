@@ -164,7 +164,10 @@ public class RetailerMobileAuth extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 long retailerCount = dataSnapshot.getChildrenCount();
                 long newUserId = retailerCount + 1;
-                String userId = "retailer" + newUserId;
+                String uId = "RT" + newUserId;
+
+                FirebaseUser user = mAuth.getCurrentUser();
+                String userId = user.getUid();
 
                 Map<String, Object> retailerInfo = new HashMap<>();
                 retailerInfo.put("name", name);
@@ -175,6 +178,7 @@ public class RetailerMobileAuth extends AppCompatActivity {
                 retailerInfo.put("role", "Shop");
                 retailerInfo.put("district", district);
                 retailerInfo.put("division", division);
+                retailerInfo.put("uId", uId);
 
                 retailerRef.child(userId).setValue(retailerInfo).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

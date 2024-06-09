@@ -18,9 +18,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.gocart.Authentication.CustomerAuth.CustomerRegister;
 import com.example.gocart.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -136,22 +139,20 @@ public class RetailShopCreate extends AppCompatActivity {
         // Create button click listener
         createButton.setOnClickListener(view -> checkEmailExists(emailEditText.getText().toString()));
     }
+
     private void checkEmailExists(String email) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
+        mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<String> signInMethods = task.getResult().getSignInMethods();
+                if (signInMethods != null && !signInMethods.isEmpty()) {
                     error.setVisibility(View.VISIBLE);
-                    scrollView.scrollTo(1, 0);
+                    error.setText("Email is already registered");
+                    scrollView.scrollTo(0, 0);
                 } else {
                     registerShop();
                 }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(RetailShopCreate.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(RetailShopCreate.this, "Failed to check email", Toast.LENGTH_SHORT).show();
             }
         });
     }

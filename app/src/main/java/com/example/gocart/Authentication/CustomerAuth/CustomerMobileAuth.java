@@ -98,7 +98,7 @@ public class CustomerMobileAuth extends AppCompatActivity {
                 otpEditText.requestFocus();
                 return;
             }
-            verifyCode(code);
+            verifyCode(code,email,password);
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -126,7 +126,7 @@ public class CustomerMobileAuth extends AppCompatActivity {
             String code = credential.getSmsCode();
             if (code != null) {
                 otpEditText.setText(code);
-                verifyCode(code);
+                verifyCode(code,email,password);
             }
         }
 
@@ -136,68 +136,56 @@ public class CustomerMobileAuth extends AppCompatActivity {
             Toast.makeText(CustomerMobileAuth.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
-
-        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken token,PhoneAuthCredential credential) {
+        @Override
+        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken token) {
             super.onCodeSent(s, token);
-            String code = credential.getSmsCode();
-
-            otpEditText.setText(code);
             verificationId = s;
             sendOtp.setVisibility(View.GONE);
             verifyOtp.setVisibility(View.VISIBLE);
         }
     };
 
-    private void verifyCode(String code) {
-        PhoneAuthProvider.getCredential(verificationId, code);
-        createUserWithEmailAndPassword(email, password);
-
+    private void verifyCode(String code,String email, String password) {
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        createUserWithEmailAndPassword(email,password);
     }
 
-    private void createUserWithEmailAndPassword(String email, String password) {
 
+
+    private void createUserWithEmailAndPassword(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // User is successfully created
                         createFirebaseUser();
-
-
+                        startActivity(new Intent(CustomerMobileAuth.this, CustomerLogin.class));
+                        finish();
                     } else {
-                        // If sign in fails, display a message to the user.
                         Toast.makeText(CustomerMobileAuth.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private void createFirebaseUser() {
-        // Get a reference to the "Customer" node in Firebase
         DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference("Customer");
 
-        // Retrieve the count of existing customers
         customerRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 long customerCount = dataSnapshot.getChildrenCount();
-
-                // Increment the customer count by 1 to get the new user ID
-                long newUserId = customerCount + 1;
-
-                // Create the new user ID string
-                String userId = "customer" + newUserId;
-
-                // Create the user object
-                User user = new User(name, email, phone);
-
-                // Store the user in Firebase using the generated user ID
-                customerRef.child(userId).setValue(user).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(CustomerMobileAuth.this, "User registered successfully", Toast.LENGTH_LONG).show();
-                        // Redirect to another activity or close
-                    } else {
-                        Toast.makeText(CustomerMobileAuth.this, "Failed to register user: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
+                String uId = "CON" + (customerCount + 1);
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    String userId = currentUser.getUid();
+                    User user = new User(name, email, phone, uId);
+                    customerRef.child(userId).setValue(user).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(CustomerMobileAuth.this, "User registered successfully", Toast.LENGTH_LONG).show();
+                            // Redirect to another activity or close
+                        } else {
+                            Toast.makeText(CustomerMobileAuth.this, "Failed to register user: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
             }
 
             @Override
@@ -208,16 +196,17 @@ public class CustomerMobileAuth extends AppCompatActivity {
     }
 
     public static class User {
-        public String name, email, phone,role;
+        public String name, email, phone, role, uID;
 
         public User() {
         }
 
-        public User(String name, String email, String phone) {
+        public User(String name, String email, String phone, String uID) {
             this.name = name;
             this.email = email;
             this.phone = phone;
             this.role = "customer";
+            this.uID = uID; // Correctly set uID
         }
     }
 }
