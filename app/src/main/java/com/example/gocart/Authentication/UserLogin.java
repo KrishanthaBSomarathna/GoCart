@@ -15,7 +15,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.gocart.Dashboard.Admin.Admin;
+import com.example.gocart.Dashboard.Admin.AdminView;
 import com.example.gocart.R;
 import com.example.gocart.RetailShop.RetailShopOwnerDashboard;
 import com.google.firebase.auth.FirebaseAuth;
@@ -91,7 +91,7 @@ public class UserLogin extends AppCompatActivity {
                     switch (role) {
                         case "Admin":
                             Toast.makeText(UserLogin.this, "Admin login successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(UserLogin.this, Admin.class));
+                            startActivity(new Intent(UserLogin.this, AdminView.class));
                             break;
                         case "Delivery Representative":
                             Toast.makeText(UserLogin.this, "Delivery Representative login successful", Toast.LENGTH_SHORT).show();

@@ -4,6 +4,8 @@ public class Admin {
     private String name;
     private String id; // Assuming there's an ID for each admin
 
+    private String uId;
+
     // No-argument constructor
     public Admin() {
     }
@@ -29,5 +31,13 @@ public class Admin {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
     }
 }

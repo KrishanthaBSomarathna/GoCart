@@ -16,7 +16,7 @@ import com.example.gocart.Authentication.EmployeeCreate.DeliveryRiderCreate;
 import com.example.gocart.Authentication.RetailerAuth.RetailShopCreate;
 import com.example.gocart.UserListView.Admin.AdminList;
 
-public class Admin extends AppCompatActivity {
+public class AdminView extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class Admin extends AppCompatActivity {
         findViewById(R.id.administrators_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Admin.this, AdminList.class);
+                Intent intent = new Intent(AdminView.this, AdminList.class);
                 startActivity(intent);
             }
         });
@@ -41,7 +41,7 @@ public class Admin extends AppCompatActivity {
         findViewById(R.id.delivery_rep_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Admin.this, DeliveryRepCreate.class);
+                Intent intent = new Intent(AdminView.this, DeliveryRepCreate.class);
                 startActivity(intent);
             }
         });
@@ -49,7 +49,7 @@ public class Admin extends AppCompatActivity {
         findViewById(R.id.delivery_riders_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Admin.this, DeliveryRiderCreate.class);
+                Intent intent = new Intent(AdminView.this, DeliveryRiderCreate.class);
                 startActivity(intent);
             }
         });
@@ -57,7 +57,7 @@ public class Admin extends AppCompatActivity {
         findViewById(R.id.retail_shops_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Admin.this, RetailShopCreate.class);
+                Intent intent = new Intent(AdminView.this, RetailShopCreate.class);
                 startActivity(intent);
             }
         });
@@ -65,7 +65,7 @@ public class Admin extends AppCompatActivity {
         findViewById(R.id.organization_structure_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Admin.this, Admin.class);
+                Intent intent = new Intent(AdminView.this, AdminView.class);
                 startActivity(intent);
             }
         });

@@ -17,8 +17,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,29 +86,56 @@ public class DeliveryRiderCreate extends AppCompatActivity {
             return;
         }
 
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailText, passwordText)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                        Map<String, Object> userData = new HashMap<>();
-                        userData.put("name", nameText);
-                        userData.put("email", emailText);
-                        userData.put("vehicle_type", vehicleTypeText);
-                        userData.put("role", "Delivery Rider");
-
-                        databaseReference.child(userId).setValue(userData)
-                                .addOnCompleteListener(innerTask -> {
-                                    if (innerTask.isSuccessful()) {
-                                        Toast.makeText(this, "Delivery Rider created successfully", Toast.LENGTH_SHORT).show();
-
-                                    } else {
-                                        Toast.makeText(this, "Error creating Delivery Rider: " + innerTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    } else {
-                        Toast.makeText(this, "Error creating user: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        error.setVisibility(View.VISIBLE);
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+        userRef.orderByChild("role").equalTo("Delivery Rider").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long maxId = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String uid = snapshot.child("uid").getValue(String.class);
+                    if (uid != null && uid.startsWith("RIDER")) {
+                        try {
+                            long id = Long.parseLong(uid.replace("RIDER", ""));
+                            if (id > maxId) {
+                                maxId = id;
+                            }
+                        } catch (NumberFormatException e) {
+                            // Handle the case where the uid is not in the expected format
+                        }
                     }
-                });
+                }
+                String newRiderId = "RIDER" + (maxId + 1);
+
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailText, passwordText)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                Map<String, Object> userData = new HashMap<>();
+                                userData.put("uid", newRiderId);  // Using RIDER ID format
+                                userData.put("name", nameText);
+                                userData.put("email", emailText);
+                                userData.put("vehicle_type", vehicleTypeText);
+                                userData.put("role", "Delivery Rider");
+
+                                databaseReference.child(userId).setValue(userData)
+                                        .addOnCompleteListener(innerTask -> {
+                                            if (innerTask.isSuccessful()) {
+                                                Toast.makeText(DeliveryRiderCreate.this, "Delivery Rider created successfully", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(DeliveryRiderCreate.this, "Error creating Delivery Rider: " + innerTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            } else {
+                                Toast.makeText(DeliveryRiderCreate.this, "Error creating user: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                error.setVisibility(View.VISIBLE);
+                            }
+                        });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(DeliveryRiderCreate.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

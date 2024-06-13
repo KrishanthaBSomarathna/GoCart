@@ -14,7 +14,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.gocart.Authentication.RetailerAuth.RetailShopCreate;
 import com.example.gocart.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -87,8 +86,6 @@ public class AdminCreate extends AppCompatActivity {
         });
     }
 
-
-
     private void createAdmin() {
         String emailText = email.getText().toString().trim();
         String nameText = name.getText().toString().trim();
@@ -115,8 +112,21 @@ public class AdminCreate extends AppCompatActivity {
         adminRef.orderByChild("role").equalTo("Admin").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                long adminCount = dataSnapshot.getChildrenCount();
-                long newAdminId = adminCount + 1;
+                long maxId = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String uid = snapshot.child("uid").getValue(String.class);
+                    if (uid != null && uid.startsWith("admin")) {
+                        try {
+                            long id = Long.parseLong(uid.replace("admin", ""));
+                            if (id > maxId) {
+                                maxId = id;
+                            }
+                        } catch (NumberFormatException e) {
+                            // Handle the case where the uid is not in the expected format
+                        }
+                    }
+                }
+                long newAdminId = maxId + 1;
                 String adminId = "admin" + newAdminId;
 
                 // Create a new user with email and password

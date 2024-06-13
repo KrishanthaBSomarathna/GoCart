@@ -64,9 +64,7 @@ public class DeliveryRepCreate extends AppCompatActivity {
         createButton = findViewById(R.id.createButton);
         error = findViewById(R.id.error);
 
-
         error.setVisibility(View.GONE);
-
 
         locationData = new HashMap<>();
 
@@ -82,12 +80,7 @@ public class DeliveryRepCreate extends AppCompatActivity {
             }
         });
 
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkEmailExists(emailEditText.getText().toString());
-            }
-        });
+        createButton.setOnClickListener(v -> checkEmailExists(emailEditText.getText().toString()));
     }
 
     private void loadLocationData() {
@@ -113,6 +106,7 @@ public class DeliveryRepCreate extends AppCompatActivity {
             }
         });
     }
+
     private void checkEmailExists(String email) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
         databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -153,29 +147,56 @@ public class DeliveryRepCreate extends AppCompatActivity {
             return;
         }
 
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailText, passwordText)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                        Map<String, Object> userData = new HashMap<>();
-                        userData.put("name", nameText);
-                        userData.put("email", emailText);
-                        userData.put("district", districtText);
-                        userData.put("divisional_secretariat", dsText);
-                        userData.put("role", "Delivery Representative");
-
-                        databaseReference.child(userId).setValue(userData)
-                                .addOnCompleteListener(innerTask -> {
-                                    if (innerTask.isSuccessful()) {
-                                        Toast.makeText(this, "Delivery Rep created successfully", Toast.LENGTH_SHORT).show();
-
-                                    } else {
-                                        Toast.makeText(this, "Error creating Delivery Rep: " + innerTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    } else {
-                        Toast.makeText(this, "Error creating user: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users");
+        userRef.orderByChild("role").equalTo("Delivery Representative").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long maxId = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String uid = snapshot.child("uid").getValue(String.class);
+                    if (uid != null && uid.startsWith("REP")) {
+                        try {
+                            long id = Long.parseLong(uid.replace("REP", ""));
+                            if (id > maxId) {
+                                maxId = id;
+                            }
+                        } catch (NumberFormatException e) {
+                            // Handle the case where the uid is not in the expected format
+                        }
                     }
-                });
+                }
+                String newRepId = "REP" + (maxId + 1);
+
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailText, passwordText)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                Map<String, Object> userData = new HashMap<>();
+                                userData.put("uid", newRepId);  // Using REP ID format
+                                userData.put("name", nameText);
+                                userData.put("email", emailText);
+                                userData.put("district", districtText);
+                                userData.put("divisional_secretariat", dsText);
+                                userData.put("role", "Delivery Representative");
+
+                                databaseReference.child(userId).setValue(userData)
+                                        .addOnCompleteListener(innerTask -> {
+                                            if (innerTask.isSuccessful()) {
+                                                Toast.makeText(DeliveryRepCreate.this, "Delivery Rep created successfully", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(DeliveryRepCreate.this, "Error creating Delivery Rep: " + innerTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            } else {
+                                Toast.makeText(DeliveryRepCreate.this, "Error creating user: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(DeliveryRepCreate.this, "Database error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

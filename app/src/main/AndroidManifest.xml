@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
+        <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyD_-WWgpw7jG6H9yfj3zR7mvJV9baKPVMQ" />
+
         <activity
             android:name=".Authentication.RetailerAuth.RetailerMobileAuth"
             android:exported="true" >
@@ -50,9 +54,7 @@
             android:name=".Authentication.RetailerAuth.SetLocation"
             android:exported="false" />
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD_-WWgpw7jG6H9yfj3zR7mvJV9baKPVMQ" />
+
 
         <activity
             android:name=".EmployeeCreate.SelectLocationActivity"
@@ -76,7 +78,7 @@
             android:name=".Authentication.EmployeeCreate.AdminCreate"
             android:exported="true" />
         <activity
-            android:name=".Dashboard.Admin.Admin"
+            android:name=".Dashboard.Admin.AdminView"
             android:exported="true" >
 
         </activity>

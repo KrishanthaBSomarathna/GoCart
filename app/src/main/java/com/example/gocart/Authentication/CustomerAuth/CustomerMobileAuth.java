@@ -171,12 +171,27 @@ public class CustomerMobileAuth extends AppCompatActivity {
         customerRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long customerCount = dataSnapshot.getChildrenCount();
-                String uId = "CON" + (customerCount + 1);
+                long maxId = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String uid = snapshot.child("uID").getValue(String.class);
+                    if (uid != null && uid.startsWith("CON")) {
+                        try {
+                            long id = Long.parseLong(uid.replace("CON", ""));
+                            if (id > maxId) {
+                                maxId = id;
+                            }
+                        } catch (NumberFormatException e) {
+                            // Handle the case where the uid is not in the expected format
+                        }
+                    }
+                }
+                long newCustomerId = maxId + 1;
+                String customerId = "CON" + newCustomerId;
+
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 if (currentUser != null) {
                     String userId = currentUser.getUid();
-                    User user = new User(name, email, phone, uId);
+                    User user = new User(name, email, phone, customerId);
                     customerRef.child(userId).setValue(user).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(CustomerMobileAuth.this, "User registered successfully", Toast.LENGTH_LONG).show();
@@ -194,6 +209,7 @@ public class CustomerMobileAuth extends AppCompatActivity {
             }
         });
     }
+
 
     public static class User {
         public String name, email, phone, role, uID;
