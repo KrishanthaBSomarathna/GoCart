@@ -111,7 +111,7 @@ public class DeliveryRiderCreate extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                 Map<String, Object> userData = new HashMap<>();
-                                userData.put("uid", newRiderId);  // Using RIDER ID format
+                                userData.put("unicId", newRiderId);  // Using RIDER ID format
                                 userData.put("name", nameText);
                                 userData.put("email", emailText);
                                 userData.put("vehicle_type", vehicleTypeText);

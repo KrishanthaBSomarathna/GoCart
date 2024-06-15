@@ -52,11 +52,9 @@ dependencies {
     implementation libs.play.services.maps
     implementation libs.play.services.location
     implementation libs.places
-
-
-
-
-
+    implementation libs.ext.junit
+    testImplementation libs.junit.junit
+    testImplementation libs.junit.junit
 
 
 }

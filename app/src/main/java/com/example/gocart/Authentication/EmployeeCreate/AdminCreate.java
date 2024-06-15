@@ -114,7 +114,7 @@ public class AdminCreate extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 long maxId = 0;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String uid = snapshot.child("uid").getValue(String.class);
+                    String uid = snapshot.child("unicId").getValue(String.class);
                     if (uid != null && uid.startsWith("admin")) {
                         try {
                             long id = Long.parseLong(uid.replace("admin", ""));
@@ -165,17 +165,17 @@ public class AdminCreate extends AppCompatActivity {
         public String name;
         public String email;
         public String role;
-        public String uid;
+        public String unicId;
 
         public User() {
             // Default constructor required for calls to DataSnapshot.getValue(User.class)
         }
 
-        public User(String name, String email, String role, String uid) {
+        public User(String name, String email, String role, String unicId) {
             this.name = name;
             this.email = email;
             this.role = role;
-            this.uid = uid;
+            this.unicId = unicId;
         }
     }
 }

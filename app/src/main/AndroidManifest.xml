@@ -16,31 +16,38 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
+        <activity
+            android:name=".UserListView.Customer.CustomerList"
+            android:exported="false" />
+        <activity
+            android:name=".UserListView.Retailer.RetailerList"
+            android:exported="false" />
+        <activity
+            android:name=".UserListView.DeliveryRider.DeliveryRiderList"
+            android:exported="false" />
+        <activity
+            android:name=".UserListView.Rep.DeliveryRepList"
+            android:exported="false" />
+
         <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyD_-WWgpw7jG6H9yfj3zR7mvJV9baKPVMQ" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD_-WWgpw7jG6H9yfj3zR7mvJV9baKPVMQ" />
 
         <activity
             android:name=".Authentication.RetailerAuth.RetailerMobileAuth"
-            android:exported="true" >
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".Authentication.RetailerAuth.RetailerLogin"
-            android:exported="true" >
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".RetailerAuth.RetailerRegister"
             android:exported="false" />
         <activity
             android:name=".Authentication.CustomerAuth.CustomerLogin"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".Authentication.UserSelect"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,9 +60,6 @@
         <activity
             android:name=".Authentication.RetailerAuth.SetLocation"
             android:exported="false" />
-
-
-
         <activity
             android:name=".EmployeeCreate.SelectLocationActivity"
             android:exported="false" />
@@ -78,10 +82,8 @@
             android:name=".Authentication.EmployeeCreate.AdminCreate"
             android:exported="true" />
         <activity
-            android:name=".Dashboard.Admin.AdminView"
-            android:exported="true" >
-
-        </activity>
+            android:name=".Dashboard.Admin.AdminDash"
+            android:exported="true" />
         <activity
             android:name=".Manager.AdminManage"
             android:exported="false" />
@@ -93,9 +95,7 @@
             android:exported="true" />
         <activity
             android:name=".Authentication.CustomerAuth.CustomerRegister"
-            android:exported="true" >
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".Login"
             android:exported="true" />

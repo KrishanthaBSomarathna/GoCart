@@ -11,18 +11,19 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.R;
-import com.example.gocart.Authentication.EmployeeCreate.DeliveryRepCreate;
-import com.example.gocart.Authentication.EmployeeCreate.DeliveryRiderCreate;
-import com.example.gocart.Authentication.RetailerAuth.RetailShopCreate;
 import com.example.gocart.UserListView.Admin.AdminList;
+import com.example.gocart.UserListView.Customer.CustomerList;
+import com.example.gocart.UserListView.DeliveryRider.DeliveryRiderList;
+import com.example.gocart.UserListView.Rep.DeliveryRepList;
+import com.example.gocart.UserListView.Retailer.RetailerList;
 
-public class AdminView extends AppCompatActivity {
+public class AdminDash extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.activity_admin_dash);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -33,7 +34,7 @@ public class AdminView extends AppCompatActivity {
         findViewById(R.id.administrators_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminView.this, AdminList.class);
+                Intent intent = new Intent(AdminDash.this, AdminList.class);
                 startActivity(intent);
             }
         });
@@ -41,7 +42,7 @@ public class AdminView extends AppCompatActivity {
         findViewById(R.id.delivery_rep_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminView.this, DeliveryRepCreate.class);
+                Intent intent = new Intent(AdminDash.this, DeliveryRepList.class);
                 startActivity(intent);
             }
         });
@@ -49,7 +50,7 @@ public class AdminView extends AppCompatActivity {
         findViewById(R.id.delivery_riders_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminView.this, DeliveryRiderCreate.class);
+                Intent intent = new Intent(AdminDash.this, DeliveryRiderList.class);
                 startActivity(intent);
             }
         });
@@ -57,15 +58,22 @@ public class AdminView extends AppCompatActivity {
         findViewById(R.id.retail_shops_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminView.this, RetailShopCreate.class);
+                Intent intent = new Intent(AdminDash.this, RetailerList.class);
                 startActivity(intent);
             }
         });
 
-        findViewById(R.id.organization_structure_card).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.user_hierarchy_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminView.this, AdminView.class);
+                Intent intent = new Intent(AdminDash.this, AdminDash.class);
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.customer_card).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminDash.this, CustomerList.class);
                 startActivity(intent);
             }
         });

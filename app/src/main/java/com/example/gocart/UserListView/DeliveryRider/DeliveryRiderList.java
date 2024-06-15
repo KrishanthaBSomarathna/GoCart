@@ -1,4 +1,4 @@
-package com.example.gocart.UserListView.Admin;
+package com.example.gocart.UserListView.DeliveryRider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gocart.Authentication.EmployeeCreate.AdminCreate;
-import com.example.gocart.Model.User;
+import com.example.gocart.Model.DeliveryRider;
 import com.example.gocart.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -24,48 +23,40 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminList extends AppCompatActivity {
+public class DeliveryRiderList extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private AdminAdapter adminAdapter;
-    private List<User> adminList;
+    private DeliveryRiderAdapter riderAdapter;
+    private List<DeliveryRider> riderList;
     private DatabaseReference databaseReference;
-    private FloatingActionButton newAdminButton;
     private ProgressBar progressBar;
-
+    private FloatingActionButton newDeliveryRider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_list);
-        newAdminButton = findViewById(R.id.new_admin_button);
+        setContentView(R.layout.activity_delivery_rider_list);
+
+        newDeliveryRider = findViewById(R.id.newDeliveryRider);
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adminList = new ArrayList<>();
-        adminAdapter = new AdminAdapter(adminList);
-        recyclerView.setAdapter(adminAdapter);
+        riderList = new ArrayList<>();
+        riderAdapter = new DeliveryRiderAdapter(riderList);
+        recyclerView.setAdapter(riderAdapter);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
-        newAdminButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(AdminList.this, AdminCreate.class));
-            }
-        });
-
-
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
-        Query query = databaseReference.orderByChild("role").equalTo("Admin");
+        Query query = databaseReference.orderByChild("role").equalTo("Delivery Rider");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                adminList.clear();
+                riderList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User user = snapshot.getValue(User.class);
-                    adminList.add(user);
+                    DeliveryRider rider = snapshot.getValue(DeliveryRider.class);
+                    riderList.add(rider);
                     progressBar.setVisibility(View.GONE);
                 }
-                adminAdapter.notifyDataSetChanged();
+                riderAdapter.notifyDataSetChanged();
             }
 
             @Override
