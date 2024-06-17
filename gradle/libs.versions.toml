@@ -25,6 +25,7 @@ places = "3.1.0"
 playServicesLocation = "20.0.0"
 playServicesMaps = "18.2.0"
 junitJunit = "4.12"
+firebaseStorage = "21.0.0"
 
 [libraries]
 androidx-espresso-core-v340 = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxEspressoCore" }
@@ -52,6 +53,7 @@ places = { module = "com.google.android.libraries.places:places", version.ref = 
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

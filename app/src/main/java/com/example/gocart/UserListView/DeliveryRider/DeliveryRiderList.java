@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gocart.Authentication.EmployeeCreate.DeliveryRiderCreate;
 import com.example.gocart.Model.DeliveryRider;
 import com.example.gocart.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,6 +45,13 @@ public class DeliveryRiderList extends AppCompatActivity {
         recyclerView.setAdapter(riderAdapter);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
+
+        newDeliveryRider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DeliveryRiderList.this, DeliveryRiderCreate.class));
+            }
+        });
 
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
         Query query = databaseReference.orderByChild("role").equalTo("Delivery Rider");

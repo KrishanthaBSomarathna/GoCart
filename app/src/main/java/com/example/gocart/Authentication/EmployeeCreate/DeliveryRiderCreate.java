@@ -3,6 +3,7 @@ package com.example.gocart.Authentication.EmployeeCreate;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,7 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DeliveryRiderCreate extends AppCompatActivity {
@@ -32,6 +36,9 @@ public class DeliveryRiderCreate extends AppCompatActivity {
     ImageButton createButton;
     DatabaseReference databaseReference;
     TextView error;
+    private AutoCompleteTextView districtTextView, divisionTextView;
+    private List<String> districtList;
+    private Map<String, List<String>> divisionListMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,13 @@ public class DeliveryRiderCreate extends AppCompatActivity {
         error = findViewById(R.id.error);
         error.setVisibility(View.GONE);
 
+        // Initialize AutoCompleteTextViews
+        districtTextView = findViewById(R.id.district);
+        divisionTextView = findViewById(R.id.division);
+
+        districtList = new ArrayList<>();
+        divisionListMap = new HashMap<>();
+
         // Set up the options for the vehicle type spinner
         String[] vehicleTypeOptions = {"Bike", "Three-Wheeler"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, vehicleTypeOptions);
@@ -64,6 +78,56 @@ public class DeliveryRiderCreate extends AppCompatActivity {
         vehicleTypeSpinner.setAdapter(adapter);
 
         createButton.setOnClickListener(this::createDeliveryRider);
+
+        // Fetch location data from Firebase
+        FirebaseDatabase.getInstance().getReference("location")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot districtSnapshot : dataSnapshot.getChildren()) {
+                            String district = districtSnapshot.getKey();
+                            if (district != null) {
+                                districtList.add(district);
+                                List<String> divisionList = new ArrayList<>();
+                                for (DataSnapshot divisionSnapshot : districtSnapshot.getChildren()) {
+                                    String division = divisionSnapshot.getValue(String.class);
+                                    if (division != null) {
+                                        divisionList.add(division);
+                                    }
+                                }
+                                divisionListMap.put(district, divisionList);
+                            }
+                        }
+
+                        // Set district adapter
+                        ArrayAdapter<String> districtAdapter = new ArrayAdapter<>(
+                                DeliveryRiderCreate.this,
+                                android.R.layout.simple_dropdown_item_1line,
+                                districtList);
+                        districtTextView.setAdapter(districtAdapter);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(DeliveryRiderCreate.this,
+                                "Failed to retrieve location data",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        // Handle district selection
+        districtTextView.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedDistrict = (String) parent.getItemAtPosition(position);
+            List<String> divisionList = divisionListMap.get(selectedDistrict);
+
+            if (divisionList != null) {
+                ArrayAdapter<String> divisionAdapter = new ArrayAdapter<>(
+                        DeliveryRiderCreate.this,
+                        android.R.layout.simple_dropdown_item_1line,
+                        divisionList);
+                divisionTextView.setAdapter(divisionAdapter);
+            }
+        });
     }
 
     private void createDeliveryRider(View view) {
@@ -72,8 +136,10 @@ public class DeliveryRiderCreate extends AppCompatActivity {
         String passwordText = passwordEditText.getText().toString().trim();
         String confirmPasswordText = confirmPasswordEditText.getText().toString().trim();
         String vehicleTypeText = vehicleTypeSpinner.getSelectedItem().toString().trim();
+        String districtText = districtTextView.getText().toString().trim();
+        String divisionText = divisionTextView.getText().toString().trim();
 
-        if (nameText.isEmpty() || emailText.isEmpty() || passwordText.isEmpty() || confirmPasswordText.isEmpty() || vehicleTypeText.isEmpty()) {
+        if (nameText.isEmpty() || emailText.isEmpty() || passwordText.isEmpty() || confirmPasswordText.isEmpty() || vehicleTypeText.isEmpty() || districtText.isEmpty() || divisionText.isEmpty()) {
             Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -115,6 +181,8 @@ public class DeliveryRiderCreate extends AppCompatActivity {
                                 userData.put("name", nameText);
                                 userData.put("email", emailText);
                                 userData.put("vehicle_type", vehicleTypeText);
+                                userData.put("district", districtText);
+                                userData.put("division", divisionText);
                                 userData.put("role", "Delivery Rider");
 
                                 databaseReference.child(userId).setValue(userData)

@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.Dashboard.Admin.AdminDash;
+import com.example.gocart.Dashboard.Admin.RepDash;
 import com.example.gocart.R;
 import com.example.gocart.RetailShop.RetailShopOwnerDashboard;
 import com.google.firebase.auth.FirebaseAuth;
@@ -95,6 +96,7 @@ public class UserLogin extends AppCompatActivity {
                             break;
                         case "Delivery Representative":
                             Toast.makeText(UserLogin.this, "Delivery Representative login successful", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(UserLogin.this, RepDash.class));
                             // Add intent to navigate to the delivery representative dashboard
                             break;
                         case "Shop Owner":

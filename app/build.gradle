@@ -53,6 +53,7 @@ dependencies {
     implementation libs.play.services.location
     implementation libs.places
     implementation libs.ext.junit
+    implementation libs.firebase.storage
     testImplementation libs.junit.junit
     testImplementation libs.junit.junit
 

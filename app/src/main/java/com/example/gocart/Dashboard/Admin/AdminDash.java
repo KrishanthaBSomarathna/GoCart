@@ -3,6 +3,7 @@ package com.example.gocart.Dashboard.Admin;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,14 +17,36 @@ import com.example.gocart.UserListView.Customer.CustomerList;
 import com.example.gocart.UserListView.DeliveryRider.DeliveryRiderList;
 import com.example.gocart.UserListView.Rep.DeliveryRepList;
 import com.example.gocart.UserListView.Retailer.RetailerList;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class AdminDash extends AppCompatActivity {
+
+    private TextView admin_name;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_admin_dash);
+        admin_name = findViewById(R.id.adminname);
+
+        // Initialize FirebaseAuth
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            String email = currentUser.getEmail();
+            if (email != null && email.contains("@gmail.com")) {
+                String name = email.split("@")[0];
+                admin_name.setText(name);
+            } else {
+                admin_name.setText("Admin");
+            }
+        } else {
+            admin_name.setText("Admin");
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -70,6 +93,7 @@ public class AdminDash extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         findViewById(R.id.customer_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
