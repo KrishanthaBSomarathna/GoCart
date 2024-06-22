@@ -1,20 +1,25 @@
-package com.example.gocart.Dashboard.Admin;
+package com.example.gocart.Dashboard.Rep;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.R;
+import com.example.gocart.Stock.ListOfStock;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class RepDash extends AppCompatActivity {
 
+    CardView stock_card;
     TextView admin_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +31,21 @@ public class RepDash extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        stock_card = findViewById(R.id.stock_card);
         admin_name = findViewById(R.id.adminname);
+        
+        stock_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                startActivity(intent = new Intent(RepDash.this, ListOfStock.class));
+            }
+        });
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+
         if (currentUser != null) {
             String email = currentUser.getEmail();
             if (email != null && email.contains("@gmail.com")) {

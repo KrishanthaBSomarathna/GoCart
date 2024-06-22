@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dashboard.Admin.RepDash">
+    tools:context=".Dashboard.Rep.RepDash">
     <TextView
         android:id="@+id/adminname"
         android:layout_width="wrap_content"
@@ -263,7 +263,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/customer_card"
+                    android:id="@+id/stock_card"
                     android:layout_width="165dp"
                     android:layout_height="165dp"
                     android:layout_marginStart="12dp"

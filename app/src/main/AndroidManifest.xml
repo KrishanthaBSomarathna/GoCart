@@ -12,7 +12,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,16 +23,13 @@
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
         <activity
-            android:name=".Stock.AddItem"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".Stock.ListOfStock"
+            android:exported="false" />
         <activity
-            android:name=".Dashboard.Admin.RepDash"
+            android:name=".Stock.AddItem"
+            android:exported="true"></activity>
+        <activity
+            android:name=".Dashboard.Rep.RepDash"
             android:exported="false" />
         <activity
             android:name=".UserListView.Customer.CustomerList"
@@ -66,9 +62,7 @@
             android:exported="true" />
         <activity
             android:name=".Authentication.UserSelect"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".RetailShop.RetailShopOwnerDashboard"
             android:exported="false" />
@@ -104,7 +98,13 @@
             android:exported="false" />
         <activity
             android:name=".Authentication.UserLogin"
-            android:exported="true" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Authentication.CustomerAuth.CustomerMobileAuth"
             android:exported="true" />
@@ -115,7 +115,7 @@
             android:name=".Login"
             android:exported="true" />
         <activity
-            android:name=".Home"
+            android:name=".Dashboard.Customer.Customer"
             android:exported="true" />
         <activity
             android:name=".Onboading3"

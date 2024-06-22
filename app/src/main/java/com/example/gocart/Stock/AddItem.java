@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,13 +40,12 @@ public class AddItem extends AppCompatActivity {
     private static final String STORAGE_PATH = "items/"; // Path in Firebase Storage
     private static final String DATABASE_PATH = "repitem"; // Path in Firebase Realtime Database
 
-    private EditText itemNameEditText, quantityEditText, priceEditText;
+    private EditText itemNameEditText, quantityEditText, priceEditText, valueEditText;
     private ImageView selectedImage;
     private ProgressBar progressBar;
     private Uri imageUri;
 
     private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
 
@@ -55,13 +55,13 @@ public class AddItem extends AppCompatActivity {
         setContentView(R.layout.activity_add_item);
 
         mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         storageReference = FirebaseStorage.getInstance().getReference();
 
         itemNameEditText = findViewById(R.id.name);
         quantityEditText = findViewById(R.id.quantity);
         priceEditText = findViewById(R.id.price);
+        valueEditText = findViewById(R.id.value);
         selectedImage = findViewById(R.id.selected_image);
         progressBar = findViewById(R.id.progressBar);
 
@@ -102,8 +102,9 @@ public class AddItem extends AppCompatActivity {
         String itemName = itemNameEditText.getText().toString().trim();
         String quantity = quantityEditText.getText().toString().trim();
         String price = priceEditText.getText().toString().trim();
+        String value = valueEditText.getText().toString().trim();
 
-        if (itemName.isEmpty() || quantity.isEmpty() || price.isEmpty()) {
+        if (itemName.isEmpty() || quantity.isEmpty() || price.isEmpty() || value.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -113,13 +114,12 @@ public class AddItem extends AppCompatActivity {
             return;
         }
 
-        // Get the current user's ID
-        String userId = currentUser != null ? currentUser.getUid() : null;
-        if (userId == null) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        String userId = currentUser.getEmail();
         progressBar.setVisibility(View.VISIBLE);
 
         final StorageReference imageRef = storageReference.child(STORAGE_PATH + System.currentTimeMillis() + ".jpg");
@@ -152,7 +152,7 @@ public class AddItem extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
-                    addItemToDatabase(itemName, quantity, price, downloadUri.toString(), userId);
+                    addItemToDatabase(itemName, quantity, price, value, downloadUri.toString(), userId);
                 } else {
                     Toast.makeText(AddItem.this, "Image upload failed", Toast.LENGTH_SHORT).show();
                 }
@@ -161,17 +161,18 @@ public class AddItem extends AppCompatActivity {
     }
 
     // Method to add item details to Firebase Realtime Database
-    private void addItemToDatabase(String itemName, String quantity, String price, String imageUrl, String userId) {
+    private void addItemToDatabase(String itemName, String quantity, String price, String value, String imageUrl, String userId) {
         String itemId = databaseReference.child(DATABASE_PATH).push().getKey();
         if (itemId != null) {
             Map<String, Object> itemData = new HashMap<>();
             itemData.put("itemName", itemName);
             itemData.put("quantity", quantity);
             itemData.put("price", price);
+            itemData.put("value", value);
             itemData.put("imageUrl", imageUrl);
             itemData.put("userId", userId);
 
-            databaseReference.child(DATABASE_PATH).child(itemId).setValue(itemData)
+            databaseReference.child(DATABASE_PATH).child(mAuth.getCurrentUser().getUid()).child(itemId).setValue(itemData)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

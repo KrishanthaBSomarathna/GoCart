@@ -16,7 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.Dashboard.Admin.AdminDash;
-import com.example.gocart.Dashboard.Admin.RepDash;
+import com.example.gocart.Dashboard.Rep.RepDash;
 import com.example.gocart.R;
 import com.example.gocart.RetailShop.RetailShopOwnerDashboard;
 import com.google.firebase.auth.FirebaseAuth;

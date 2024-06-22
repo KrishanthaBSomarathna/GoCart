@@ -13,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.gocart.Home;
+import com.example.gocart.Dashboard.Customer.Customer;
 import com.example.gocart.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,7 +55,7 @@ public class RetailerLogin extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(RetailerLogin
                                 .this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RetailerLogin.this, Home.class));
+                        startActivity(new Intent(RetailerLogin.this, Customer.class));
                     } else {
                         Toast.makeText(RetailerLogin.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }

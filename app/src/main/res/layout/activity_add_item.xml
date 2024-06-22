@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/logbgg"
         android:hint="Quantity"
@@ -71,6 +71,27 @@
         app:layout_constraintTop_toBottomOf="@id/name" />
 
     <!-- Price EditText -->
+
+    <!-- Add Item Button -->
+
+    <!-- ProgressBar -->
+
+    <EditText
+        android:id="@+id/value"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/logbgg"
+        android:hint="100ml, 10kg, etc."
+        android:padding="20dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quantity" />
+
     <EditText
         android:id="@+id/price"
         android:layout_width="match_parent"
@@ -86,16 +107,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/quantity" />
+        app:layout_constraintTop_toBottomOf="@+id/value" />
 
-    <!-- Add Item Button -->
-
-    <!-- ProgressBar -->
     <ImageButton
         android:id="@+id/add_item"
         android:layout_width="165dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="28dp"
         android:background="@drawable/upload"
         android:onClick="addItemToFirebase"
         android:text="Add Item"
