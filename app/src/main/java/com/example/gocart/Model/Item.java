@@ -1,16 +1,22 @@
 package com.example.gocart.Model;
 
 public class Item {
-    String id;
-    String name;
-    int price;
-    int stock;
-    public Item(String id, String name, int price, int stock) {
+    private String id;
+    private String name;
+    private String size;
+    private double price;
+    private int imageResId;
+
+    public Item(String id, String name, String size, double price, int imageResId) {
         this.id = id;
         this.name = name;
+        this.size = size;
         this.price = price;
-        this.stock = stock;
+        this.imageResId = imageResId;
     }
+
+    // Getters and Setters
+
 
     public String getId() {
         return id;
@@ -28,19 +34,28 @@ public class Item {
         this.name = name;
     }
 
-    public int getPrice() {
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public int getStock() {
-        return stock;
+    public int getImageResId() {
+        return imageResId;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setImageResId(int imageResId) {
+        this.imageResId = imageResId;
     }
 }
+
