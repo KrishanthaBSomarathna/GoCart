@@ -1,61 +1,45 @@
 package com.example.gocart.Model;
 
 public class Item {
-    private String id;
-    private String name;
-    private String size;
-    private double price;
-    private int imageResId;
+    private String imageUrl;
+    private String itemName;
+    private String price;
+    private String quantity;
+    private String userId;
+    private String value;
 
-    public Item(String id, String name, String size, double price, int imageResId) {
-        this.id = id;
-        this.name = name;
-        this.size = size;
+    public Item() {}
+
+    public Item(String imageUrl, String itemName, String price, String quantity, String userId, String value) {
+        this.imageUrl = imageUrl;
+        this.itemName = itemName;
         this.price = price;
-        this.imageResId = imageResId;
+        this.quantity = quantity;
+        this.userId = userId;
+        this.value = value;
     }
 
-    // Getters and Setters
-
-
-    public String getId() {
-        return id;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getItemName() {
+        return itemName;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public String getQuantity() {
+        return quantity;
     }
 
-    public int getImageResId() {
-        return imageResId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setImageResId(int imageResId) {
-        this.imageResId = imageResId;
+    public String getValue() {
+        return value;
     }
 }
-

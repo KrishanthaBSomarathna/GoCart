@@ -70,12 +70,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name" />
 
-    <!-- Price EditText -->
-
-    <!-- Add Item Button -->
-
-    <!-- ProgressBar -->
-
+    <!-- Value EditText -->
     <EditText
         android:id="@+id/value"
         android:layout_width="match_parent"
@@ -92,6 +87,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/quantity" />
 
+    <!-- Price EditText -->
     <EditText
         android:id="@+id/price"
         android:layout_width="match_parent"
@@ -109,6 +105,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/value" />
 
+    <!-- Add Item Button -->
     <ImageButton
         android:id="@+id/add_item"
         android:layout_width="165dp"
@@ -122,6 +119,7 @@
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- ProgressBar -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"

@@ -4,22 +4,26 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.gocart.Model.Item;
 import com.example.gocart.R;
 
 import java.util.List;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
-    private List<Item> itemList;
-    private Context context;
+public class RepItemAdapter extends RecyclerView.Adapter<RepItemAdapter.ItemViewHolder> {
 
-    public ItemAdapter(List<Item> itemList, Context context) {
-        this.itemList = itemList;
+    private Context context;
+    private List<Item> itemList;
+
+    public RepItemAdapter(Context context, List<Item> itemList) {
         this.context = context;
+        this.itemList = itemList;
     }
 
     @NonNull
@@ -32,10 +36,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Item item = itemList.get(position);
-        holder.name.setText(item.getName());
-        holder.size.setText(item.getSize());
-        holder.price.setText("Rs." + item.getPrice());
-        holder.imageView.setImageResource(item.getImageResId());
+        holder.itemName.setText(item.getItemName());
+        holder.price.setText("Rs. " + item.getPrice());
+        holder.value.setText(item.getValue());
+        holder.quantity.setText("Stock: "+item.getQuantity());
+
+        Glide.with(context).load(item.getImageUrl()).into(holder.imageView);
     }
 
     @Override
@@ -43,22 +49,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return itemList.size();
     }
 
-    public void updateList(List<Item> newList) {
-        itemList = new ArrayList<>();
-        itemList.addAll(newList);
-        notifyDataSetChanged();
-    }
-
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
-        TextView name, size, price;
+
         ImageView imageView;
+        TextView itemName, price, quantity,value;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.item_name);
-            size = itemView.findViewById(R.id.item_size);
-            price = itemView.findViewById(R.id.item_price);
-            imageView = itemView.findViewById(R.id.item_image);
+            imageView = itemView.findViewById(R.id.imageView);
+            itemName = itemView.findViewById(R.id.itemName);
+            price = itemView.findViewById(R.id.price);
+            quantity = itemView.findViewById(R.id.quantity);
+            value = itemView.findViewById(R.id.itemValue);
         }
     }
 }

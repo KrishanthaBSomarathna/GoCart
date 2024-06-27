@@ -23,11 +23,14 @@
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
         <activity
+            android:name=".UserListView.DeliveryRider.DeliveryRiderListOfRep"
+            android:exported="false" />
+        <activity
             android:name=".Stock.ListOfStock"
             android:exported="false" />
         <activity
             android:name=".Stock.AddItem"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".Dashboard.Rep.RepDash"
             android:exported="false" />
@@ -62,7 +65,7 @@
             android:exported="true" />
         <activity
             android:name=".Authentication.UserSelect"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".RetailShop.RetailShopOwnerDashboard"
             android:exported="false" />

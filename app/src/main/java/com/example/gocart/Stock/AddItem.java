@@ -1,11 +1,12 @@
 package com.example.gocart.Stock;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,7 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -42,7 +42,6 @@ public class AddItem extends AppCompatActivity {
 
     private EditText itemNameEditText, quantityEditText, priceEditText, valueEditText;
     private ImageView selectedImage;
-    private ProgressBar progressBar;
     private Uri imageUri;
 
     private FirebaseAuth mAuth;
@@ -63,7 +62,6 @@ public class AddItem extends AppCompatActivity {
         priceEditText = findViewById(R.id.price);
         valueEditText = findViewById(R.id.value);
         selectedImage = findViewById(R.id.selected_image);
-        progressBar = findViewById(R.id.progressBar);
 
         selectedImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,8 +117,9 @@ public class AddItem extends AppCompatActivity {
             Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
             return;
         }
-        String userId = currentUser.getEmail();
-        progressBar.setVisibility(View.VISIBLE);
+        String userId = currentUser.getUid();
+
+        showUploadDialog();
 
         final StorageReference imageRef = storageReference.child(STORAGE_PATH + System.currentTimeMillis() + ".jpg");
         UploadTask uploadTask = imageRef.putFile(imageUri);
@@ -129,13 +128,8 @@ public class AddItem extends AppCompatActivity {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                progressBar.setVisibility(View.GONE);
+                dismissUploadDialog();
                 Toast.makeText(AddItem.this, "Image upload failed", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                // Optionally, update the progress bar or any other UI elements here
             }
         }).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
@@ -149,7 +143,7 @@ public class AddItem extends AppCompatActivity {
         }).addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
-                progressBar.setVisibility(View.GONE);
+                dismissUploadDialog();
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
                     addItemToDatabase(itemName, quantity, price, value, downloadUri.toString(), userId);
@@ -172,13 +166,12 @@ public class AddItem extends AppCompatActivity {
             itemData.put("imageUrl", imageUrl);
             itemData.put("userId", userId);
 
-            databaseReference.child(DATABASE_PATH).child(mAuth.getCurrentUser().getUid()).child(itemId).setValue(itemData)
+            databaseReference.child(DATABASE_PATH).child(userId).child(itemId).setValue(itemData)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(AddItem.this, "Item added successfully", Toast.LENGTH_SHORT).show();
-                                finish();
+                                showUploadCompleteDialog();
                             } else {
                                 Toast.makeText(AddItem.this, "Failed to add item", Toast.LENGTH_SHORT).show();
                             }
@@ -186,4 +179,48 @@ public class AddItem extends AppCompatActivity {
                     });
         }
     }
+
+    // Show dialog while uploading
+    private void showUploadDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Uploading Item")
+                .setMessage("Please wait while the item is being uploaded...")
+                .setCancelable(false);
+        uploadDialog = builder.create();
+        uploadDialog.show();
+    }
+
+    // Dismiss the upload dialog
+    private void dismissUploadDialog() {
+        if (uploadDialog != null && uploadDialog.isShowing()) {
+            uploadDialog.dismiss();
+        }
+    }
+
+    // Show dialog when upload is complete
+    private void showUploadCompleteDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Upload Complete")
+                .setMessage("The item has been uploaded successfully.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        clearFields();
+                    }
+                })
+                .setCancelable(false);
+        builder.create().show();
+    }
+
+    // Clear the input fields after upload
+    private void clearFields() {
+        itemNameEditText.setText("");
+        quantityEditText.setText("");
+        priceEditText.setText("");
+        valueEditText.setText("");
+        selectedImage.setImageResource(R.drawable.placeholder); // Reset to placeholder image
+        imageUri = null;
+    }
+
+    private AlertDialog uploadDialog;
 }

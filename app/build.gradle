@@ -56,6 +56,8 @@ dependencies {
     implementation libs.firebase.storage
     testImplementation libs.junit.junit
     testImplementation libs.junit.junit
+    implementation libs.glide
+    annotationProcessor libs.compiler
 
 
 }
