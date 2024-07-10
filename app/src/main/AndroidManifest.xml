@@ -23,6 +23,35 @@
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
         <activity
+            android:name=".Catagory.CatagoryVeg"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Catagory.CatagoryPage"
+            android:exported="true">
+           
+        </activity>
+        <activity
+            android:name=".Dashboard.Retailer.RetailerDash"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".MainActivity3"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".UserListView.Retailer.RetailerListOfRep"
+            android:exported="false">
+
+        </activity>
+        <activity
             android:name=".UserListView.DeliveryRider.DeliveryRiderListOfRep"
             android:exported="false" />
         <activity
@@ -65,7 +94,9 @@
             android:exported="true" />
         <activity
             android:name=".Authentication.UserSelect"
-            android:exported="true" />
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".RetailShop.RetailShopOwnerDashboard"
             android:exported="false" />
@@ -102,11 +133,7 @@
         <activity
             android:name=".Authentication.UserLogin"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Authentication.CustomerAuth.CustomerMobileAuth"
@@ -118,7 +145,7 @@
             android:name=".Login"
             android:exported="true" />
         <activity
-            android:name=".Dashboard.Customer.Customer"
+            android:name=".Dashboard.Customer.CustomerDash"
             android:exported="true" />
         <activity
             android:name=".Onboading3"

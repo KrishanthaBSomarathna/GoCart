@@ -22,7 +22,7 @@ public class RetailerAdapter extends RecyclerView.Adapter<RetailerAdapter.Retail
         void onDeleteClick(int position);
     }
 
-    public RetailerAdapter(List<Retailer> retailerList, OnItemClickListener listener) {
+    public RetailerAdapter(List<Retailer> retailerList) {
         this.retailerList = retailerList;
         this.listener = listener;
     }

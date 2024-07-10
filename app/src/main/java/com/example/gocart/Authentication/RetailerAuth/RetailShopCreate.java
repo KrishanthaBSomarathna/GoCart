@@ -38,7 +38,7 @@ import java.util.Map;
 public class RetailShopCreate extends AppCompatActivity {
     private EditText nameEditText, emailEditText, phoneEditText, passwordEditText, confirmPasswordEditText, latitudeEditText, longitudeEditText;
     private AutoCompleteTextView districtTextView, divisionTextView;
-    private ImageButton setLocationButton, createButton;
+    private ImageButton setLocationButton, createButton, loginButton;
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private double latitude, longitude;
@@ -59,6 +59,7 @@ public class RetailShopCreate extends AppCompatActivity {
         });
 
         // Initialize UI components
+        loginButton = findViewById(R.id.loginButton);
         nameEditText = findViewById(R.id.editText9);
         emailEditText = findViewById(R.id.emailEditText);
         phoneEditText = findViewById(R.id.editText);
@@ -133,6 +134,11 @@ public class RetailShopCreate extends AppCompatActivity {
         // Set location button click listener
         setLocationButton.setOnClickListener(view -> {
             Intent intent = new Intent(RetailShopCreate.this, SetLocation.class);
+            startActivityForResult(intent, 1);
+        });
+
+        loginButton.setOnClickListener(view -> {
+            Intent intent = new Intent(RetailShopCreate.this, RetailerLogin.class);
             startActivityForResult(intent, 1);
         });
 

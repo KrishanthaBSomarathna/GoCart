@@ -1,4 +1,4 @@
-package com.example.gocart.Stock;
+package com.example.gocart.Catagory.CategoryList;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gocart.Model.Item;
 import com.example.gocart.R;
+import com.example.gocart.Stock.AddItem;
+import com.example.gocart.Stock.RepItemAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListOfStock extends AppCompatActivity {
+public class CategoryVeg extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RepItemAdapter repItemAdapter;
@@ -64,14 +66,16 @@ public class ListOfStock extends AppCompatActivity {
                 itemList.clear();
                 for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
                     Item item = itemSnapshot.getValue(Item.class);
-                    itemList.add(item);
+                    if (item != null && "Chicken, Meat & Fish".equalsIgnoreCase(item.getCategory())) {
+                        itemList.add(item);
+                    }
                 }
                 filterItemList(""); // Initially show all items
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ListOfStock.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CategoryVeg.this, "Failed to load data", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -94,7 +98,7 @@ public class ListOfStock extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             // Handle FAB click action
-            Intent intent = new Intent(ListOfStock.this, AddItem.class); // Replace with your actual activity
+            Intent intent = new Intent(CategoryVeg.this, AddItem.class); // Replace with your actual activity
             startActivity(intent);
         });
     }

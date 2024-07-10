@@ -8,9 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,6 +45,7 @@ public class AddItem extends AppCompatActivity {
     private EditText itemNameEditText, quantityEditText, priceEditText, valueEditText;
     private ImageView selectedImage;
     private Uri imageUri;
+    private Spinner categorySpinner;
 
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
@@ -62,6 +65,7 @@ public class AddItem extends AppCompatActivity {
         priceEditText = findViewById(R.id.price);
         valueEditText = findViewById(R.id.value);
         selectedImage = findViewById(R.id.selected_image);
+        categorySpinner = findViewById(R.id.category_spinner);
 
         selectedImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +73,12 @@ public class AddItem extends AppCompatActivity {
                 openGallery();
             }
         });
+
+        // Set up spinner with categories
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.item_categories, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(adapter);
     }
 
     // Open gallery to pick an image
@@ -101,8 +111,9 @@ public class AddItem extends AppCompatActivity {
         String quantity = quantityEditText.getText().toString().trim();
         String price = priceEditText.getText().toString().trim();
         String value = valueEditText.getText().toString().trim();
+        String category = categorySpinner.getSelectedItem().toString();
 
-        if (itemName.isEmpty() || quantity.isEmpty() || price.isEmpty() || value.isEmpty()) {
+        if (itemName.isEmpty() || quantity.isEmpty() || price.isEmpty() || value.isEmpty() || category.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -146,7 +157,7 @@ public class AddItem extends AppCompatActivity {
                 dismissUploadDialog();
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
-                    addItemToDatabase(itemName, quantity, price, value, downloadUri.toString(), userId);
+                    addItemToDatabase(itemName, quantity, price, value, category, downloadUri.toString(), userId);
                 } else {
                     Toast.makeText(AddItem.this, "Image upload failed", Toast.LENGTH_SHORT).show();
                 }
@@ -155,7 +166,7 @@ public class AddItem extends AppCompatActivity {
     }
 
     // Method to add item details to Firebase Realtime Database
-    private void addItemToDatabase(String itemName, String quantity, String price, String value, String imageUrl, String userId) {
+    private void addItemToDatabase(String itemName, String quantity, String price, String value, String category, String imageUrl, String userId) {
         String itemId = databaseReference.child(DATABASE_PATH).push().getKey();
         if (itemId != null) {
             Map<String, Object> itemData = new HashMap<>();
@@ -163,6 +174,7 @@ public class AddItem extends AppCompatActivity {
             itemData.put("quantity", quantity);
             itemData.put("price", price);
             itemData.put("value", value);
+            itemData.put("category", category);
             itemData.put("imageUrl", imageUrl);
             itemData.put("userId", userId);
 
@@ -220,6 +232,7 @@ public class AddItem extends AppCompatActivity {
         valueEditText.setText("");
         selectedImage.setImageResource(R.drawable.placeholder); // Reset to placeholder image
         imageUri = null;
+        categorySpinner.setSelection(0); // Reset spinner to the first item
     }
 
     private AlertDialog uploadDialog;

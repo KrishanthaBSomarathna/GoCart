@@ -14,12 +14,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.R;
 import com.example.gocart.Stock.ListOfStock;
+import com.example.gocart.UserListView.DeliveryRider.DeliveryRiderListOfRep;
+import com.example.gocart.UserListView.Retailer.RetailerListOfRep;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class RepDash extends AppCompatActivity {
 
-    CardView stock_card;
+    CardView stock_card,rider_card,retailer_card;
     TextView admin_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +34,30 @@ public class RepDash extends AppCompatActivity {
             return insets;
         });
         stock_card = findViewById(R.id.stock_card);
+        rider_card = findViewById(R.id.delivery_riders_card);
+        retailer_card = findViewById(R.id.retail_shops_card);
         admin_name = findViewById(R.id.adminname);
-        
+
+        retailer_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                startActivity(intent = new Intent(RepDash.this, RetailerListOfRep.class));
+            }
+        });
+
         stock_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent;
                 startActivity(intent = new Intent(RepDash.this, ListOfStock.class));
+            }
+        });
+        rider_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                startActivity(intent = new Intent(RepDash.this, DeliveryRiderListOfRep.class));
             }
         });
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();

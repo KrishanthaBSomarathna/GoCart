@@ -17,4 +17,22 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="google_maps_key">AIzaSyD_-WWgpw7jG6H9yfj3zR7mvJV9baKPVMQ</string>
+
+    <string-array name="item_categories">
+        <item>Vegetables &amp; Fruits</item>
+        <item>Dairy &amp; Breakfast</item>
+        <item>Cold Drinks
+&amp; Juices</item>
+        <item>Instant &amp;
+Frozen Food</item>
+        <item>Tea &amp;
+Coffee</item><item>Atta, Rice
+&amp; Dal</item><item>Masala, Oil
+&amp; Dry Fruits</item><item>Chicken,
+Meat &amp; Fish</item>
+
+
+
+        <!-- Add more categories as needed -->
+    </string-array>
 </resources>
