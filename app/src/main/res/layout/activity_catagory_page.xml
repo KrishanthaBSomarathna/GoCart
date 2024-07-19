@@ -40,6 +40,7 @@
 
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/veg"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -57,54 +58,28 @@
                         android:foreground="#0C878787" />
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="13dp"
-                        android:background="@drawable/addtofav" />
-
-                    <ImageView
-                        android:layout_width="45dp"
+                        android:layout_width="76dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/bd1" />
+                        android:background="@drawable/veg" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="3dp"
-                        android:layout_marginTop="130dp"
+                        android:layout_marginTop="140dp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
                         android:text="Vegetables &amp;  Fruits"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/item_count_veg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="170dp"
-                        android:text="Items: 10" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="190dp"
-                        android:text="Rs.100000" />
-
-                    <ImageButton
-                        android:layout_width="54dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="bottom|end"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/more" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/dairy"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -122,52 +97,24 @@
                         android:foreground="#0C878787" />
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="13dp"
-                        android:background="@drawable/addtofav" />
-
-                    <ImageView
-                        android:layout_width="45dp"
+                        android:layout_width="60dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/bd1" />
+                        android:background="@drawable/diary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="3dp"
-                        android:layout_marginTop="130dp"
+                        android:layout_marginTop="140dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
                         android:text="Dairy &amp; Breakfast"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/item_count_dairy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="170dp"
-                        android:text="Items: 10" />
-
-                    <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="190dp"
-                        android:text="Rs.580.00" />
-
-                    <ImageButton
-                        android:layout_width="54dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="bottom|end"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/more" />
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
@@ -179,6 +126,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cool"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -196,56 +144,28 @@
                         android:foreground="#0C878787" />
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="13dp"
-                        android:background="@drawable/addtofav" />
-
-                    <ImageView
                         android:layout_width="45dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/bd1" />
+                        android:background="@drawable/cool" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="3dp"
-                        android:layout_marginTop="130dp"
-                        android:text="Cold Drinks
-&amp; Juices"
+                        android:layout_marginTop="140dp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
+                        android:text="Cold Drinks&amp; Juices"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/item_count_cold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="170dp"
-                        android:text="Items: 10" />
-
-                    <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="190dp"
-                        android:text="Rs.580.00" />
-
-                    <ImageButton
-                        android:layout_width="54dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="bottom|end"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/more" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/instant"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -263,53 +183,25 @@
                         android:foreground="#0C878787" />
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="13dp"
-                        android:background="@drawable/addtofav" />
-
-                    <ImageView
-                        android:layout_width="45dp"
+                        android:layout_width="68dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/bd1" />
+                        android:background="@drawable/instant" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="3dp"
-                        android:layout_marginTop="130dp"
+                        android:layout_marginTop="140dp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
                         android:text="Instant &amp;
 Frozen Food"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/item_count_instant"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="170dp"
-                        android:text="Items: 10" />
-
-                    <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="190dp"
-                        android:text="Rs.580.00" />
-
-                    <ImageButton
-                        android:layout_width="54dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="bottom|end"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/more" />
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
@@ -321,6 +213,7 @@ Frozen Food"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/tea"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -338,56 +231,29 @@ Frozen Food"
                         android:foreground="#0C878787" />
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="13dp"
-                        android:background="@drawable/addtofav" />
-
-                    <ImageView
-                        android:layout_width="45dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="100dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/bd1" />
+                        android:background="@drawable/tea" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="3dp"
-                        android:layout_marginTop="130dp"
+                        android:layout_marginTop="140dp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
                         android:text="Tea &amp;
 Coffee"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/item_count_tea"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="170dp"
-                        android:text="Items: 10" />
-
-                    <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="190dp"
-                        android:text="Rs.580.00" />
-
-                    <ImageButton
-                        android:layout_width="54dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="bottom|end"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/more" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/atta"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -405,53 +271,25 @@ Coffee"
                         android:foreground="#0C878787" />
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="13dp"
-                        android:background="@drawable/addtofav" />
-
-                    <ImageView
-                        android:layout_width="45dp"
+                        android:layout_width="88dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/bd1" />
+                        android:background="@drawable/atta" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="3dp"
-                        android:layout_marginTop="130dp"
+                        android:layout_marginTop="140dp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
                         android:text="Atta, Rice
 &amp; Dal"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/item_count_rice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="170dp"
-                        android:text="Items: 10" />
-
-                    <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="190dp"
-                        android:text="Rs.580.00" />
-
-                    <ImageButton
-                        android:layout_width="54dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="bottom|end"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/more" />
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
@@ -463,6 +301,7 @@ Coffee"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/masala"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -480,56 +319,29 @@ Coffee"
                         android:foreground="#0C878787" />
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="13dp"
-                        android:background="@drawable/addtofav" />
-
-                    <ImageView
-                        android:layout_width="45dp"
+                        android:layout_width="85dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/bd1" />
+                        android:background="@drawable/masalla" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="3dp"
-                        android:layout_marginTop="130dp"
-                        android:text="Masala, Oil
+                        android:layout_marginTop="140dp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
+                        android:text="Masala,Oil
 &amp; Dry Fruits"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/item_count_masala"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="170dp"
-                        android:text="Items: 10" />
-
-                    <TextView
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="190dp"
-                        android:text="Rs.580.00" />
-
-                    <ImageButton
-                        android:layout_width="54dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="bottom|end"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/more" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/meat"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -547,53 +359,27 @@ Coffee"
                         android:foreground="#0C878787" />
 
                     <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="13dp"
-                        android:background="@drawable/addtofav" />
-
-                    <ImageView
-                        android:layout_width="45dp"
+                        android:layout_width="111dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/bd1" />
+                        android:background="@drawable/meat" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="3dp"
-                        android:layout_marginTop="130dp"
+                        android:layout_marginTop="140dp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center"
                         android:text="Chicken,
 Meat &amp; Fish"
                         android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/item_count_chicken"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="170dp"
-                        android:text="Items: 10" />
 
-                    <TextView
 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="190dp"
-                        android:text="Rs.580.00" />
-
-                    <ImageButton
-                        android:layout_width="54dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="bottom|end"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@drawable/more" />
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>

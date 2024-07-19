@@ -5,6 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RetailerAuth.RetailerRegister">
+    tools:context=".Dashboard.Customer.FilterProduct">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

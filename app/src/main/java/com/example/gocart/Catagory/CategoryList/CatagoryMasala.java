@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryVeg extends AppCompatActivity {
+public class CatagoryMasala extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RepItemAdapter repItemAdapter;
@@ -66,7 +65,7 @@ public class CategoryVeg extends AppCompatActivity {
                 itemList.clear();
                 for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
                     Item item = itemSnapshot.getValue(Item.class);
-                    if (item != null && "Vegetables & Fruits".equals(item.getCategory())) {
+                    if (item != null && "Masala, Oil & Dry Fruits".equals(item.getCategory())) {
                         itemList.add(item);
                     }
                 }
@@ -75,7 +74,7 @@ public class CategoryVeg extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(CategoryVeg.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CatagoryMasala.this, "Failed to load data", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -98,7 +97,7 @@ public class CategoryVeg extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             // Handle FAB click action
-            Intent intent = new Intent(CategoryVeg.this, AddItem.class); // Replace with your actual activity
+            Intent intent = new Intent(CatagoryMasala.this, AddItem.class); // Replace with your actual activity
             startActivity(intent);
         });
     }

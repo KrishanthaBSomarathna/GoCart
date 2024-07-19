@@ -23,34 +23,56 @@
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
         <activity
-            android:name=".Catagory.CatagoryVeg"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".Dashboard.Customer.FilterProduct"
+            android:exported="false" />
+        <activity
+            android:name=".Dashboard.Customer.CustomerLocation"
+            android:exported="false" />
+        <activity
+            android:name=".Catagory.CategoryList.CatagoryCool"
+            android:exported="true" />
+        <activity
+            android:name=".Catagory.CategoryList.CatagoryInstant"
+            android:exported="true" />
+        <activity
+            android:name=".Catagory.CategoryList.CatagoryTea"
+            android:exported="true" />
+        <activity
+            android:name=".Catagory.CategoryList.CatagoryMasala"
+            android:exported="true" />
+        <activity
+            android:name=".Catagory.CategoryList.CatagoryMilk"
+            android:exported="true" />
+        <activity
+            android:name=".Catagory.CategoryList.CatagoryRice"
+            android:exported="true" />
+        <activity
+            android:name=".Catagory.CategoryList.CatagoryWheat"
+            android:exported="true" />
+        <activity
+            android:name=".Catagory.CategoryList.CategoryVeg"
+            android:exported="true" />
+        <activity
+            android:name=".Catagory.CategoryList.CatagoryChicken"
+            android:exported="true" />
+        <activity
+            android:name=".Catagory.CategoryList.CatagoryAtta"
+            android:exported="true" />
+        <activity
+            android:name=".Catagory.CategoryList.CatagoryDairy"
+            android:exported="true" />
         <activity
             android:name=".Catagory.CatagoryPage"
-            android:exported="true">
-           
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".Dashboard.Retailer.RetailerDash"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".MainActivity3"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".UserListView.Retailer.RetailerListOfRep"
-            android:exported="false">
-
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".UserListView.DeliveryRider.DeliveryRiderListOfRep"
             android:exported="false" />
@@ -94,9 +116,7 @@
             android:exported="true" />
         <activity
             android:name=".Authentication.UserSelect"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".RetailShop.RetailShopOwnerDashboard"
             android:exported="false" />
@@ -132,9 +152,7 @@
             android:exported="false" />
         <activity
             android:name=".Authentication.UserLogin"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".Authentication.CustomerAuth.CustomerMobileAuth"
             android:exported="true" />
@@ -146,7 +164,13 @@
             android:exported="true" />
         <activity
             android:name=".Dashboard.Customer.CustomerDash"
-            android:exported="true" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Onboading3"
             android:exported="false" />

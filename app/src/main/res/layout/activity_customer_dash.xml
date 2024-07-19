@@ -179,7 +179,7 @@
                         android:background="@drawable/catbg" />
 
                     <ImageView
-                        android:layout_width="60dp"
+                        android:layout_width="56dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="-70dp"
@@ -209,17 +209,18 @@
                         android:background="@drawable/catbg" />
 
                     <ImageView
-                        android:layout_width="60dp"
+                        android:layout_width="44dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="-70dp"
-                        android:background="@drawable/veg" />
+                        android:background="@drawable/diary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Vegetables\n Fruits"
+                        android:layout_gravity="center"
+                        android:text="Dairy &amp;\nBreakfast"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -238,17 +239,18 @@
                         android:background="@drawable/catbg" />
 
                     <ImageView
-                        android:layout_width="60dp"
+                        android:layout_width="35dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="-70dp"
-                        android:background="@drawable/veg" />
+                        android:background="@drawable/cool" />
+
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Vegetables\n Fruits"
+                        android:text="Cold Drinks,\nJuice"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -267,17 +269,17 @@
                         android:background="@drawable/catbg" />
 
                     <ImageView
-                        android:layout_width="60dp"
+                        android:layout_width="46dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="-70dp"
-                        android:background="@drawable/veg" />
+                        android:background="@drawable/instant" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Vegetables\n Fruits"
+                        android:text="Instant Food"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -313,13 +315,15 @@
                         android:layout_height="60dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="-70dp"
-                        android:background="@drawable/veg" />
+                        android:background="@drawable/tea" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Vegetables\n Fruits"
+                        android:layout_gravity="center"
+                        android:text="Tea &amp;\n
+Coffee"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -343,13 +347,15 @@
                         android:layout_height="60dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="-70dp"
-                        android:background="@drawable/veg" />
+                        android:background="@drawable/atta" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Vegetables\n Fruits"
+                        android:layout_gravity="center"
+                        android:text="Atta, Rice\n
+&amp; Dal"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -368,17 +374,18 @@
                         android:background="@drawable/catbg" />
 
                     <ImageView
-                        android:layout_width="60dp"
+                        android:layout_width="55dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="-70dp"
-                        android:background="@drawable/veg" />
+                        android:background="@drawable/masalla" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Vegetables\n Fruits"
+                        android:text="Masala, Oil\n
+&amp; Dry Fruits"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -397,17 +404,18 @@
                         android:background="@drawable/catbg" />
 
                     <ImageView
-                        android:layout_width="60dp"
+                        android:layout_width="77dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="-70dp"
-                        android:background="@drawable/veg" />
+                        android:background="@drawable/meat" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Vegetables\n Fruits"
+                        android:text="Chicken,\n
+Meat &amp; Fish"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
