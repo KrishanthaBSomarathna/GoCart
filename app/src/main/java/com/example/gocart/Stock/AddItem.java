@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -19,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.gocart.Model.Item;
 import com.example.gocart.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,14 +33,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AddItem extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_PICK = 2;
-    private static final String STORAGE_PATH = "items/"; // Path in Firebase Storage
-    private static final String DATABASE_PATH = "repitem"; // Path in Firebase Realtime Database
+    private static final String STORAGE_PATH = "items/";
+    private static final String DATABASE_PATH = "repitem";
 
     private EditText itemNameEditText, quantityEditText, priceEditText, valueEditText;
     private ImageView selectedImage;
@@ -50,6 +48,8 @@ public class AddItem extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
+
+    private AlertDialog uploadDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,20 +74,17 @@ public class AddItem extends AppCompatActivity {
             }
         });
 
-        // Set up spinner with categories
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.item_categories, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(adapter);
     }
 
-    // Open gallery to pick an image
     public void openGallery() {
         Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(pickPhotoIntent, REQUEST_IMAGE_PICK);
     }
 
-    // Handle result from gallery intent
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -97,7 +94,7 @@ public class AddItem extends AppCompatActivity {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                     selectedImage.setImageBitmap(bitmap);
-                    selectedImage.setBackground(null); // Remove the placeholder background
+                    selectedImage.setBackground(null);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -105,7 +102,6 @@ public class AddItem extends AppCompatActivity {
         }
     }
 
-    // Method to handle "Add Item" button click
     public void addItemToFirebase(View view) {
         String itemName = itemNameEditText.getText().toString().trim();
         String quantity = quantityEditText.getText().toString().trim();
@@ -135,7 +131,6 @@ public class AddItem extends AppCompatActivity {
         final StorageReference imageRef = storageReference.child(STORAGE_PATH + System.currentTimeMillis() + ".jpg");
         UploadTask uploadTask = imageRef.putFile(imageUri);
 
-        // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
@@ -148,7 +143,6 @@ public class AddItem extends AppCompatActivity {
                 if (!task.isSuccessful()) {
                     throw task.getException();
                 }
-                // Continue with the task to get the download URL
                 return imageRef.getDownloadUrl();
             }
         }).addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -165,20 +159,12 @@ public class AddItem extends AppCompatActivity {
         });
     }
 
-    // Method to add item details to Firebase Realtime Database
     private void addItemToDatabase(String itemName, String quantity, String price, String value, String category, String imageUrl, String userId) {
         String itemId = databaseReference.child(DATABASE_PATH).push().getKey();
         if (itemId != null) {
-            Map<String, Object> itemData = new HashMap<>();
-            itemData.put("itemName", itemName);
-            itemData.put("quantity", quantity);
-            itemData.put("price", price);
-            itemData.put("value", value);
-            itemData.put("category", category);
-            itemData.put("imageUrl", imageUrl);
-            itemData.put("userId", userId);
+            Item item = new Item(itemId, imageUrl, itemName, price, quantity, userId, value, category, false);
 
-            databaseReference.child(DATABASE_PATH).child(userId).child(itemId).setValue(itemData)
+            databaseReference.child(DATABASE_PATH).child(userId).child(itemId).setValue(item)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -192,7 +178,6 @@ public class AddItem extends AppCompatActivity {
         }
     }
 
-    // Show dialog while uploading
     private void showUploadDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Uploading Item")
@@ -202,14 +187,12 @@ public class AddItem extends AppCompatActivity {
         uploadDialog.show();
     }
 
-    // Dismiss the upload dialog
     private void dismissUploadDialog() {
         if (uploadDialog != null && uploadDialog.isShowing()) {
             uploadDialog.dismiss();
         }
     }
 
-    // Show dialog when upload is complete
     private void showUploadCompleteDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Upload Complete")
@@ -224,16 +207,13 @@ public class AddItem extends AppCompatActivity {
         builder.create().show();
     }
 
-    // Clear the input fields after upload
     private void clearFields() {
         itemNameEditText.setText("");
         quantityEditText.setText("");
         priceEditText.setText("");
         valueEditText.setText("");
-        selectedImage.setImageResource(R.drawable.placeholder); // Reset to placeholder image
+        selectedImage.setImageResource(R.drawable.placeholder);
         imageUri = null;
-        categorySpinner.setSelection(0); // Reset spinner to the first item
+        categorySpinner.setSelection(0);
     }
-
-    private AlertDialog uploadDialog;
 }

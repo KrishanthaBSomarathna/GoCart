@@ -33,7 +33,6 @@ android {
 }
 
 dependencies {
-
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity
@@ -42,22 +41,28 @@ dependencies {
     implementation libs.lifecycle.viewmodel.ktx
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
+
+    // Firebase
     implementation libs.firebase.database
     implementation libs.firebase.auth
-    implementation libs.core
+    implementation libs.firebase.storage
 
-
-    implementation libs.firebase.auth.v2101
-    implementation libs.firebase.database.v2003
+    // Google Play Services
     implementation libs.play.services.maps
     implementation libs.play.services.location
     implementation libs.places
-    implementation libs.ext.junit
-    implementation libs.firebase.storage
-    testImplementation libs.junit.junit
-    testImplementation libs.junit.junit
+
+    // Testing
+    testImplementation libs.junit
+    androidTestImplementation libs.espresso.core
+
+    // TensorFlow Lite
+    implementation libs.tensorflow.lite
+
+    // Glide
     implementation libs.glide
-    annotationProcessor libs.compiler
 
-
+    // Room
+    annotationProcessor libs.androidx.room.compiler
 }
+

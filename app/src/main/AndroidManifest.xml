@@ -23,22 +23,36 @@
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
         <activity
-            android:name=".Dashboard.Customer.FilterProduct"
+            android:name=".Predictor.Predictor"
             android:exported="false" />
+        <activity
+            android:name=".Dashboard.Customer.SelectDistrict"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".ChatBot.ChatBot"
+            android:exported="true" />
+        <activity
+            android:name=".Dashboard.Customer.FilterProduct"
+            android:exported="true" />
         <activity
             android:name=".Dashboard.Customer.CustomerLocation"
             android:exported="false" />
         <activity
-            android:name=".Catagory.CategoryList.CatagoryCool"
+            android:name=".Stock.BestDealItem"
+            android:exported="false" />
+        <activity
+            android:name=".UserListView.Customer.Catagory.CategoryList.CatagoryCool"
             android:exported="true" />
         <activity
-            android:name=".Catagory.CategoryList.CatagoryInstant"
+            android:name=".UserListView.Customer.Catagory.CategoryList.CatagoryInstant"
             android:exported="true" />
         <activity
-            android:name=".Catagory.CategoryList.CatagoryTea"
+            android:name=".UserListView.Customer.Catagory.CategoryList.CatagoryTea"
             android:exported="true" />
         <activity
-            android:name=".Catagory.CategoryList.CatagoryMasala"
+            android:name=".UserListView.Customer.Catagory.CategoryList.CatagoryMasala"
             android:exported="true" />
         <activity
             android:name=".Catagory.CategoryList.CatagoryMilk"
@@ -50,19 +64,19 @@
             android:name=".Catagory.CategoryList.CatagoryWheat"
             android:exported="true" />
         <activity
-            android:name=".Catagory.CategoryList.CategoryVeg"
+            android:name=".UserListView.Customer.Catagory.CategoryList.CategoryVeg"
             android:exported="true" />
         <activity
-            android:name=".Catagory.CategoryList.CatagoryChicken"
+            android:name=".UserListView.Customer.Catagory.CategoryList.CatagoryChicken"
             android:exported="true" />
         <activity
-            android:name=".Catagory.CategoryList.CatagoryAtta"
+            android:name=".UserListView.Customer.Catagory.CategoryList.CatagoryAtta"
             android:exported="true" />
         <activity
-            android:name=".Catagory.CategoryList.CatagoryDairy"
+            android:name=".UserListView.Customer.Catagory.CategoryList.CatagoryDairy"
             android:exported="true" />
         <activity
-            android:name=".Catagory.CatagoryPage"
+            android:name=".UserListView.Customer.Catagory.CatagoryPage"
             android:exported="true" />
         <activity
             android:name=".Dashboard.Retailer.RetailerDash"
@@ -164,25 +178,27 @@
             android:exported="true" />
         <activity
             android:name=".Dashboard.Customer.CustomerDash"
-            android:exported="true">
+            android:exported="true"></activity>
+        <activity
+            android:name=".Onboadings.Onboading3"
+            android:exported="false" />
+        <activity
+            android:name=".Onboadings.Onboarding2"
+            android:exported="false" />
+        <activity
+            android:name=".Onboadings.Onboading1"
+            android:exported="true" >
+
+        </activity>
+        <activity
+            android:name=".SplashScreen"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Onboading3"
-            android:exported="false" />
-        <activity
-            android:name=".Onboarding2"
-            android:exported="false" />
-        <activity
-            android:name=".Onboading1"
-            android:exported="true" />
-        <activity
-            android:name=".SplashScreen"
-            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />

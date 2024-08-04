@@ -1,6 +1,7 @@
 package com.example.gocart.Model;
 
 public class Item {
+    private String itemId;
     private String imageUrl;
     private String itemName;
     private String price;
@@ -8,10 +9,12 @@ public class Item {
     private String userId;
     private String value;
     private String category;
+    private boolean bestdeal;
 
     public Item() {}
 
-    public Item(String imageUrl, String itemName, String price, String quantity, String userId, String value, String category) {
+    public Item(String itemId, String imageUrl, String itemName, String price, String quantity, String userId, String value, String category, boolean bestdeal) {
+        this.itemId = itemId;
         this.imageUrl = imageUrl;
         this.itemName = itemName;
         this.price = price;
@@ -19,6 +22,15 @@ public class Item {
         this.userId = userId;
         this.value = value;
         this.category = category;
+        this.bestdeal = bestdeal;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public String getImageUrl() {
@@ -51,5 +63,13 @@ public class Item {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public boolean isBestdeal() {
+        return bestdeal;
+    }
+
+    public void setBestdeal(boolean bestdeal) {
+        this.bestdeal = bestdeal;
     }
 }

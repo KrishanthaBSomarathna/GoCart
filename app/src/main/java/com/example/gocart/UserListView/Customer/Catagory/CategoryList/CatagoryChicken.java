@@ -1,4 +1,4 @@
-package com.example.gocart.Catagory.CategoryList;
+package com.example.gocart.UserListView.Customer.Catagory.CategoryList;
 
 import android.content.Intent;
 import android.os.Bundle;

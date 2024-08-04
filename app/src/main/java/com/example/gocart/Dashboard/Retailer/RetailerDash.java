@@ -11,17 +11,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.gocart.Catagory.CatagoryPage;
+import com.example.gocart.Stock.BestDealItem;
+import com.example.gocart.UserListView.Customer.Catagory.CatagoryPage;
 import com.example.gocart.R;
 import com.example.gocart.Stock.ListOfStock;
 
-import org.junit.experimental.categories.Category;
-
-import java.util.Locale;
-
 public class RetailerDash extends AppCompatActivity {
 
-    CardView stock_card,retail_item_catagory;
+    CardView stock_card,retail_item_catagory,bestDealcard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +33,7 @@ public class RetailerDash extends AppCompatActivity {
 
         retail_item_catagory = findViewById(R.id.retail_item_catagory);
         stock_card = findViewById(R.id.stock_card);
+        bestDealcard= findViewById(R.id.bestDealcard);
 
         stock_card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +41,14 @@ public class RetailerDash extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), ListOfStock.class));
             }
         });
+
+        bestDealcard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), BestDealItem.class));
+            }
+        });
+
 
         retail_item_catagory.setOnClickListener(new View.OnClickListener() {
             @Override

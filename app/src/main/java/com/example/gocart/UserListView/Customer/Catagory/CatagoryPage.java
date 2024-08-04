@@ -1,4 +1,4 @@
-package com.example.gocart.Catagory;
+package com.example.gocart.UserListView.Customer.Catagory;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,14 +11,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.gocart.Catagory.CategoryList.CatagoryAtta;
-import com.example.gocart.Catagory.CategoryList.CatagoryChicken;
-import com.example.gocart.Catagory.CategoryList.CatagoryCool;
-import com.example.gocart.Catagory.CategoryList.CatagoryDairy;
-import com.example.gocart.Catagory.CategoryList.CatagoryInstant;
-import com.example.gocart.Catagory.CategoryList.CatagoryMasala;
-import com.example.gocart.Catagory.CategoryList.CatagoryTea;
-import com.example.gocart.Catagory.CategoryList.CategoryVeg;
+import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryAtta;
+import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryChicken;
+import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryCool;
+import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryDairy;
+import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryInstant;
+import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryMasala;
+import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryTea;
+import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CategoryVeg;
 import com.example.gocart.R;
 
 public class CatagoryPage extends AppCompatActivity {

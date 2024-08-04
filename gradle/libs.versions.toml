@@ -27,6 +27,8 @@ playServicesLocation = "20.0.0"
 playServicesMaps = "18.2.0"
 junitJunit = "4.12"
 firebaseStorage = "21.0.0"
+roomCompiler = "2.6.1"
+tensorflowLite = "2.4.0"
 
 [libraries]
 androidx-espresso-core-v340 = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxEspressoCore" }
@@ -57,6 +59,8 @@ play-services-location = { module = "com.google.android.gms:play-services-locati
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
+tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

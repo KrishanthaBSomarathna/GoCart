@@ -1,4 +1,4 @@
-package com.example.gocart.Catagory.CategoryList;
+package com.example.gocart.UserListView.Customer.Catagory.CategoryList;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CatagoryMasala extends AppCompatActivity {
+public class CatagoryInstant extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RepItemAdapter repItemAdapter;
@@ -65,7 +65,7 @@ public class CatagoryMasala extends AppCompatActivity {
                 itemList.clear();
                 for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
                     Item item = itemSnapshot.getValue(Item.class);
-                    if (item != null && "Masala, Oil & Dry Fruits".equals(item.getCategory())) {
+                    if (item != null && "Instant & Frozen Food".equals(item.getCategory())) {
                         itemList.add(item);
                     }
                 }
@@ -74,7 +74,7 @@ public class CatagoryMasala extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(CatagoryMasala.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CatagoryInstant.this, "Failed to load data", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -97,7 +97,7 @@ public class CatagoryMasala extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             // Handle FAB click action
-            Intent intent = new Intent(CatagoryMasala.this, AddItem.class); // Replace with your actual activity
+            Intent intent = new Intent(CatagoryInstant.this, AddItem.class); // Replace with your actual activity
             startActivity(intent);
         });
     }

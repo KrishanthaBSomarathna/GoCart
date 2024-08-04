@@ -17,8 +17,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.Dashboard.Admin.AdminDash;
 import com.example.gocart.Dashboard.Rep.RepDash;
+import com.example.gocart.Dashboard.Retailer.RetailerDash;
 import com.example.gocart.R;
-import com.example.gocart.RetailShop.RetailShopOwnerDashboard;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -101,7 +101,7 @@ public class UserLogin extends AppCompatActivity {
                             break;
                         case "Shop Owner":
                             Toast.makeText(UserLogin.this, "Shop Owner login successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(UserLogin.this, RetailShopOwnerDashboard.class));
+                            startActivity(new Intent(UserLogin.this, RetailerDash.class));
                             break;
                         default:
                             Toast.makeText(UserLogin.this, "Login successful", Toast.LENGTH_SHORT).show();

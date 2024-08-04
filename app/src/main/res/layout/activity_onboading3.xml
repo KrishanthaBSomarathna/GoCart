@@ -6,15 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E2FFDF"
-    tools:context=".Onboading3">
+    tools:context=".Onboadings.Onboading3">
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="445dp"
-        android:layout_height="562dp"
-        android:layout_marginTop="84dp"
-        android:background="@drawable/man1"
+        android:layout_width="481dp"
+        android:layout_height="580dp"
+        android:layout_marginTop="52dp"
+        android:background="@drawable/girl"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.384"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
