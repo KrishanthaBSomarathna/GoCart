@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.Dashboard.Customer.CustomerDash;
+import com.example.gocart.Dashboard.Customer.SelectDistrict;
 import com.example.gocart.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -78,7 +79,7 @@ public class CustomerLogin extends AppCompatActivity {
                     String role = dataSnapshot.getValue(String.class);
                     if ("customer".equals(role)) {
                         // User is a customer, redirect to home screen
-                        startActivity(new Intent(CustomerLogin.this, CustomerDash.class));
+                        startActivity(new Intent(CustomerLogin.this, SelectDistrict.class));
                     } else {
                         // User is not a customer, show error message
                         mAuth.signOut();

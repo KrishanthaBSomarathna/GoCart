@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.Authentication.UserSelect;
 import com.example.gocart.Dashboard.Admin.AdminDash;
+import com.example.gocart.Dashboard.Customer.CustomerDash; // Add this import
+import com.example.gocart.Dashboard.Customer.SelectDistrict;
 import com.example.gocart.Dashboard.Rep.RepDash;
 import com.example.gocart.Onboadings.Onboading1;
 import com.google.firebase.auth.FirebaseAuth;
@@ -75,6 +78,9 @@ public class SplashScreen extends AppCompatActivity {
                         case "Delivery Representative":
                             startActivity(new Intent(SplashScreen.this, RepDash.class));
                             break;
+                        case "customer": // Make sure the role matches the role in the database
+                            checkCustomerDetails(userId);
+                            break;
                         default:
                             // Unknown role, go to login page
                             startActivity(new Intent(SplashScreen.this, UserSelect.class));
@@ -87,6 +93,31 @@ public class SplashScreen extends AppCompatActivity {
             } else {
                 // Error getting user data, go to login page
                 startActivity(new Intent(SplashScreen.this, UserSelect.class));
+            }
+            finish();
+        });
+    }
+
+    private void checkCustomerDetails(String userId) {
+        DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference("Customer").child(userId);
+        customerRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().exists()) {
+                    boolean hasDistrict = task.getResult().child("district").getValue(String.class) != null;
+                    boolean hasDivision = task.getResult().child("divisional_secretariat").getValue(String.class) != null;
+
+                    if (hasDistrict && hasDivision) {
+                        startActivity(new Intent(SplashScreen.this, CustomerDash.class)); // Navigate to customer dashboard
+                    } else {
+                        startActivity(new Intent(SplashScreen.this, SelectDistrict.class)); // Navigate to select district
+                    }
+                } else {
+                    // Customer data not found, go to select district
+                    startActivity(new Intent(SplashScreen.this, SelectDistrict.class));
+                }
+            } else {
+                // Error getting customer data, go to select district
+                startActivity(new Intent(SplashScreen.this, SelectDistrict.class));
             }
             finish();
         });
