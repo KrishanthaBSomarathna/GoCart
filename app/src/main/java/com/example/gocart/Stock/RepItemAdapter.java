@@ -79,7 +79,7 @@ public class RepItemAdapter extends RecyclerView.Adapter<RepItemAdapter.ItemView
 
     private void updateBestDeal(Item item) {
         if (item.getItemId() != null) {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("repitem").child(item.getUserId()).child(item.getItemId());
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("shopitem").child(item.getUserId()).child(item.getItemId());
             databaseReference.child("bestdeal").setValue(!item.isBestdeal()).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     item.setBestdeal(!item.isBestdeal());

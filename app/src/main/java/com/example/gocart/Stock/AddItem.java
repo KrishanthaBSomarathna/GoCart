@@ -38,7 +38,7 @@ public class AddItem extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_PICK = 2;
     private static final String STORAGE_PATH = "items/";
-    private static final String DATABASE_PATH = "repitem";
+    private static final String DATABASE_PATH = "shopitem";
 
     private EditText itemNameEditText, quantityEditText, priceEditText, valueEditText;
     private ImageView selectedImage;

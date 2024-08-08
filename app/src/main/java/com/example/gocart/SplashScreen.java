@@ -66,7 +66,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void checkUserRole(String userId) {
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("customer").child(userId);
         usersRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().exists()) {

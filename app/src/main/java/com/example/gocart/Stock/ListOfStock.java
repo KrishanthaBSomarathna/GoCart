@@ -56,7 +56,7 @@ public class ListOfStock extends AppCompatActivity {
         repItemAdapter = new RepItemAdapter(this, filteredItemList); // Pass filtered list to the adapter
         recyclerView.setAdapter(repItemAdapter);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("repitem").child(currentUserId);
+        databaseReference = FirebaseDatabase.getInstance().getReference("shopitem").child(currentUserId);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
