@@ -20,14 +20,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.gocart.Model.Item;
 import com.example.gocart.R;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,6 +41,7 @@ public class AddItem extends AppCompatActivity {
     private static final int REQUEST_IMAGE_PICK = 2;
     private static final String STORAGE_PATH = "items/";
     private static final String DATABASE_PATH = "shopitem";
+    private static final String USERS_PATH = "retailer";
 
     private EditText itemNameEditText, quantityEditText, priceEditText, valueEditText;
     private ImageView selectedImage;
@@ -50,6 +53,7 @@ public class AddItem extends AppCompatActivity {
     private StorageReference storageReference;
 
     private AlertDialog uploadDialog;
+    private String retailerDivision;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +71,44 @@ public class AddItem extends AppCompatActivity {
         selectedImage = findViewById(R.id.selected_image);
         categorySpinner = findViewById(R.id.category_spinner);
 
-        selectedImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openGallery();
-            }
-        });
+        selectedImage.setOnClickListener(v -> openGallery());
+
+
+
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.item_categories, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(adapter);
+
+        fetchRetailerDivision();
+    }
+
+    private void fetchRetailerDivision() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            databaseReference.child(USERS_PATH).child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        retailerDivision = dataSnapshot.child("division").getValue(String.class);
+                        if (retailerDivision == null) {
+                            Toast.makeText(AddItem.this, "Division data is missing", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(AddItem.this, "No data found for user", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(AddItem.this, "Failed to fetch retailer division: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(AddItem.this, "User not authenticated", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void openGallery() {
@@ -109,6 +140,9 @@ public class AddItem extends AppCompatActivity {
         String value = valueEditText.getText().toString().trim();
         String category = categorySpinner.getSelectedItem().toString();
 
+        // Use retailerDivision directly
+        String division = retailerDivision;
+
         if (itemName.isEmpty() || quantity.isEmpty() || price.isEmpty() || value.isEmpty() || category.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
@@ -131,48 +165,36 @@ public class AddItem extends AppCompatActivity {
         final StorageReference imageRef = storageReference.child(STORAGE_PATH + System.currentTimeMillis() + ".jpg");
         UploadTask uploadTask = imageRef.putFile(imageUri);
 
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                dismissUploadDialog();
+        uploadTask.addOnFailureListener(exception -> {
+            dismissUploadDialog();
+            Toast.makeText(AddItem.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+        }).continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                throw task.getException();
+            }
+            return imageRef.getDownloadUrl();
+        }).addOnCompleteListener(task -> {
+            dismissUploadDialog();
+            if (task.isSuccessful()) {
+                Uri downloadUri = task.getResult();
+                addItemToDatabase(itemName, quantity, price, value, category, downloadUri.toString(), userId, division);
+            } else {
                 Toast.makeText(AddItem.this, "Image upload failed", Toast.LENGTH_SHORT).show();
-            }
-        }).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
-                }
-                return imageRef.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                dismissUploadDialog();
-                if (task.isSuccessful()) {
-                    Uri downloadUri = task.getResult();
-                    addItemToDatabase(itemName, quantity, price, value, category, downloadUri.toString(), userId);
-                } else {
-                    Toast.makeText(AddItem.this, "Image upload failed", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
 
-    private void addItemToDatabase(String itemName, String quantity, String price, String value, String category, String imageUrl, String userId) {
+    private void addItemToDatabase(String itemName, String quantity, String price, String value, String category, String imageUrl, String userId, String division) {
         String itemId = databaseReference.child(DATABASE_PATH).push().getKey();
         if (itemId != null) {
-            Item item = new Item(itemId, imageUrl, itemName, price, quantity, userId, value, category, false);
+            Item item = new Item(itemId, imageUrl, itemName, price, quantity, userId, value, category, false, division);
 
             databaseReference.child(DATABASE_PATH).child(userId).child(itemId).setValue(item)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                showUploadCompleteDialog();
-                            } else {
-                                Toast.makeText(AddItem.this, "Failed to add item", Toast.LENGTH_SHORT).show();
-                            }
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            showUploadCompleteDialog();
+                        } else {
+                            Toast.makeText(AddItem.this, "Failed to add item", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -197,11 +219,9 @@ public class AddItem extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Upload Complete")
                 .setMessage("The item has been uploaded successfully.")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        clearFields();
-                    }
+                .setPositiveButton("OK", (dialog, which) -> {
+                    dialog.dismiss();
+                    clearFields();
                 })
                 .setCancelable(false);
         builder.create().show();

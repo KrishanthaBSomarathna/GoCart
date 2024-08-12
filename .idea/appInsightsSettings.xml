@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.gocart" />
-                  <option name="mobileSdkAppId" value="1:747419193203:android:470c0dfb67f5c95c7e3f06" />
-                  <option name="projectId" value="go-cart-68aa2" />
-                  <option name="projectNumber" value="747419193203" />
+                  <option name="mobileSdkAppId" value="1:905969850206:android:d2f0987e34f17e0a3661cf" />
+                  <option name="projectId" value="test-7fe98" />
+                  <option name="projectNumber" value="905969850206" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

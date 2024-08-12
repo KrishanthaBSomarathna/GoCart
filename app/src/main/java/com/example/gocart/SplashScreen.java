@@ -81,6 +81,9 @@ public class SplashScreen extends AppCompatActivity {
                         case "customer": // Make sure the role matches the role in the database
                             checkCustomerDetails(userId);
                             break;
+                        case "retailer": // Make sure the role matches the role in the database
+//                            checkRetailerDetails(userId);
+                            break;
                         default:
                             // Unknown role, go to login page
                             startActivity(new Intent(SplashScreen.this, UserSelect.class));

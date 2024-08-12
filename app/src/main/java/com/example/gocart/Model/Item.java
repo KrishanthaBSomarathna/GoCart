@@ -10,10 +10,11 @@ public class Item {
     private String value;
     private String category;
     private boolean bestdeal;
+    private String division;
 
     public Item() {}
 
-    public Item(String itemId, String imageUrl, String itemName, String price, String quantity, String userId, String value, String category, boolean bestdeal) {
+    public Item(String itemId, String imageUrl, String itemName, String price, String quantity, String userId, String value, String category, boolean bestdeal, String division) {
         this.itemId = itemId;
         this.imageUrl = imageUrl;
         this.itemName = itemName;
@@ -72,4 +73,13 @@ public class Item {
     public void setBestdeal(boolean bestdeal) {
         this.bestdeal = bestdeal;
     }
+
+    public String getDivision() {
+        return division;
+    }
+
+    public void setDivision(String division) {
+        this.division = division;
+    }
+
 }

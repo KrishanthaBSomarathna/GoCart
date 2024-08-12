@@ -20,10 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -164,7 +161,6 @@ public class RetailShopCreate extends AppCompatActivity {
     }
 
     private void registerShop() {
-
         String name = nameEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String phone = phoneEditText.getText().toString().trim();
@@ -174,7 +170,6 @@ public class RetailShopCreate extends AppCompatActivity {
         String division = divisionTextView.getText().toString().trim();
         String latitudeStr = latitudeEditText.getText().toString().trim();
         String longitudeStr = longitudeEditText.getText().toString().trim();
-        String role = "shop";
 
         if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() ||
                 district.isEmpty() || division.isEmpty() || latitudeStr.isEmpty() || longitudeStr.isEmpty()) {
@@ -198,6 +193,8 @@ public class RetailShopCreate extends AppCompatActivity {
             Toast.makeText(this, "Invalid latitude or longitude", Toast.LENGTH_SHORT).show();
             return;
         }
+
+
 
         // Proceed to phone number verification
         Intent intent = new Intent(RetailShopCreate.this, RetailerMobileAuth.class);
