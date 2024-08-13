@@ -186,6 +186,8 @@ public class RetailerMobileAuth extends AppCompatActivity {
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
                                         Toast.makeText(RetailerMobileAuth.this, "Retailer registered successfully", Toast.LENGTH_LONG).show();
+                                        DatabaseReference data = FirebaseDatabase.getInstance().getReference("users");
+                                        data.child(userId).child("role").setValue("Shop");
                                         startActivity(new Intent(RetailerMobileAuth.this, RetailerLogin.class));
                                     } else {
                                         Toast.makeText(RetailerMobileAuth.this, "Failed to create user: " + task1.getException().getMessage(), Toast.LENGTH_LONG).show();

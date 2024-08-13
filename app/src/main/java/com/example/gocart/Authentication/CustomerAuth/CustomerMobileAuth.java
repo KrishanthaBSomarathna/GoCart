@@ -157,6 +157,7 @@ public class CustomerMobileAuth extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         createFirebaseUser();
+
                         startActivity(new Intent(CustomerMobileAuth.this, CustomerLogin.class));
                         finish();
                     } else {
@@ -192,11 +193,12 @@ public class CustomerMobileAuth extends AppCompatActivity {
                 if (currentUser != null) {
                     String userId = currentUser.getUid();
                     User user = new User(name, email, phone, customerId);
+                    DatabaseReference users = FirebaseDatabase.getInstance().getReference("users").child(userId);
+                    users.child("role").setValue("customer");
                     customerRef.child(userId).setValue(user).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(CustomerMobileAuth.this, "User registered successfully", Toast.LENGTH_LONG).show();
-                            DatabaseReference users = FirebaseDatabase.getInstance().getReference("users").child(userId);
-                            users.child("Role").setValue("customer");
+
                             // Redirect to another activity or close
                         } else {
                             Toast.makeText(CustomerMobileAuth.this, "Failed to register user: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();

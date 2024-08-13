@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,9 +16,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.Authentication.UserSelect;
 import com.example.gocart.Dashboard.Admin.AdminDash;
-import com.example.gocart.Dashboard.Customer.CustomerDash; // Add this import
+import com.example.gocart.Dashboard.Customer.CustomerDash;
 import com.example.gocart.Dashboard.Customer.SelectDistrict;
 import com.example.gocart.Dashboard.Rep.RepDash;
+import com.example.gocart.Dashboard.Retailer.RetailerDash;
 import com.example.gocart.Onboadings.Onboading1;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -66,35 +68,47 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void checkUserRole(String userId) {
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("customer").child(userId);
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
         usersRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().exists()) {
                     String role = task.getResult().child("role").getValue(String.class);
-                    switch (role) {
-                        case "Admin":
-                            startActivity(new Intent(SplashScreen.this, AdminDash.class));
-                            break;
-                        case "Delivery Representative":
-                            startActivity(new Intent(SplashScreen.this, RepDash.class));
-                            break;
-                        case "customer": // Make sure the role matches the role in the database
-                            checkCustomerDetails(userId);
-                            break;
-                        case "retailer": // Make sure the role matches the role in the database
-//                            checkRetailerDetails(userId);
-                            break;
-                        default:
-                            // Unknown role, go to login page
-                            startActivity(new Intent(SplashScreen.this, UserSelect.class));
-                            break;
+
+                    // Log role for debugging purposes
+                    Log.d("SplashScreen", "User : " + role);
+
+                    if (role != null) {
+                        switch (role) {
+                            case "Admin":
+                                startActivity(new Intent(SplashScreen.this, AdminDash.class));
+                                break;
+                            case "Delivery Representative":
+                                startActivity(new Intent(SplashScreen.this, RepDash.class));
+                                break;
+                            case "customer":
+                                checkCustomerDetails(userId);
+                                break;
+                            case "Shop":
+                                startActivity(new Intent(SplashScreen.this, RetailerDash.class));
+                                break;
+                            default:
+                                // Unknown role, go to login page
+                                startActivity(new Intent(SplashScreen.this, UserSelect.class));
+                                break;
+                        }
+                    } else {
+                        // Role is null, go to login page
+                        Log.e("SplashScreen", "User role is null");
+                        startActivity(new Intent(SplashScreen.this, UserSelect.class));
                     }
                 } else {
                     // User data not found, go to login page
+                    Log.e("SplashScreen", "User data not found");
                     startActivity(new Intent(SplashScreen.this, UserSelect.class));
                 }
             } else {
                 // Error getting user data, go to login page
+                Log.e("SplashScreen", "Error getting user data", task.getException());
                 startActivity(new Intent(SplashScreen.this, UserSelect.class));
             }
             finish();
@@ -102,7 +116,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void checkCustomerDetails(String userId) {
-        DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference("Customer").child(userId);
+        DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
         customerRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().exists()) {
