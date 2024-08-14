@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,8 +34,8 @@ public class ListOfStock extends AppCompatActivity {
     private List<Item> filteredItemList; // List to hold filtered items
 
     private DatabaseReference databaseReference;
-    FirebaseUser firebaseUser;
-    FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private FirebaseAuth firebaseAuth;
     private String currentUserId; // Set the logged-in user ID
 
     @Override
@@ -44,13 +43,16 @@ public class ListOfStock extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_stock); // Ensure correct layout file is referenced
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
         if (firebaseUser != null) {
             currentUserId = firebaseUser.getUid();
         }
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // Set GridLayoutManager programmatically
+
         itemList = new ArrayList<>();
         filteredItemList = new ArrayList<>();
         repItemAdapter = new RepItemAdapter(this, filteredItemList); // Pass filtered list to the adapter
@@ -64,7 +66,9 @@ public class ListOfStock extends AppCompatActivity {
                 itemList.clear();
                 for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
                     Item item = itemSnapshot.getValue(Item.class);
-                    itemList.add(item);
+                    if (item != null) {
+                        itemList.add(item);
+                    }
                 }
                 filterItemList(""); // Initially show all items
             }
@@ -79,6 +83,7 @@ public class ListOfStock extends AppCompatActivity {
         entersearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // No action needed
             }
 
             @Override
@@ -88,6 +93,7 @@ public class ListOfStock extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                // No action needed
             }
         });
 
@@ -102,7 +108,7 @@ public class ListOfStock extends AppCompatActivity {
     private void filterItemList(String query) {
         filteredItemList.clear();
         for (Item item : itemList) {
-            if (item.getItemName().toLowerCase().contains(query.toLowerCase())) {
+            if (item.getItemName() != null && item.getItemName().toLowerCase().contains(query.toLowerCase())) {
                 filteredItemList.add(item);
             }
         }

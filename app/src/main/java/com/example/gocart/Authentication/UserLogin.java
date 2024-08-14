@@ -51,7 +51,7 @@ public class UserLogin extends AppCompatActivity {
         userTypeSpinner = findViewById(R.id.userTypeSpinner);
 
         // Set up the options for the spinner
-        String[] userTypeOptions = {"Delivery Representative","Admin",  "Delivery Rider"};
+        String[] userTypeOptions = {"Admin","Delivery Representative"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, userTypeOptions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userTypeSpinner.setAdapter(adapter);
@@ -98,10 +98,6 @@ public class UserLogin extends AppCompatActivity {
                             Toast.makeText(UserLogin.this, "Delivery Representative login successful", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(UserLogin.this, RepDash.class));
                             // Add intent to navigate to the delivery representative dashboard
-                            break;
-                        case "Shop Owner":
-                            Toast.makeText(UserLogin.this, "Shop Owner login successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(UserLogin.this, RetailerDash.class));
                             break;
                         default:
                             Toast.makeText(UserLogin.this, "Login successful", Toast.LENGTH_SHORT).show();

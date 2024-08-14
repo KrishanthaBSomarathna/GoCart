@@ -55,7 +55,7 @@ public class RetailerLogin extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(RetailerLogin
-                                .this, "Login Successful", Toast.LENGTH_SHORT).show();
+                                .this, "Login Successful"+user.getUid(), Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(RetailerLogin.this, RetailerDash.class));
                     } else {
                         Toast.makeText(RetailerLogin.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

@@ -158,52 +158,44 @@ public class RetailerMobileAuth extends AppCompatActivity {
     }
 
     private void createFirebaseUser() {
-        DatabaseReference retailerRef = FirebaseDatabase.getInstance().getReference("retailer");
-        retailerRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long retailerCount = dataSnapshot.getChildrenCount();
-                long newUserId = retailerCount + 1;
-                String uId = "RT" + newUserId;
-
-                FirebaseUser user = mAuth.getCurrentUser();
-                String userId = user.getUid();
-                DatabaseReference data = FirebaseDatabase.getInstance().getReference("users");
-                data.child(userId).child("role").setValue("Shop");
-                Map<String, Object> retailerInfo = new HashMap<>();
-                retailerInfo.put("name", name);
-                retailerInfo.put("email", email);
-                retailerInfo.put("phone", phone);
-                retailerInfo.put("latitude", Double.parseDouble(latitude));
-                retailerInfo.put("longitude", Double.parseDouble(longitude));
-                retailerInfo.put("role", "Shop");
-                retailerInfo.put("district", district);
-                retailerInfo.put("division", division);
-                retailerInfo.put("uId", uId);
-
-                retailerRef.child(userId).setValue(retailerInfo).addOnCompleteListener(task -> {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        mAuth.createUserWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) {
-                                        Toast.makeText(RetailerMobileAuth.this, "Retailer registered successfully", Toast.LENGTH_LONG).show();
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        String userId = user.getUid(); // Get the newly registered user's authentication userId
 
-                                        startActivity(new Intent(RetailerMobileAuth.this, RetailerLogin.class));
-                                    } else {
-                                        Toast.makeText(RetailerMobileAuth.this, "Failed to create user: " + task1.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                    }
-                                });
+                        DatabaseReference retailerRef = FirebaseDatabase.getInstance().getReference("retailer");
+                        DatabaseReference data = FirebaseDatabase.getInstance().getReference("users");
+
+                        // Set the role of the user
+                        data.child(userId).child("role").setValue("Shop");
+
+                        // Prepare retailer info
+                        Map<String, Object> retailerInfo = new HashMap<>();
+                        retailerInfo.put("name", name);
+                        retailerInfo.put("email", email);
+                        retailerInfo.put("phone", phone);
+                        retailerInfo.put("latitude", Double.parseDouble(latitude));
+                        retailerInfo.put("longitude", Double.parseDouble(longitude));
+                        retailerInfo.put("role", "Shop");
+                        retailerInfo.put("district", district);
+                        retailerInfo.put("division", division);
+                        retailerInfo.put("uId", userId); // Use the authentication userId as the retailer's unique ID
+
+                        // Save retailer details under the new user's authentication userId
+                        retailerRef.child(userId).setValue(retailerInfo).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                Toast.makeText(RetailerMobileAuth.this, "Retailer registered successfully", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(RetailerMobileAuth.this, RetailerLogin.class));
+                            } else {
+                                Toast.makeText(RetailerMobileAuth.this, "Failed to register retailer: " + task1.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
                     } else {
-                        Toast.makeText(RetailerMobileAuth.this, "Failed to register retailer: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(RetailerMobileAuth.this, "Failed to create user: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(RetailerMobileAuth.this, "Error retrieving retailer count: " + databaseError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
     }
+
 }
 

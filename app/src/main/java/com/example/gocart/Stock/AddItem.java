@@ -1,7 +1,6 @@
 package com.example.gocart.Stock;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -35,6 +34,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddItem extends AppCompatActivity {
 
@@ -53,7 +54,7 @@ public class AddItem extends AppCompatActivity {
     private StorageReference storageReference;
 
     private AlertDialog uploadDialog;
-    private String retailerDivision;
+    private String retailerDivision = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +73,6 @@ public class AddItem extends AppCompatActivity {
         categorySpinner = findViewById(R.id.category_spinner);
 
         selectedImage.setOnClickListener(v -> openGallery());
-
-
-
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.item_categories, android.R.layout.simple_spinner_item);
@@ -134,13 +132,16 @@ public class AddItem extends AppCompatActivity {
     }
 
     public void addItemToFirebase(View view) {
+        if (retailerDivision == null) {
+            Toast.makeText(this, "Retailer division is not available. Please try again later.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String itemName = itemNameEditText.getText().toString().trim();
         String quantity = quantityEditText.getText().toString().trim();
         String price = priceEditText.getText().toString().trim();
         String value = valueEditText.getText().toString().trim();
         String category = categorySpinner.getSelectedItem().toString();
-
-        // Use retailerDivision directly
         String division = retailerDivision;
 
         if (itemName.isEmpty() || quantity.isEmpty() || price.isEmpty() || value.isEmpty() || category.isEmpty()) {
@@ -189,12 +190,21 @@ public class AddItem extends AppCompatActivity {
         if (itemId != null) {
             Item item = new Item(itemId, imageUrl, itemName, price, quantity, userId, value, category, false, division);
 
-            databaseReference.child(DATABASE_PATH).child(userId).child(itemId).setValue(item)
+            Map<String, Object> itemUpdates = new HashMap<>();
+            itemUpdates.put("name", itemName);
+            itemUpdates.put("quantity", quantity);
+            itemUpdates.put("price", price);
+            itemUpdates.put("value", value);
+            itemUpdates.put("category", category);
+            itemUpdates.put("imageUrl", imageUrl);
+            itemUpdates.put("division", division);
+
+            databaseReference.child(DATABASE_PATH).child(userId).child(itemId).updateChildren(itemUpdates)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             showUploadCompleteDialog();
                         } else {
-                            Toast.makeText(AddItem.this, "Failed to add item", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddItem.this, "Failed to update item", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
