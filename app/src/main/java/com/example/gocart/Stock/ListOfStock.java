@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gocart.Model.Item;
 import com.example.gocart.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,21 +32,12 @@ public class ListOfStock extends AppCompatActivity {
     private List<Item> filteredItemList; // List to hold filtered items
 
     private DatabaseReference databaseReference;
-    private FirebaseUser firebaseUser;
-    private FirebaseAuth firebaseAuth;
-    private String currentUserId; // Set the logged-in user ID
+    private String userId = "ZkGWwrQPIkeFKzODjGodEEoeDYd2"; // Fixed user ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_of_stock); // Ensure correct layout file is referenced
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
-
-        if (firebaseUser != null) {
-            currentUserId = firebaseUser.getUid();
-        }
+        setContentView(R.layout.activity_list_of_stock);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // Set GridLayoutManager programmatically
@@ -58,7 +47,7 @@ public class ListOfStock extends AppCompatActivity {
         repItemAdapter = new RepItemAdapter(this, filteredItemList); // Pass filtered list to the adapter
         recyclerView.setAdapter(repItemAdapter);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("shopitem").child(currentUserId);
+        databaseReference = FirebaseDatabase.getInstance().getReference("shopitem").child(userId);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -99,7 +88,6 @@ public class ListOfStock extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            // Handle FAB click action
             Intent intent = new Intent(ListOfStock.this, AddItem.class); // Replace with your actual activity
             startActivity(intent);
         });

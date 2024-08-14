@@ -191,13 +191,16 @@ public class AddItem extends AppCompatActivity {
             Item item = new Item(itemId, imageUrl, itemName, price, quantity, userId, value, category, false, division);
 
             Map<String, Object> itemUpdates = new HashMap<>();
-            itemUpdates.put("name", itemName);
+            itemUpdates.put("itemName", itemName);
             itemUpdates.put("quantity", quantity);
             itemUpdates.put("price", price);
             itemUpdates.put("value", value);
             itemUpdates.put("category", category);
             itemUpdates.put("imageUrl", imageUrl);
             itemUpdates.put("division", division);
+            itemUpdates.put("bestdeal", false);
+            itemUpdates.put("userId", userId);
+            itemUpdates.put("itemId", itemId);
 
             databaseReference.child(DATABASE_PATH).child(userId).child(itemId).updateChildren(itemUpdates)
                     .addOnCompleteListener(task -> {
