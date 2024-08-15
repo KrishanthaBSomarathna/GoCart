@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gocart.Model.Item;
 import com.example.gocart.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,25 +31,30 @@ public class ListOfStock extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RepItemAdapter repItemAdapter;
     private List<Item> itemList;
-    private List<Item> filteredItemList; // List to hold filtered items
+    private List<Item> filteredItemList;
 
     private DatabaseReference databaseReference;
-    private String userId = "ZkGWwrQPIkeFKzODjGodEEoeDYd2"; // Fixed user ID
+    private FirebaseUser firebaseUser;
+    private String currentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_stock);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // Set GridLayoutManager programmatically
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            currentUserId = firebaseUser.getUid();
+        }
 
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         itemList = new ArrayList<>();
         filteredItemList = new ArrayList<>();
-        repItemAdapter = new RepItemAdapter(this, filteredItemList); // Pass filtered list to the adapter
+        repItemAdapter = new RepItemAdapter(this, filteredItemList);
         recyclerView.setAdapter(repItemAdapter);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("shopitem").child(userId);
+        databaseReference = FirebaseDatabase.getInstance().getReference("shopitem").child(currentUserId);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -55,9 +62,7 @@ public class ListOfStock extends AppCompatActivity {
                 itemList.clear();
                 for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
                     Item item = itemSnapshot.getValue(Item.class);
-                    if (item != null) {
-                        itemList.add(item);
-                    }
+                    itemList.add(item);
                 }
                 filterItemList(""); // Initially show all items
             }
@@ -72,7 +77,6 @@ public class ListOfStock extends AppCompatActivity {
         entersearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // No action needed
             }
 
             @Override
@@ -82,13 +86,12 @@ public class ListOfStock extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                // No action needed
             }
         });
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            Intent intent = new Intent(ListOfStock.this, AddItem.class); // Replace with your actual activity
+            Intent intent = new Intent(ListOfStock.this, AddItem.class);
             startActivity(intent);
         });
     }
@@ -96,7 +99,8 @@ public class ListOfStock extends AppCompatActivity {
     private void filterItemList(String query) {
         filteredItemList.clear();
         for (Item item : itemList) {
-            if (item.getItemName() != null && item.getItemName().toLowerCase().contains(query.toLowerCase())) {
+            String itemName = item.getItemName();
+            if (itemName != null && itemName.toLowerCase().contains(query.toLowerCase())) {
                 filteredItemList.add(item);
             }
         }
