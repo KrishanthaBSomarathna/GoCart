@@ -17,8 +17,6 @@ import com.example.gocart.R;
 import com.example.gocart.Stock.AddItem;
 import com.example.gocart.Stock.RepItemAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BestDeal extends AppCompatActivity {
@@ -36,37 +35,34 @@ public class BestDeal extends AppCompatActivity {
     private List<Item> filteredItemList;
 
     private DatabaseReference databaseReference;
-    private FirebaseUser firebaseUser;
-    private String currentUserId;
+
+    private static final List<String> DIVISIONS = Arrays.asList("Wariyapola", "Nikaweratiya");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_stock);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null) {
-            currentUserId = firebaseUser.getUid();
-        }
-
         recyclerView = findViewById(R.id.recyclerView);
-        // Set up the RecyclerView with a LinearLayoutManager and horizontal orientation
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         itemList = new ArrayList<>();
         filteredItemList = new ArrayList<>();
         repItemAdapter = new RepItemAdapter(this, filteredItemList);
         recyclerView.setAdapter(repItemAdapter);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("shopitem").child(currentUserId);
+        // Set database reference to the general items path
+        databaseReference = FirebaseDatabase.getInstance().getReference("shopitem");
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 itemList.clear();
-                for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
-                    Item item = itemSnapshot.getValue(Item.class);
-                    if (item != null && item.isBestdeal() && (item.getDivision().equals("Wariyapola") || item.getDivision().equals("Nikaweratiya"))) {
-                        itemList.add(item);
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot itemSnapshot : userSnapshot.getChildren()) {
+                        Item item = itemSnapshot.getValue(Item.class);
+                        if (item != null && item.isBestdeal() && DIVISIONS.contains(item.getDivision())) {
+                            itemList.add(item);
+                        }
                     }
                 }
                 filterItemList(""); // Initially show all filtered items
