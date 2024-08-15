@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,10 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.gocart.Model.Item;
 import com.example.gocart.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CustomerItemAdapter extends RecyclerView.Adapter<CustomerItemAdapter.ItemViewHolder> {
 
@@ -45,9 +50,21 @@ public class CustomerItemAdapter extends RecyclerView.Adapter<CustomerItemAdapte
         holder.value.setText(item.getValue());
         holder.quantity.setText("Stock: " + item.getQuantity());
 
+        // Get current user's ID and current date
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = user != null ? user.getUid() : "UnknownUser";
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        holder.add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Item added to cart", Toast.LENGTH_SHORT).show();
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Customer");
+                databaseReference.child(userId).child("Cart").child(date).child(item.getItemId()).child("quantity").setValue(1);
+            }
+        });
+
         Glide.with(context).load(item.getImageUrl()).into(holder.imageView);
-
-
     }
 
     @Override
@@ -58,6 +75,7 @@ public class CustomerItemAdapter extends RecyclerView.Adapter<CustomerItemAdapte
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView itemName, price, quantity, value;
+        ImageButton add;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,7 +84,7 @@ public class CustomerItemAdapter extends RecyclerView.Adapter<CustomerItemAdapte
             price = itemView.findViewById(R.id.price);
             quantity = itemView.findViewById(R.id.quantity);
             value = itemView.findViewById(R.id.itemValue);
+            add = itemView.findViewById(R.id.add);
         }
     }
-
 }
