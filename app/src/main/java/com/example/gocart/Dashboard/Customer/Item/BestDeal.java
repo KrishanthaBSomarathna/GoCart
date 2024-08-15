@@ -9,14 +9,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gocart.Model.Item;
 import com.example.gocart.R;
 import com.example.gocart.Stock.AddItem;
-import com.example.gocart.Stock.ShopItemAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,13 +30,15 @@ import java.util.List;
 public class BestDeal extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ShopItemAdapter shopItemAdapter;
+    private CustomerItemAdapter shopItemAdapter;
     private List<Item> itemList;
     private List<Item> filteredItemList;
 
     private DatabaseReference databaseReference;
+    private DatabaseReference customerRef;
+    private FirebaseAuth mAuth;
 
-    private static final List<String> DIVISIONS = Arrays.asList("Wariyapola", "Nikaweratiya");
+    private List<String> customerDivisions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,35 +46,19 @@ public class BestDeal extends AppCompatActivity {
         setContentView(R.layout.activity_list_of_stock);
 
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // Set up GridLayoutManager with 2 columns
         itemList = new ArrayList<>();
         filteredItemList = new ArrayList<>();
-        shopItemAdapter = new ShopItemAdapter(this, filteredItemList);
+        shopItemAdapter = new CustomerItemAdapter(this, filteredItemList);
         recyclerView.setAdapter(shopItemAdapter);
 
-        // Set database reference to the general items path
+        // Set up Firebase references
         databaseReference = FirebaseDatabase.getInstance().getReference("shopitem");
+        customerRef = FirebaseDatabase.getInstance().getReference("Customer");
+        mAuth = FirebaseAuth.getInstance();
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                itemList.clear();
-                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                    for (DataSnapshot itemSnapshot : userSnapshot.getChildren()) {
-                        Item item = itemSnapshot.getValue(Item.class);
-                        if (item != null && item.isBestdeal() && DIVISIONS.contains(item.getDivision())) {
-                            itemList.add(item);
-                        }
-                    }
-                }
-                filterItemList(""); // Initially show all filtered items
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(BestDeal.this, "Failed to load data", Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Fetch customer divisions and then fetch items
+        fetchCustomerDivisions();
 
         EditText entersearch = findViewById(R.id.entersearch);
         entersearch.addTextChangedListener(new TextWatcher() {
@@ -94,6 +80,52 @@ public class BestDeal extends AppCompatActivity {
         fab.setOnClickListener(view -> {
             Intent intent = new Intent(BestDeal.this, AddItem.class);
             startActivity(intent);
+        });
+    }
+
+    private void fetchCustomerDivisions() {
+        // Get the currently logged-in user ID
+        String userId = mAuth.getCurrentUser().getUid();
+
+        customerRef.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String divisionalSecretariat = snapshot.child("divisional_secretariat").getValue(String.class);
+                    if (divisionalSecretariat != null) {
+                        customerDivisions = Arrays.asList(divisionalSecretariat.split(",\\s*"));
+                    }
+                    fetchItems(); // Fetch items after getting divisions
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(BestDeal.this, "Failed to load customer data", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchItems() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                itemList.clear();
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot itemSnapshot : userSnapshot.getChildren()) {
+                        Item item = itemSnapshot.getValue(Item.class);
+                        if (item != null && item.isBestdeal() && customerDivisions.contains(item.getDivision())) {
+                            itemList.add(item);
+                        }
+                    }
+                }
+                filterItemList(""); // Initially show all filtered items
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(BestDeal.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
