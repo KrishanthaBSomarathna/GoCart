@@ -23,22 +23,20 @@
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
         <activity
+            android:name=".Dashboard.Customer.Cart"
+            android:exported="false" />
+        <activity
             android:name=".Dashboard.Customer.CustomerCategory"
-            android:exported="true" >
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".Dashboard.Customer.Item.BestDeal"
-            android:exported="true">
-
-        </activity>
-
+            android:exported="true"></activity>
         <activity
             android:name=".Predictor.Predictor"
             android:exported="false" />
         <activity
             android:name=".Dashboard.Customer.SelectDistrict"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".ChatBot.ChatBot"
             android:exported="true" />
@@ -187,9 +185,7 @@
             android:exported="true" />
         <activity
             android:name=".Dashboard.Customer.CustomerDash"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".Onboadings.Onboading3"
             android:exported="false" />
@@ -198,7 +194,7 @@
             android:exported="false" />
         <activity
             android:name=".Onboadings.Onboading1"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".SplashScreen"
             android:exported="true">
