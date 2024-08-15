@@ -26,6 +26,15 @@
             android:name=".Dashboard.Customer.CustomerCategory"
             android:exported="false" />
         <activity
+            android:name=".Dashboard.Customer.Item.BestDeal"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".Predictor.Predictor"
             android:exported="false" />
         <activity
@@ -192,11 +201,7 @@
         <activity
             android:name=".SplashScreen"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"

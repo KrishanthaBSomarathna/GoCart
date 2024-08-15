@@ -27,14 +27,7 @@ public class CustomerDash extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        filter = findViewById(R.id.filter);
 
-        filter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), FilterProduct.class));
-            }
-        });
 
     }
 }
