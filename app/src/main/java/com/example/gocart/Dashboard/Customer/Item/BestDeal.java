@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gocart.Model.Item;
 import com.example.gocart.R;
 import com.example.gocart.Stock.AddItem;
-import com.example.gocart.Stock.RepItemAdapter;
+import com.example.gocart.Stock.ShopItemAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,7 +30,7 @@ import java.util.List;
 public class BestDeal extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RepItemAdapter repItemAdapter;
+    private ShopItemAdapter shopItemAdapter;
     private List<Item> itemList;
     private List<Item> filteredItemList;
 
@@ -47,8 +47,8 @@ public class BestDeal extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         itemList = new ArrayList<>();
         filteredItemList = new ArrayList<>();
-        repItemAdapter = new RepItemAdapter(this, filteredItemList);
-        recyclerView.setAdapter(repItemAdapter);
+        shopItemAdapter = new ShopItemAdapter(this, filteredItemList);
+        recyclerView.setAdapter(shopItemAdapter);
 
         // Set database reference to the general items path
         databaseReference = FirebaseDatabase.getInstance().getReference("shopitem");
@@ -105,6 +105,6 @@ public class BestDeal extends AppCompatActivity {
                 filteredItemList.add(item);
             }
         }
-        repItemAdapter.notifyDataSetChanged();
+        shopItemAdapter.notifyDataSetChanged();
     }
 }
