@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gocart.Model.Item;
 import com.example.gocart.R;
 import com.example.gocart.Stock.AddItem;
-import com.example.gocart.Stock.RepItemAdapter;
+import com.example.gocart.Stock.ShopItemAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,7 +31,7 @@ import java.util.List;
 public class CatagoryChicken extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RepItemAdapter repItemAdapter;
+    private ShopItemAdapter shopItemAdapter;
     private List<Item> itemList;
     private List<Item> filteredItemList; // List to hold filtered items
 
@@ -54,8 +54,8 @@ public class CatagoryChicken extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // Set GridLayoutManager programmatically
         itemList = new ArrayList<>();
         filteredItemList = new ArrayList<>();
-        repItemAdapter = new RepItemAdapter(this, filteredItemList); // Pass filtered list to the adapter
-        recyclerView.setAdapter(repItemAdapter);
+        shopItemAdapter = new ShopItemAdapter(this, filteredItemList); // Pass filtered list to the adapter
+        recyclerView.setAdapter(shopItemAdapter);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("repitem").child(currentUserId);
 
@@ -109,6 +109,6 @@ public class CatagoryChicken extends AppCompatActivity {
                 filteredItemList.add(item);
             }
         }
-        repItemAdapter.notifyDataSetChanged();
+        shopItemAdapter.notifyDataSetChanged();
     }
 }

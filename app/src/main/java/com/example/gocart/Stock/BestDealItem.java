@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,7 +29,7 @@ import java.util.List;
 public class BestDealItem extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RepItemAdapter repItemAdapter;
+    private ShopItemAdapter shopItemAdapter;
     private List<Item> itemList;
     private List<Item> filteredItemList; // List to hold filtered items
 
@@ -53,8 +52,8 @@ public class BestDealItem extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // Set GridLayoutManager programmatically
         itemList = new ArrayList<>();
         filteredItemList = new ArrayList<>();
-        repItemAdapter = new RepItemAdapter(this, filteredItemList); // Pass filtered list to the adapter
-        recyclerView.setAdapter(repItemAdapter);
+        shopItemAdapter = new ShopItemAdapter(this, filteredItemList); // Pass filtered list to the adapter
+        recyclerView.setAdapter(shopItemAdapter);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("shopitem").child(currentUserId);
 
@@ -108,6 +107,6 @@ public class BestDealItem extends AppCompatActivity {
                 filteredItemList.add(item);
             }
         }
-        repItemAdapter.notifyDataSetChanged();
+        shopItemAdapter.notifyDataSetChanged();
     }
 }

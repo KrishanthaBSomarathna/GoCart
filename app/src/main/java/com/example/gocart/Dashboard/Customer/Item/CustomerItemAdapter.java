@@ -1,4 +1,4 @@
-package com.example.gocart.Stock;
+package com.example.gocart.Dashboard.Customer.Item;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,12 +20,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
-public class RepItemAdapter extends RecyclerView.Adapter<RepItemAdapter.ItemViewHolder> {
+public class CustomerItemAdapter extends RecyclerView.Adapter<CustomerItemAdapter.ItemViewHolder> {
 
     private Context context;
     private List<Item> itemList;
 
-    public RepItemAdapter(Context context, List<Item> itemList) {
+    public CustomerItemAdapter(Context context, List<Item> itemList) {
         this.context = context;
         this.itemList = itemList;
     }
@@ -33,7 +33,7 @@ public class RepItemAdapter extends RecyclerView.Adapter<RepItemAdapter.ItemView
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_layout, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_customer_layout, parent, false);
         return new ItemViewHolder(view);
     }
 
@@ -44,16 +44,10 @@ public class RepItemAdapter extends RecyclerView.Adapter<RepItemAdapter.ItemView
         holder.price.setText("Rs. " + item.getPrice());
         holder.value.setText(item.getValue());
         holder.quantity.setText("Stock: " + item.getQuantity());
-        holder.bestDeal.setChecked(item.isBestdeal());
 
         Glide.with(context).load(item.getImageUrl()).into(holder.imageView);
 
-        holder.bestDeal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateBestDeal(item);
-            }
-        });
+
     }
 
     @Override
@@ -64,7 +58,6 @@ public class RepItemAdapter extends RecyclerView.Adapter<RepItemAdapter.ItemView
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView itemName, price, quantity, value;
-        CheckBox bestDeal;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,23 +66,7 @@ public class RepItemAdapter extends RecyclerView.Adapter<RepItemAdapter.ItemView
             price = itemView.findViewById(R.id.price);
             quantity = itemView.findViewById(R.id.quantity);
             value = itemView.findViewById(R.id.itemValue);
-            bestDeal = itemView.findViewById(R.id.bestDeal);
         }
     }
 
-    private void updateBestDeal(Item item) {
-        if (item.getItemId() != null) {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("shopitem").child(item.getUserId()).child(item.getItemId());
-            databaseReference.child("bestdeal").setValue(!item.isBestdeal()).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    item.setBestdeal(!item.isBestdeal());
-                    Toast.makeText(context, "Best deal status updated", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "Failed to update best deal status", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            Toast.makeText(context, "Item ID is null", Toast.LENGTH_SHORT).show();
-        }
-    }
 }

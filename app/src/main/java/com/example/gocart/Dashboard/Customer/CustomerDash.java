@@ -2,11 +2,6 @@ package com.example.gocart.Dashboard.Customer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -18,11 +13,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gocart.Dashboard.Customer.Item.BestDeal;
+import com.example.gocart.Dashboard.Customer.Item.CustomerItemAdapter;
 import com.example.gocart.Model.Item;
 import com.example.gocart.R;
 import com.example.gocart.Stock.AddItem;
-import com.example.gocart.Stock.RepItemAdapter;
+import com.example.gocart.Stock.ShopItemAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,7 +32,7 @@ import java.util.List;
 public class CustomerDash extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RepItemAdapter repItemAdapter;
+    private CustomerItemAdapter customerItemAdapter;
     private List<Item> itemList;
     private List<Item> filteredItemList;
 
@@ -58,8 +53,8 @@ public class CustomerDash extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         itemList = new ArrayList<>();
         filteredItemList = new ArrayList<>();
-        repItemAdapter = new RepItemAdapter(this, filteredItemList);
-        recyclerView.setAdapter(repItemAdapter);
+        customerItemAdapter = new CustomerItemAdapter(this, filteredItemList);
+        recyclerView.setAdapter(customerItemAdapter);
 
         // Set database reference to the general items path
         databaseReference = FirebaseDatabase.getInstance().getReference("shopitem");
@@ -102,6 +97,6 @@ public class CustomerDash extends AppCompatActivity {
                 filteredItemList.add(item);
             }
         }
-        repItemAdapter.notifyDataSetChanged();
+        customerItemAdapter.notifyDataSetChanged();
     }
 }
