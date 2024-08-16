@@ -518,6 +518,7 @@
                 android:layout_weight="1" />
 
             <ImageView
+                android:id="@+id/cartPage"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="@drawable/cartbar" />

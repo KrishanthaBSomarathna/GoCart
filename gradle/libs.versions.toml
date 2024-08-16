@@ -29,6 +29,7 @@ junitJunit = "4.12"
 firebaseStorage = "21.0.0"
 roomCompiler = "2.6.1"
 tensorflowLite = "2.4.0"
+androidxJunit = "1.2.1"
 
 [libraries]
 androidx-espresso-core-v340 = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxEspressoCore" }
@@ -61,6 +62,7 @@ junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
 tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

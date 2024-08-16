@@ -23,7 +23,7 @@
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
         <activity
-            android:name=".Dashboard.Customer.Cart"
+            android:name=".Dashboard.Customer.CartActivity"
             android:exported="true" >
 
         </activity>
@@ -188,11 +188,7 @@
         <activity
             android:name=".Dashboard.Customer.CustomerDash"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Onboadings.Onboading3"
@@ -206,7 +202,11 @@
         <activity
             android:name=".SplashScreen"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
