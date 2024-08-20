@@ -60,7 +60,7 @@ public class CustomerItemAdapter extends RecyclerView.Adapter<CustomerItemAdapte
             public void onClick(View v) {
                 Toast.makeText(context, "Item added to cart", Toast.LENGTH_SHORT).show();
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Customer");
-                databaseReference.child(userId).child("Cart").child(date).child(item.getItemId()).child("quantity").setValue(1);
+                databaseReference.child(userId).child("Cart").child(item.getItemId()).child("cartQty").setValue(1);
             }
         });
 
