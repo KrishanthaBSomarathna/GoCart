@@ -16,15 +16,17 @@ import com.example.gocart.Model.Item;
 import com.example.gocart.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ItemViewHolder> {
 
-    private Context context;
-    private List<Item> itemList;
+    private final Context context;
+    private final List<Item> itemList;
 
     public CartItemAdapter(Context context, List<Item> itemList) {
         this.context = context;
@@ -97,12 +99,20 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ItemVi
                 if (newQty <= 0) {
                     deleteItem(item, position); // Optionally remove item if quantity becomes zero
                 } else {
+                    // Calculate new total
+                    double unitPrice = Double.parseDouble(item.getPrice()); // Convert price to double
+                    double newTotal = unitPrice * newQty;
+
                     cartRef.child("cartQty").setValue(newQty)
                             .addOnSuccessListener(aVoid -> {
-                                // Update item object and notify RecyclerView
-                                item.setCartQty(newQty);
-                                notifyItemChanged(position);
-                                Toast.makeText(context, "Quantity updated", Toast.LENGTH_SHORT).show();
+                                cartRef.child("total").setValue(newTotal) // Update the total value
+                                        .addOnSuccessListener(aVoid1 -> {
+                                            // Update item object and notify RecyclerView
+                                            item.setCartQty(newQty);
+                                            notifyItemChanged(position);
+                                            Toast.makeText(context, "Quantity updated", Toast.LENGTH_SHORT).show();
+                                        })
+                                        .addOnFailureListener(e -> Toast.makeText(context, "Failed to update total", Toast.LENGTH_SHORT).show());
                             })
                             .addOnFailureListener(e -> Toast.makeText(context, "Failed to update quantity", Toast.LENGTH_SHORT).show());
                 }
@@ -133,6 +143,23 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ItemVi
                     }
                 })
                 .addOnFailureListener(e -> Toast.makeText(context, "Failed to remove item", Toast.LENGTH_SHORT).show());
+    }
+
+
+
+    public void calculateTotalSum(DatabaseReference cartRef, OnTotalSumCalculatedListener listener) {
+        cartRef.get().addOnSuccessListener(snapshot -> {
+            double totalSum = 0.0;
+            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                double total = Double.parseDouble(dataSnapshot.child("total").getValue(String.class));
+                totalSum += total;
+            }
+            listener.onTotalSumCalculated(totalSum);
+        }).addOnFailureListener(e -> Toast.makeText(context, "Failed to calculate total sum", Toast.LENGTH_SHORT).show());
+    }
+
+    public interface OnTotalSumCalculatedListener {
+        void onTotalSumCalculated(double totalSum);
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
