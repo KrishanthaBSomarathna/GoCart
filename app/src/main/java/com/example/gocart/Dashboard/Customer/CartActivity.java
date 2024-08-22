@@ -2,6 +2,8 @@ package com.example.gocart.Dashboard.Customer;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,6 +41,7 @@ public class CartActivity extends AppCompatActivity {
 
     private Set<String> itemIdsToLoad = new HashSet<>();
     private String currentUserId;
+    ImageButton placeOrderbtn;
 
     private static final String TAG = "CartActivity";
 
@@ -49,6 +53,7 @@ public class CartActivity extends AppCompatActivity {
         // Initialize UI components
         recyclerView = findViewById(R.id.recyclerView);
         totalTextView = findViewById(R.id.total);
+        placeOrderbtn = findViewById(R.id.placeOrderbtn);
 
         // Setup RecyclerView
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
@@ -63,6 +68,16 @@ public class CartActivity extends AppCompatActivity {
 
         // Fetch cart items in real-time
         fetchCartItemsRealtime();
+
+        placeOrderbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customerReference.child(currentUserId).child("Orders").child(curentdate).child(ordernumberinsamedate gose here).child("division").setValue("Wariyapola");
+                customerReference.child(currentUserId).child("Orders").child(curentdate).child(ordernumberinsamedate gose here).child("address").setValue("Kurunegala,Padeniya");
+                customerReference.child(currentUserId).child("Orders").child(curentdate).child(ordernumberinsamedate gose here).child("items").setValue({"itemid1":2,"itemid2"4});
+                customerReference.child(currentUserId).child("Orders").child(curentdate).child(ordernumberinsamedate gose here).child("totalpayment").setValue(4000);
+            }
+        });
     }
 
     private void fetchCartItemsRealtime() {
