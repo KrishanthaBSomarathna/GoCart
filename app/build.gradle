@@ -65,5 +65,8 @@ dependencies {
 
     // Room
     annotationProcessor libs.androidx.room.compiler
+
+    implementation libs.glide.v4151
+    annotationProcessor libs.compiler.v4151
 }
 

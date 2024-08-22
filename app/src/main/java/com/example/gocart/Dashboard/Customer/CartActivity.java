@@ -1,5 +1,7 @@
 package com.example.gocart.Dashboard.Customer;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,10 +24,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 public class CartActivity extends AppCompatActivity {
@@ -41,7 +47,8 @@ public class CartActivity extends AppCompatActivity {
 
     private Set<String> itemIdsToLoad = new HashSet<>();
     private String currentUserId;
-    ImageButton placeOrderbtn;
+    private ImageButton placeOrderbtn;
+    private double totalSum;
 
     private static final String TAG = "CartActivity";
 
@@ -72,10 +79,8 @@ public class CartActivity extends AppCompatActivity {
         placeOrderbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                customerReference.child(currentUserId).child("Orders").child(curentdate).child(ordernumberinsamedate gose here).child("division").setValue("Wariyapola");
-                customerReference.child(currentUserId).child("Orders").child(curentdate).child(ordernumberinsamedate gose here).child("address").setValue("Kurunegala,Padeniya");
-                customerReference.child(currentUserId).child("Orders").child(curentdate).child(ordernumberinsamedate gose here).child("items").setValue({"itemid1":2,"itemid2"4});
-                customerReference.child(currentUserId).child("Orders").child(curentdate).child(ordernumberinsamedate gose here).child("totalpayment").setValue(4000);
+                placeOrder();
+                Toast.makeText(CartActivity.this, "Order placed successfully", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -87,7 +92,7 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 itemIdsToLoad.clear();
-                double totalSum = 0.0;
+                totalSum = 0.0;
 
                 if (snapshot.exists()) {
                     for (DataSnapshot cartItemSnapshot : snapshot.getChildren()) {
@@ -153,6 +158,88 @@ public class CartActivity extends AppCompatActivity {
                 Toast.makeText(CartActivity.this, "Failed to load items", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void placeOrder() {
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String orderNumber = generateOrderNumber(currentDate);
+
+        Map<String, Object> orderData = new HashMap<>();
+        orderData.put("division", "Wariyapola");
+        orderData.put("address", "Kurunegala,Padeniya");
+        orderData.put("totalpayment", totalSum);
+
+        Map<String, Integer> orderedItems = new HashMap<>();
+
+        // Keep track of the number of items processed
+        final int[] itemsProcessed = {0};
+
+        for (String itemId : itemIdsToLoad) {
+            cartReference.child(itemId).child("quantity").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        int quantity = snapshot.getValue(Integer.class);
+                        orderedItems.put(itemId, quantity);
+                    }
+
+                    // Increment the processed items count
+                    itemsProcessed[0]++;
+
+                    // Check if all items have been processed
+                    if (itemsProcessed[0] == itemIdsToLoad.size()) {
+                        orderData.put("items", orderedItems);
+
+                        // Store the order data in Firebase
+                        customerReference.child(currentUserId).child("Orders").child(currentDate).child(orderNumber).setValue(orderData)
+                                .addOnSuccessListener(aVoid -> {
+                                    // Show the success dialog
+                                    showOrderSuccessDialog();
+
+                                    // Clear the cart after placing the order
+                                    customerReference.child(currentUserId).child("Cart").removeValue();
+                                })
+                                .addOnFailureListener(e -> Toast.makeText(CartActivity.this, "Failed to place order", Toast.LENGTH_SHORT).show());
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e(TAG, "Failed to retrieve item quantity: " + error.getMessage());
+                    Toast.makeText(CartActivity.this, "Failed to retrieve item quantity", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void showOrderSuccessDialog() {
+        // Create a custom dialog
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_order_success);
+
+        // Find views in the dialog layout
+        TextView myOrdersButton = dialog.findViewById(R.id.myOrdersButton);
+        TextView okButton = dialog.findViewById(R.id.okButton);
+
+        // Handle My Orders button click
+        myOrdersButton.setOnClickListener(v -> {
+            // Open MyOrdersActivity (Assume you have this activity)
+            startActivity(new Intent(CartActivity.this, CustomerDash.class));
+            finish();
+            dialog.dismiss();
+        });
+
+        // Handle OK button click
+        okButton.setOnClickListener(v -> dialog.dismiss());
+
+        // Display the dialog
+        dialog.show();
+    }
+
+
+
+    private String generateOrderNumber(String currentDate) {
+        return currentDate + "-" + System.currentTimeMillis();  // Generates a unique order number based on the current time
     }
 
     private double convertToDouble(Object value) {

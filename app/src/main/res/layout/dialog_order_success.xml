@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/successImage"
+        android:layout_width="354dp"
+        android:layout_height="277dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/orderplaced" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/successImage"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"
+        android:text="Order Placed Successfully!"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/myOrdersButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@+id/successImage"
+        android:layout_alignBottom="@+id/successImage"
+        android:layout_marginBottom="17dp"
+        android:background="@drawable/addbtn"
+        android:padding="10dp"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/okButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_alignStart="@+id/successImage"
+        android:layout_alignBottom="@+id/successImage"
+        android:layout_marginStart="6dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/addbtn"
+        android:padding="10dp"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+</RelativeLayout>
