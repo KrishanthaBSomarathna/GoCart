@@ -63,6 +63,8 @@ public class CustomerItemAdapter extends RecyclerView.Adapter<CustomerItemAdapte
                 databaseReference.child(userId).child("Cart").child(item.getItemId()).child("cartQty").setValue(1);
                 databaseReference.child(userId).child("Cart").child(item.getItemId()).child("unitPrice").setValue(item.getPrice());
                 databaseReference.child(userId).child("Cart").child(item.getItemId()).child("total").setValue(item.getPrice());
+                databaseReference.child(userId).child("Cart").child(item.getItemId()).child("userId").setValue(item.getUserId());
+                databaseReference.child(userId).child("Cart").child(item.getItemId()).child("division").setValue(item.getDivision());
             }
         });
 

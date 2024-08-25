@@ -164,23 +164,39 @@ public class CartActivity extends AppCompatActivity {
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String orderNumber = generateOrderNumber(currentDate);
 
+        // Create order data map
         Map<String, Object> orderData = new HashMap<>();
         orderData.put("division", "Wariyapola");
         orderData.put("address", "Kurunegala,Padeniya");
         orderData.put("totalpayment", totalSum);
 
-        Map<String, Integer> orderedItems = new HashMap<>();
+        // Initialize a map to store ordered items and their quantities
+        Map<String, Map<String, Object>> orderedItems = new HashMap<>();
 
         // Keep track of the number of items processed
         final int[] itemsProcessed = {0};
 
+        // Iterate over each item in the cart
         for (String itemId : itemIdsToLoad) {
-            cartReference.child(itemId).child("quantity").addListenerForSingleValueEvent(new ValueEventListener() {
+            cartReference.child(itemId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
-                        int quantity = snapshot.getValue(Integer.class);
-                        orderedItems.put(itemId, quantity);
+                        // Get the quantity and other details of the item
+                        int quantity = snapshot.child("cartQty").getValue(Integer.class);
+                        double unitPrice = convertToDouble(snapshot.child("unitPrice").getValue());
+                        double total = convertToDouble(snapshot.child("total").getValue());
+
+                        // Create a map to store item details
+                        Map<String, Object> itemDetails = new HashMap<>();
+                        itemDetails.put("quantity", quantity);
+                        itemDetails.put("unitPrice", unitPrice);
+                        itemDetails.put("total", total);
+                        itemDetails.put("division", snapshot.child("division").getValue());
+                        itemDetails.put("userId",snapshot.child("userId").getValue());
+
+                        // Add the item details to the orderedItems map
+                        orderedItems.put(itemId, itemDetails);
                     }
 
                     // Increment the processed items count
@@ -188,6 +204,7 @@ public class CartActivity extends AppCompatActivity {
 
                     // Check if all items have been processed
                     if (itemsProcessed[0] == itemIdsToLoad.size()) {
+                        // Add ordered items to the order data
                         orderData.put("items", orderedItems);
 
                         // Store the order data in Firebase
@@ -230,13 +247,16 @@ public class CartActivity extends AppCompatActivity {
         });
 
         // Handle OK button click
-        okButton.setOnClickListener(v -> dialog.dismiss());
 
+        okButton.setOnClickListener(v -> {
+            // Open MyOrdersActivity (Assume you have this activity)
+            startActivity(new Intent(CartActivity.this, CustomerDash.class));
+            finish();
+            dialog.dismiss();
+        });
         // Display the dialog
         dialog.show();
     }
-
-
 
     private String generateOrderNumber(String currentDate) {
         return currentDate + "-" + System.currentTimeMillis();  // Generates a unique order number based on the current time
