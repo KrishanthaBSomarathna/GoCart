@@ -51,7 +51,7 @@ public class UserLogin extends AppCompatActivity {
         userTypeSpinner = findViewById(R.id.userTypeSpinner);
 
         // Set up the options for the spinner
-        String[] userTypeOptions = {"Admin","Delivery Representative"};
+        String[] userTypeOptions = {"Delivery Representative","Admin"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, userTypeOptions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userTypeSpinner.setAdapter(adapter);

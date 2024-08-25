@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="36dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -518,6 +518,7 @@
                 android:layout_weight="1" />
 
             <ImageView
+                android:id="@+id/cartPage"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="@drawable/cartbar" />

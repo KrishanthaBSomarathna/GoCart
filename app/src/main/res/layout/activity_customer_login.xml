@@ -54,6 +54,8 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/logbg"
         android:hint="Email"
+        android:text="5@gmail.com"
+        
         android:padding="20dp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"

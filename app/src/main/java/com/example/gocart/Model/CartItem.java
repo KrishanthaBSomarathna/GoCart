@@ -1,14 +1,12 @@
 package com.example.gocart.Model;
 
-public class Order {
+public class CartItem {
     private String itemId;
-    private int quantity;
+    private String quantity;
 
-    public Order() {
-        // Default constructor required for calls to DataSnapshot.getValue(Order.class)
-    }
+    public CartItem() {}
 
-    public Order(String itemId, int quantity) {
+    public CartItem(String itemId, String quantity) {
         this.itemId = itemId;
         this.quantity = quantity;
     }
@@ -21,11 +19,11 @@ public class Order {
         this.itemId = itemId;
     }
 
-    public int getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 }

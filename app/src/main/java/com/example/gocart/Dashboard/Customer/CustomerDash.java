@@ -3,6 +3,7 @@ package com.example.gocart.Dashboard.Customer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ public class CustomerDash extends AppCompatActivity {
     private DatabaseReference customerReference;
     TextView district,bestDeal;
     LinearLayout veg, drinks, dairy, instant, tea, atta, masala, chicken, other;
+    ImageView cart;
 
 
     @Override
@@ -59,6 +61,7 @@ public class CustomerDash extends AppCompatActivity {
             return insets;
         });
 
+        cart = findViewById(R.id.cartPage);
         bestDeal = findViewById(R.id.bestDeal);
         district = findViewById(R.id.textView4);
 
@@ -83,6 +86,15 @@ public class CustomerDash extends AppCompatActivity {
         masala = findViewById(R.id.category_masala_oil_dry_fruits);
         chicken = findViewById(R.id.category_meat_fish);
         other = findViewById(R.id.linearLayout);
+
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(
+                        new Intent(CustomerDash.this, CartActivity.class)
+                );
+            }
+        });
 
         Intent intent = new Intent(CustomerDash.this, CustomerCategory.class);
 

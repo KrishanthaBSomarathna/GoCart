@@ -43,7 +43,7 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.ItemVi
         holder.itemName.setText(item.getItemName());
         holder.price.setText("Rs. " + item.getPrice());
         holder.value.setText(item.getValue());
-        holder.quantity.setText("Stock: " + item.getQuantity());
+//        holder.quantity.setText("Stock: " + item.getQuantity());
         holder.bestDeal.setChecked(item.isBestdeal());
 
         Glide.with(context).load(item.getImageUrl()).into(holder.imageView);

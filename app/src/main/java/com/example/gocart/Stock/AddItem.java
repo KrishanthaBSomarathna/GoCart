@@ -188,7 +188,7 @@ public class AddItem extends AppCompatActivity {
     private void addItemToDatabase(String itemName, String quantity, String price, String value, String category, String imageUrl, String userId, String division) {
         String itemId = databaseReference.child(DATABASE_PATH).push().getKey();
         if (itemId != null) {
-            Item item = new Item(itemId, imageUrl, itemName, price, quantity, userId, value, category, false, division);
+            Item item = new Item(itemId, imageUrl, itemName, price, quantity, userId, value, category, false, division, 0);
 
             Map<String, Object> itemUpdates = new HashMap<>();
             itemUpdates.put("itemName", itemName);
@@ -201,6 +201,7 @@ public class AddItem extends AppCompatActivity {
             itemUpdates.put("bestdeal", false);
             itemUpdates.put("userId", userId);
             itemUpdates.put("itemId", itemId);
+            itemUpdates.put("cartQty", 0); // Ensure to add cartQty to the database update
 
             databaseReference.child(DATABASE_PATH).child(userId).child(itemId).updateChildren(itemUpdates)
                     .addOnCompleteListener(task -> {
