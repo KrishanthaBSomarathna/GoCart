@@ -70,5 +70,7 @@ dependencies {
     annotationProcessor libs.compiler.v4151
     implementation libs.tensorflow.lite.v2110
     implementation libs.tensorflow.lite.support
+    implementation libs.retrofit
+    implementation libs.converter.gson
 }
 

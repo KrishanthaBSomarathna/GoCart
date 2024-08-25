@@ -29,6 +29,7 @@ playServicesLocation = "21.3.0"
 playServicesMaps = "19.0.0"
 junitJunit = "4.12"
 firebaseStorage = "21.0.0"
+retrofit = "2.9.0"
 roomCompiler = "2.6.1"
 tensorflowLite = "2.16.1"
 androidxJunit = "1.2.1"
@@ -39,6 +40,7 @@ tensorflowLiteVersion = "2.16.1"
 androidx-espresso-core-v340 = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxEspressoCore" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 compiler-v4151 = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 firebase-auth-v2101 = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuthVersion" }
 firebase-database-v2003 = { module = "com.google.firebase:firebase-database", version.ref = "firebaseDatabaseVersion" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
@@ -67,6 +69,7 @@ play-services-maps = { module = "com.google.android.gms:play-services-maps", ver
 junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 tensorflow-lite-support = { module = "org.tensorflow:tensorflow-lite-support", version.ref = "tensorflowLiteSupport" }
