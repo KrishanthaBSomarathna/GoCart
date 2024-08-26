@@ -11,7 +11,6 @@
         android:id="@+id/imageView10"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="536dp"
         android:background="@drawable/gbg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,12 +50,21 @@
 
     <Button
         android:id="@+id/btnPredict"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Predict"
-        app:layout_constraintTop_toBottomOf="@+id/imageView10"
+        android:text="Predict Orders"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="@+id/imageView10" />
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="136dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

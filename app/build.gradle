@@ -72,5 +72,7 @@ dependencies {
     implementation libs.tensorflow.lite.support
     implementation libs.retrofit
     implementation libs.converter.gson
+    implementation libs.volley
+    implementation libs.gson
 }
 
