@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gocart.Dashboard.Customer.Item.BestDeal;
 import com.example.gocart.Dashboard.Customer.Item.CustomerItemAdapter;
 import com.example.gocart.Model.Item;
+import com.example.gocart.Predictor.PredictorActivity;
 import com.example.gocart.R;
 import com.example.gocart.Stock.AddItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -212,7 +213,7 @@ public class CustomerDash extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            Intent inten = new Intent(CustomerDash.this, AddItem.class);
+            Intent inten = new Intent(CustomerDash.this, PredictorActivity.class);
             startActivity(inten);
         });
     }

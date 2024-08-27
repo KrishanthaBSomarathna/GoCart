@@ -26,6 +26,12 @@
         <activity
             android:name=".Dashboard.Rep.OrderList"
             android:exported="false" />
+
+        <activity
+            android:name=".Predictor.PredictorActivity"
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".Dashboard.Customer.CartActivity"
             android:exported="true"></activity>
@@ -38,11 +44,7 @@
         <activity
             android:name=".Predictor.Predictor"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Dashboard.Customer.SelectDistrict"
@@ -208,7 +210,11 @@
         <activity
             android:name=".SplashScreen"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"

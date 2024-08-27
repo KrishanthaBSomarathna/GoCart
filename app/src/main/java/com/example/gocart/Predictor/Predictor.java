@@ -20,13 +20,13 @@ public class Predictor extends AppCompatActivity {
         setContentView(R.layout.activity_predictor);
 
         apiService = new ApiService(this);
-        Button btnPredict = findViewById(R.id.btnPredict);
-        tvResult = findViewById(R.id.tvResult);
+//        Button btnPredict = findViewById(R.id.btnPredict);
+//        tvResult = findViewById(R.id.tvResult);
 
-        btnPredict.setOnClickListener(v -> {
-            String customerId = "JD9ti7rxfeSQYQClJYEcwmt6kwG3"; // Example customer ID
-            predictOrders(customerId);
-        });
+//        btnPredict.setOnClickListener(v -> {
+//            String customerId = "JD9ti7rxfeSQYQClJYEcwmt6kwG3"; // Example customer ID
+//            predictOrders(customerId);
+//        });
     }
 
     private void predictOrders(String customerId) {
