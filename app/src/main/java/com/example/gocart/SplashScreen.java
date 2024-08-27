@@ -126,7 +126,7 @@ public class SplashScreen extends AppCompatActivity {
                     if (hasDistrict && hasDivision) {
                         startActivity(new Intent(SplashScreen.this, CustomerDash.class)); // Navigate to customer dashboard
                     } else {
-                        startActivity(new Intent(SplashScreen.this, SelectDistrict.class)); // Navigate to select district
+                        startActivity(new Intent(SplashScreen.this, CustomerDash.class)); // Navigate to select district
                     }
                 } else {
                     // Customer data not found, go to select district

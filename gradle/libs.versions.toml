@@ -7,6 +7,7 @@ firebaseAuthVersion = "21.0.1"
 firebaseDatabaseVersion = "20.0.3"
 glide = "4.16.0"
 glideVersion = "4.16.0"
+gson = "2.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.6.1"
@@ -29,20 +30,24 @@ playServicesLocation = "21.3.0"
 playServicesMaps = "19.0.0"
 junitJunit = "4.12"
 firebaseStorage = "21.0.0"
+retrofit = "2.9.0"
 roomCompiler = "2.6.1"
 tensorflowLite = "2.16.1"
 androidxJunit = "1.2.1"
 tensorflowLiteSupport = "0.4.4"
 tensorflowLiteVersion = "2.16.1"
+volley = "1.2.1"
 
 [libraries]
 androidx-espresso-core-v340 = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxEspressoCore" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 compiler-v4151 = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 firebase-auth-v2101 = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuthVersion" }
 firebase-database-v2003 = { module = "com.google.firebase:firebase-database", version.ref = "firebaseDatabaseVersion" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-v4151 = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -67,10 +72,12 @@ play-services-maps = { module = "com.google.android.gms:play-services-maps", ver
 junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 tensorflow-lite-support = { module = "org.tensorflow:tensorflow-lite-support", version.ref = "tensorflowLiteSupport" }
 tensorflow-lite-v2110 = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLiteVersion" }
+volley = { module = "com.android.volley:volley", version.ref = "volley" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
