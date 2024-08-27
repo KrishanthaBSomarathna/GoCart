@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.example.gocart.API.ApiService;
+import com.example.gocart.Dashboard.Customer.CartActivity;
 import com.example.gocart.Dashboard.Customer.CustomerDash;
 import com.example.gocart.Dashboard.Customer.Item.CartItemAdapter;
 import com.example.gocart.Model.Item;
@@ -45,7 +47,7 @@ import java.util.Set;
 public class PredictorActivity extends AppCompatActivity {
     private ApiService apiService;
     private RecyclerView recyclerView;
-    private CartItemAdapter cartItemAdapter;
+    private PredictorItemAdapter predictorItemAdapter;
     private List<Item> itemList;
 
     private DatabaseReference shopItemReference;
@@ -54,37 +56,115 @@ public class PredictorActivity extends AppCompatActivity {
 
     private Set<String> itemIdsToLoad = new HashSet<>();
     private String currentUserId;
-    private ImageButton placeOrderbtn,btnPredict;
+    private ImageButton btnPredict, addtocart;
     private double totalSum;
-    FirebaseAuth firebaseAuth;
+    private Dialog progressDialog;
+    private FirebaseAuth firebaseAuth;
 
-    private static final String TAG = "CartActivity";
+    private static final String TAG = "PredictorActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_predictor);
+
         apiService = new ApiService(this);
         btnPredict = findViewById(R.id.btnPredict);
-//        tvResult = findViewById(R.id.tvResult);
-
+        addtocart = findViewById(R.id.addtocart);
+        addtocart.setVisibility(View.GONE);
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+        // Initialize the progress dialog
+        progressDialog = new Dialog(this);
+        progressDialog.setContentView(R.layout.dialog_progress);
+        progressDialog.setCancelable(false);  // Prevent closing the dialog by clicking outside
+
         btnPredict.setOnClickListener(v -> {
             assert firebaseUser != null;
             String customerId = firebaseUser.getUid(); // Example customer ID
+
+            // Show the progress dialog when the prediction starts
+            progressDialog.show();
             predictOrders(customerId);
+            addtocart.setVisibility(View.VISIBLE);
         });
+
+        addtocart.setOnClickListener(v -> {
+            // Show progress dialog while moving data
+            progressDialog.show();
+
+            // Create a reference to the predicted items in the Firebase database
+            DatabaseReference predictedItemsReference = customerReference.child(currentUserId).child("PredictedItem");
+            DatabaseReference cartItemsReference = customerReference.child(currentUserId).child("Cart");
+
+            // Retrieve predicted items
+            predictedItemsReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        // Create a map to hold the data to be moved
+                        Map<String, Object> cartItems = new HashMap<>();
+                        Map<String, Object> updates = new HashMap<>();
+
+                        // Iterate through each item in the predicted items
+                        for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
+                            String itemId = itemSnapshot.getKey();
+                            if (itemId != null) {
+                                // Add item data to cartItems map
+                                cartItems.put(itemId, itemSnapshot.getValue());
+
+                                // Prepare to remove item from predicted items
+                                updates.put("PredictedItem/" + itemId, null);
+                            }
+                        }
+
+                        // Add cart items to the Cart path in Firebase
+                        cartItemsReference.updateChildren(cartItems).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                // Remove items from PredictedItem
+                                customerReference.child(currentUserId).updateChildren(updates).addOnCompleteListener(updateTask -> {
+                                    if (updateTask.isSuccessful()) {
+                                        Toast.makeText(PredictorActivity.this, "Items moved to cart successfully", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(getApplicationContext(), CartActivity.class));
+                                        finish();
+                                    } else {
+                                        Toast.makeText(PredictorActivity.this, "Failed to update predicted items", Toast.LENGTH_SHORT).show();
+                                    }
+                                    progressDialog.dismiss();
+                                }).addOnFailureListener(e -> {
+                                    Toast.makeText(PredictorActivity.this, "Failed to remove predicted items", Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                });
+                            } else {
+                                Toast.makeText(PredictorActivity.this, "Failed to move items to cart", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                            }
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(PredictorActivity.this, "Failed to move items to cart", Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss();
+                        });
+                    } else {
+                        Toast.makeText(PredictorActivity.this, "No predicted items to move", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e(TAG, "Failed to retrieve predicted items: " + error.getMessage());
+                    Toast.makeText(PredictorActivity.this, "Failed to retrieve predicted items", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+            });
+        });
+
         // Initialize UI components
         recyclerView = findViewById(R.id.recyclerViewPredictions);
-//        totalTextView = findViewById(R.id.total);
-//        placeOrderbtn = findViewById(R.id.placeOrderbtn);
-
-        // Setup RecyclerView
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         itemList = new ArrayList<>();
-        cartItemAdapter = new CartItemAdapter(this, itemList);
-        recyclerView.setAdapter(cartItemAdapter);
+        predictorItemAdapter = new PredictorItemAdapter(this, itemList);
+        recyclerView.setAdapter(predictorItemAdapter);
 
         // Initialize Firebase references
         shopItemReference = FirebaseDatabase.getInstance().getReference("shopitem");
@@ -93,18 +173,10 @@ public class PredictorActivity extends AppCompatActivity {
 
         // Fetch cart items in real-time
         fetchCartItemsRealtime();
-//
-//        placeOrderbtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                placeOrder();
-//                Toast.makeText(PredictorActivity.this, "Order placed successfully", Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     private void fetchCartItemsRealtime() {
-        cartReference = customerReference.child(currentUserId).child("Cart");
+        cartReference = customerReference.child(currentUserId).child("PredictedItem");
 
         cartReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -130,7 +202,8 @@ public class PredictorActivity extends AppCompatActivity {
                 } else {
                     // No items in cart
                     itemList.clear();
-                    cartItemAdapter.notifyDataSetChanged();
+                    predictorItemAdapter.notifyDataSetChanged();
+                    progressDialog.dismiss();  // Dismiss the progress dialog if no items found
                     Toast.makeText(PredictorActivity.this, "Your cart is empty", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -139,6 +212,7 @@ public class PredictorActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e(TAG, "Failed to load cart items: " + error.getMessage());
                 Toast.makeText(PredictorActivity.this, "Failed to load cart items", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();  // Dismiss the progress dialog in case of error
             }
         });
     }
@@ -159,10 +233,13 @@ public class PredictorActivity extends AppCompatActivity {
                         }
                     }
 
-                    cartItemAdapter.notifyDataSetChanged();
+                    predictorItemAdapter.notifyDataSetChanged();
 
-                    // Display total price
+                    // Dismiss the progress dialog after loading items
+                    progressDialog.dismiss();
+
                 } else {
+                    progressDialog.dismiss();
                     Toast.makeText(PredictorActivity.this, "No items found in shop", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -171,151 +248,39 @@ public class PredictorActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e(TAG, "Failed to load shop items: " + error.getMessage());
                 Toast.makeText(PredictorActivity.this, "Failed to load items", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();  // Dismiss the progress dialog in case of error
             }
         });
     }
 
-    private void placeOrder() {
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        String orderNumber = generateOrderNumber(currentDate);
-
-        // Create order data map
-        Map<String, Object> orderData = new HashMap<>();
-        orderData.put("division", "Wariyapola");
-        orderData.put("address", "Kurunegala,Padeniya");
-        orderData.put("totalpayment", totalSum);
-
-        // Initialize a map to store ordered items and their quantities
-        Map<String, Map<String, Object>> orderedItems = new HashMap<>();
-
-        // Keep track of the number of items processed
-        final int[] itemsProcessed = {0};
-
-        // Iterate over each item in the cart
-        for (String itemId : itemIdsToLoad) {
-            cartReference.child(itemId).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        // Get the quantity and other details of the item
-                        int quantity = snapshot.child("cartQty").getValue(Integer.class);
-                        double unitPrice = convertToDouble(snapshot.child("unitPrice").getValue());
-                        double total = convertToDouble(snapshot.child("total").getValue());
-
-                        // Create a map to store item details
-                        Map<String, Object> itemDetails = new HashMap<>();
-                        itemDetails.put("quantity", quantity);
-                        itemDetails.put("unitPrice", unitPrice);
-                        itemDetails.put("total", total);
-                        itemDetails.put("division", snapshot.child("division").getValue());
-                        itemDetails.put("userId",snapshot.child("userId").getValue());
-
-                        // Add the item details to the orderedItems map
-                        orderedItems.put(itemId, itemDetails);
-                    }
-
-                    // Increment the processed items count
-                    itemsProcessed[0]++;
-
-                    // Check if all items have been processed
-                    if (itemsProcessed[0] == itemIdsToLoad.size()) {
-                        // Add ordered items to the order data
-                        orderData.put("items", orderedItems);
-
-                        // Store the order data in Firebase
-                        customerReference.child(currentUserId).child("Orders").child(currentDate).child(orderNumber).setValue(orderData)
-                                .addOnSuccessListener(aVoid -> {
-                                    // Show the success dialog
-                                    showOrderSuccessDialog();
-
-                                    // Clear the cart after placing the order
-                                    customerReference.child(currentUserId).child("Cart").removeValue();
-                                })
-                                .addOnFailureListener(e -> Toast.makeText(PredictorActivity.this, "Failed to place order", Toast.LENGTH_SHORT).show());
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.e(TAG, "Failed to retrieve item quantity: " + error.getMessage());
-                    Toast.makeText(PredictorActivity.this, "Failed to retrieve item quantity", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-
-    private void showOrderSuccessDialog() {
-        // Create a custom dialog
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_order_success);
-
-        // Find views in the dialog layout
-        TextView myOrdersButton = dialog.findViewById(R.id.myOrdersButton);
-        TextView okButton = dialog.findViewById(R.id.okButton);
-
-        // Handle My Orders button click
-        myOrdersButton.setOnClickListener(v -> {
-            // Open MyOrdersActivity (Assume you have this activity)
-            startActivity(new Intent(PredictorActivity.this, CustomerDash.class));
-            finish();
-            dialog.dismiss();
-        });
-
-        // Handle OK button click
-
-        okButton.setOnClickListener(v -> {
-            // Open MyOrdersActivity (Assume you have this activity)
-            startActivity(new Intent(PredictorActivity.this, CustomerDash.class));
-            finish();
-            dialog.dismiss();
-        });
-        // Display the dialog
-        dialog.show();
-    }
-
-    private String generateOrderNumber(String currentDate) {
-        return currentDate + "-" + System.currentTimeMillis();  // Generates a unique order number based on the current time
-    }
-
-    private double convertToDouble(Object value) {
-        if (value == null) {
-            return 0.0;
-        }
-
-        try {
-            if (value instanceof Long) {
-                return ((Long) value).doubleValue();
-            } else if (value instanceof Double) {
-                return (Double) value;
-            } else if (value instanceof String) {
-                return Double.parseDouble((String) value);
-            } else if (value instanceof Integer) {
-                return ((Integer) value).doubleValue();
-            } else {
-                Log.w(TAG, "Unknown data type for total value: " + value.getClass().getSimpleName());
-                return 0.0;
-            }
-        } catch (NumberFormatException e) {
-            Log.e(TAG, "Failed to convert value to double: " + e.getMessage());
-            return 0.0;
-        }
-    }
     private void predictOrders(String customerId) {
         apiService.predictOrders(customerId, new ApiService.ApiResponseListener() {
             @Override
             public void onSuccess(JSONObject response) {
                 try {
                     String result = response.toString(4);
-//                    tvResult.setText(result);
+                    // Once prediction is done, fetch cart items to display in RecyclerView
+                    fetchCartItemsRealtime();
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "Error parsing prediction response: " + e.getMessage());
+                    progressDialog.dismiss();
+                    Toast.makeText(PredictorActivity.this, "Failed to parse prediction response", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onError(VolleyError error) {
-//                tvResult.setText("Error: " + error.getMessage());
+                Log.e(TAG, "Error making prediction request: " + error.getMessage());
+                progressDialog.dismiss();
+                Toast.makeText(PredictorActivity.this, "Failed to make prediction request", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private double convertToDouble(Object value) {
+        if (value instanceof Number) {
+            return ((Number) value).doubleValue();
+        }
+        return 0.0;
     }
 }
