@@ -1,17 +1,21 @@
 package com.example.gocart.Model;
+import java.util.Map;
+
+import java.util.List;
+
 public class OrderDetail {
     private String orderId;
     private String address;
-    private int totalPayment;
+    private List<String> itemIds;
 
     // Default constructor required for calls to DataSnapshot.getValue(OrderDetail.class)
     public OrderDetail() {}
 
     // Parameterized constructor
-    public OrderDetail(String orderId, String address, int totalPayment) {
+    public OrderDetail(String orderId, String address, List<String> itemIds) {
         this.orderId = orderId;
         this.address = address;
-        this.totalPayment = totalPayment;
+        this.itemIds = itemIds;
     }
 
     // Getters and setters
@@ -31,11 +35,11 @@ public class OrderDetail {
         this.address = address;
     }
 
-    public int getTotalPayment() {
-        return totalPayment;
+    public List<String> getItemIds() {
+        return itemIds;
     }
 
-    public void setTotalPayment(int totalPayment) {
-        this.totalPayment = totalPayment;
+    public void setItemIds(List<String> itemIds) {
+        this.itemIds = itemIds;
     }
 }

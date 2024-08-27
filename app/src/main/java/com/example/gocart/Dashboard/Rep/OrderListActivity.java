@@ -1,4 +1,5 @@
 package com.example.gocart.Dashboard.Rep;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -25,14 +26,14 @@ public class OrderListActivity extends AppCompatActivity {
     private OrderDetailAdapter adapter;
     private List<OrderDetail> orderDetailsList;
 
-    private String userId = "ZkGWwrQPIkeFKzODjGodEEoeDYd2";
-    private String customerId = "JD9ti7asdadaasdQClJYEcwmt6kwG3";
-    private String specificDate = "2024-03-18";
+    private String userId = "wwww";  // User ID to filter item IDs
+    private String customerId = "JD9ti7rxfeSQYQClJYEcwmt6kwG3";  // Customer ID
+    private String specificDate = "2024-03-18";  // Specific order date
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_list2);
+        setContentView(R.layout.activity_order_list);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -57,10 +58,19 @@ public class OrderListActivity extends AppCompatActivity {
                 for (DataSnapshot orderSnapshot : dataSnapshot.getChildren()) {
                     String orderId = orderSnapshot.getKey();
                     String address = orderSnapshot.child("address").getValue(String.class);
-                    int totalPayment = orderSnapshot.child("totalpayment").getValue(Integer.class);
 
-                    OrderDetail orderDetail = new OrderDetail(orderId, address, totalPayment);
-                    orderDetailsList.add(orderDetail);
+                    List<String> filteredItemIds = new ArrayList<>();
+                    for (DataSnapshot itemSnapshot : orderSnapshot.child("items").getChildren()) {
+                        String itemUserId = itemSnapshot.child("userId").getValue(String.class);
+                        if (userId.equals(itemUserId)) {
+                            filteredItemIds.add(itemSnapshot.getKey());
+                        }
+                    }
+
+                    if (!filteredItemIds.isEmpty()) {  // Add only if there are matching item IDs
+                        OrderDetail orderDetail = new OrderDetail(orderId, address, filteredItemIds);
+                        orderDetailsList.add(orderDetail);
+                    }
                 }
 
                 adapter.notifyDataSetChanged();

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:background="@drawable/prediction_background">
 
@@ -30,18 +30,27 @@
                 android:text="Address" />
 
             <TextView
-                android:id="@+id/TotalPayment"
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total Payment" />
+                android:text="Items Codes"
+                android:textStyle="bold"/>
+            <!-- LinearLayout to hold the item IDs -->
+            <LinearLayout
+                android:id="@+id/ItemIdsContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
         </LinearLayout>
 
         <ImageButton
             android:id="@+id/orderDetails"
-            android:layout_width="80dp"
-            android:layout_height="41dp"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/orderdetails" />
+            android:background="@drawable/complete" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

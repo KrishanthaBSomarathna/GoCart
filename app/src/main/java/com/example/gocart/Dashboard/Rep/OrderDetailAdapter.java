@@ -1,8 +1,10 @@
 package com.example.gocart.Dashboard.Rep;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,14 +21,14 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
     public static class OrderDetailViewHolder extends RecyclerView.ViewHolder {
         public TextView orderIdView;
         public TextView addressView;
-        public TextView totalPaymentView;
+        public LinearLayout itemIdsContainer;
         public ImageButton orderDetailsButton;
 
         public OrderDetailViewHolder(View v) {
             super(v);
             orderIdView = v.findViewById(R.id.OrderId);
             addressView = v.findViewById(R.id.Address);
-            totalPaymentView = v.findViewById(R.id.TotalPayment);
+            itemIdsContainer = v.findViewById(R.id.ItemIdsContainer);
             orderDetailsButton = v.findViewById(R.id.orderDetails);
         }
     }
@@ -48,7 +50,16 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         OrderDetail orderDetail = orderDetailList.get(position);
         holder.orderIdView.setText(orderDetail.getOrderId());
         holder.addressView.setText(orderDetail.getAddress());
-        holder.totalPaymentView.setText("Total Payment: " + orderDetail.getTotalPayment());
+
+        // Clear previous views to avoid duplication
+        holder.itemIdsContainer.removeAllViews();
+
+        // Dynamically add TextViews for each item ID
+        for (String itemId : orderDetail.getItemIds()) {
+            TextView itemIdView = new TextView(holder.itemView.getContext());
+            itemIdView.setText(itemId);
+            holder.itemIdsContainer.addView(itemIdView);
+        }
 
         // Set onClickListener for the details button if needed
         holder.orderDetailsButton.setOnClickListener(v -> {
