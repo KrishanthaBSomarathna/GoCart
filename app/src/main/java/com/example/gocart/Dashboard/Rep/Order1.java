@@ -102,13 +102,12 @@ public class Order1 extends AppCompatActivity {
                             String shopId = itemSnapshot.child("userId").getValue(String.class);
                             if (shopId != null && assignedDivisions.contains(division)) {
                                 if (uniqueShopIds.add(shopId)) {
-                                    shopList.add(new Shop(shopId));
+                                    fetchRetailerDetails(shopId);
                                 }
                             }
                         }
                     }
                 }
-                updateRecyclerView();
             }
 
             @Override
@@ -117,6 +116,28 @@ public class Order1 extends AppCompatActivity {
             }
         });
     }
+
+    private void fetchRetailerDetails(String shopId) {
+        DatabaseReference retailerRef = FirebaseDatabase.getInstance().getReference("retailer").child(shopId);
+        retailerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String name = snapshot.child("name").getValue(String.class);
+                    String phone = snapshot.child("phone").getValue(String.class);
+                    String division = snapshot.child("division").getValue(String.class);
+                    shopList.add(new Shop(shopId, name, phone, division));
+                    updateRecyclerView();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle possible errors.
+            }
+        });
+    }
+
 
     private void updateRecyclerView() {
         if (order1Adapter == null) {

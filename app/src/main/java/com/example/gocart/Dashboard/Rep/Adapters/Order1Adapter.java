@@ -38,6 +38,9 @@ public class Order1Adapter extends RecyclerView.Adapter<Order1Adapter.ShopViewHo
     public void onBindViewHolder(@NonNull ShopViewHolder holder, int position) {
         Shop shop = shopList.get(position);
         holder.shopIdTextView.setText(shop.getShopId());
+        holder.shopNameTextView.setText(shop.getName());
+        holder.shopPhoneTextView.setText(shop.getPhone());
+        holder.shopDivisionTextView.setText(shop.getDivision());
         holder.showdetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,6 +51,7 @@ public class Order1Adapter extends RecyclerView.Adapter<Order1Adapter.ShopViewHo
         });
     }
 
+
     @Override
     public int getItemCount() {
         return shopList.size();
@@ -55,12 +59,19 @@ public class Order1Adapter extends RecyclerView.Adapter<Order1Adapter.ShopViewHo
 
     public static class ShopViewHolder extends RecyclerView.ViewHolder {
         TextView shopIdTextView;
+        TextView shopNameTextView;
+        TextView shopPhoneTextView;
+        TextView shopDivisionTextView;
         ImageButton showdetails;
 
         public ShopViewHolder(@NonNull View itemView) {
             super(itemView);
             shopIdTextView = itemView.findViewById(R.id.userid);
+            shopNameTextView = itemView.findViewById(R.id.shop_name);
+            shopPhoneTextView = itemView.findViewById(R.id.shop_phone);
+            shopDivisionTextView = itemView.findViewById(R.id.shop_division);
             showdetails = itemView.findViewById(R.id.showdetails);
         }
     }
+
 }

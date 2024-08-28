@@ -22,7 +22,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ShopId" />
+
+            <TextView
+                android:id="@+id/shop_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shop Name" />
+
+            <TextView
+                android:id="@+id/shop_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone Number" />
+
+            <TextView
+                android:id="@+id/shop_division"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Division" />
         </LinearLayout>
+
 
         <ImageButton
             android:id="@+id/showdetails"

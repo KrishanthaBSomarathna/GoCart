@@ -51,6 +51,6 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/complete" />
+            android:background="@drawable/img_9" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

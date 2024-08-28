@@ -186,12 +186,14 @@ public class CartActivity extends AppCompatActivity {
                         int quantity = snapshot.child("cartQty").getValue(Integer.class);
                         double unitPrice = convertToDouble(snapshot.child("unitPrice").getValue());
                         double total = convertToDouble(snapshot.child("total").getValue());
+                        String imageUrl = snapshot.child("imageUrl").getValue(String.class);
 
                         // Create a map to store item details
                         Map<String, Object> itemDetails = new HashMap<>();
                         itemDetails.put("quantity", quantity);
                         itemDetails.put("unitPrice", unitPrice);
                         itemDetails.put("total", total);
+                        itemDetails.put("imageUrl", imageUrl);
                         itemDetails.put("division", snapshot.child("division").getValue());
                         itemDetails.put("userId",snapshot.child("userId").getValue());
 

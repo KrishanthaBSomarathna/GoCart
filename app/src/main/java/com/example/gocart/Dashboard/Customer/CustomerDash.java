@@ -48,7 +48,7 @@ public class CustomerDash extends AppCompatActivity {
     private DatabaseReference customerReference;
     TextView district,bestDeal;
     LinearLayout veg, drinks, dairy, instant, tea, atta, masala, chicken, other;
-    ImageView cart;
+    ImageView cart,setting;
 
 
     @Override
@@ -65,6 +65,7 @@ public class CustomerDash extends AppCompatActivity {
         cart = findViewById(R.id.cartPage);
         bestDeal = findViewById(R.id.bestDeal);
         district = findViewById(R.id.textView4);
+        setting = findViewById(R.id.setting);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -87,6 +88,13 @@ public class CustomerDash extends AppCompatActivity {
         masala = findViewById(R.id.category_masala_oil_dry_fruits);
         chicken = findViewById(R.id.category_meat_fish);
         other = findViewById(R.id.linearLayout);
+
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),SelectDistrict.class));
+            }
+        });
 
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
