@@ -107,7 +107,7 @@ public class CustomerDash extends AppCompatActivity {
             editor.apply();
 
             // Hide pageview after 3 seconds
-            new Handler().postDelayed(() -> pageview.setVisibility(View.GONE), 3000);
+            new Handler().postDelayed(() -> pageview.setVisibility(View.GONE), 5000);
         } else {
             pageview.setVisibility(View.GONE);
         }
