@@ -1,6 +1,7 @@
 package com.example.gocart.Dashboard.Rep.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gocart.Dashboard.Rep.OrderItemListView;
 import com.example.gocart.Model.OrderDetail;
 import com.example.gocart.R;
 import com.google.firebase.database.DatabaseReference;
@@ -75,26 +77,33 @@ public class Order4Adapter extends RecyclerView.Adapter<Order4Adapter.OrderDetai
         }
 
         // Handle the complete button click to update the order status in Firebase
+//        holder.completebtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                DatabaseReference orderRef = FirebaseDatabase.getInstance().getReference("Customer")
+//                        .child(customerId)
+//                        .child("Orders")
+//                        .child(specificDate)
+//                        .child(orderDetail.getOrderId())
+//                        .child("status");
+//
+//                orderRef.setValue("Complete").addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        Toast.makeText(context, "Order marked as complete.", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(context, "Failed to update order status.", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//        });
+
         holder.completebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference orderRef = FirebaseDatabase.getInstance().getReference("Customer")
-                        .child(customerId)
-                        .child("Orders")
-                        .child(specificDate)
-                        .child(orderDetail.getOrderId())
-                        .child("status");
-
-                orderRef.setValue("Complete").addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(context, "Order marked as complete.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, "Failed to update order status.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Intent intent = new Intent(context, OrderItemListView.class);
+                context.startActivity(intent);
             }
         });
-
         // Optional: You can remove this Toast if not needed
         Toast.makeText(context, "Order ID: " + orderDetail.getOrderId(), Toast.LENGTH_SHORT).show();
     }
