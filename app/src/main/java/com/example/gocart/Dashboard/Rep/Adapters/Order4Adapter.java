@@ -101,6 +101,10 @@ public class Order4Adapter extends RecyclerView.Adapter<Order4Adapter.OrderDetai
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, OrderItemListView.class);
+                intent.putExtra("orderId", orderDetail.getOrderId());
+                intent.putExtra("customerId", customerId);
+                intent.putExtra("specificDate", specificDate);
+                intent.putExtra("userId",userId);
                 context.startActivity(intent);
             }
         });
