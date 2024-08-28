@@ -1,4 +1,4 @@
-package com.example.gocart.UserListView.Customer.Catagory.CategoryList;
+package com.example.gocart.UserListView.Customer.Catagory;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,36 +28,42 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CatagoryChicken extends AppCompatActivity {
+public class CatagorySelector extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ShopItemAdapter shopItemAdapter;
     private List<Item> itemList;
-    private List<Item> filteredItemList; // List to hold filtered items
+    private List<Item> filteredItemList;
 
     private DatabaseReference databaseReference;
-    FirebaseUser firebaseUser;
-    FirebaseAuth firebaseAuth;
-    private String currentUserId; // Set the logged-in user ID
+    private FirebaseUser firebaseUser;
+    private String currentUserId;
+
+    private String selectedCategory ; // Replace this with the desired category
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_of_stock); // Ensure correct layout file is referenced
+        setContentView(R.layout.activity_list_of_stock);
+
+        Intent inten = getIntent();
+        if (inten != null && inten.hasExtra("category")) {
+            selectedCategory = inten.getStringExtra("category");
+        }
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
         if (firebaseUser != null) {
             currentUserId = firebaseUser.getUid();
         }
+
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // Set GridLayoutManager programmatically
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         itemList = new ArrayList<>();
         filteredItemList = new ArrayList<>();
-        shopItemAdapter = new ShopItemAdapter(this, filteredItemList); // Pass filtered list to the adapter
+        shopItemAdapter = new ShopItemAdapter(this, filteredItemList);
         recyclerView.setAdapter(shopItemAdapter);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("repitem").child(currentUserId);
+        databaseReference = FirebaseDatabase.getInstance().getReference("shopitem").child(currentUserId);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -65,16 +71,16 @@ public class CatagoryChicken extends AppCompatActivity {
                 itemList.clear();
                 for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
                     Item item = itemSnapshot.getValue(Item.class);
-                    if (item != null && "Chicken, Meat & Fish".equals(item.getCategory())) {
+                    if (item != null && selectedCategory.equals(item.getCategory())) {
                         itemList.add(item);
                     }
                 }
-                filterItemList(""); // Initially show all items
+                filterItemList(""); // Initially show all items matching the category
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(CatagoryChicken.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CatagorySelector.this, "Failed to load data", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -96,8 +102,7 @@ public class CatagoryChicken extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            // Handle FAB click action
-            Intent intent = new Intent(CatagoryChicken.this, AddItem.class); // Replace with your actual activity
+            Intent intent = new Intent(CatagorySelector.this, AddItem.class);
             startActivity(intent);
         });
     }
@@ -105,7 +110,10 @@ public class CatagoryChicken extends AppCompatActivity {
     private void filterItemList(String query) {
         filteredItemList.clear();
         for (Item item : itemList) {
-            if (item.getItemName().toLowerCase().contains(query.toLowerCase())) {
+            String itemName = item.getItemName();
+            String itemCategory = item.getCategory();
+            if (itemName != null && itemName.toLowerCase().contains(query.toLowerCase()) &&
+                    itemCategory != null && itemCategory.equals(selectedCategory)) {
                 filteredItemList.add(item);
             }
         }

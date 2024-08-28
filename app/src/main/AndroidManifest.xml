@@ -104,13 +104,13 @@
             android:name=".UserListView.Customer.Catagory.CategoryList.CatagoryChicken"
             android:exported="true" />
         <activity
-            android:name=".UserListView.Customer.Catagory.CategoryList.CatagoryAtta"
+            android:name=".UserListView.Customer.Catagory.CatagorySelector"
             android:exported="true" />
         <activity
             android:name=".UserListView.Customer.Catagory.CategoryList.CatagoryDairy"
             android:exported="true" />
         <activity
-            android:name=".UserListView.Customer.Catagory.CatagoryPage"
+            android:name=".UserListView.Customer.Catagory.CatagoryList"
             android:exported="true" />
         <activity
             android:name=".Dashboard.Retailer.RetailerDash"

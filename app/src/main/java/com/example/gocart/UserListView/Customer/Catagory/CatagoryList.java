@@ -11,17 +11,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryAtta;
-import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryChicken;
-import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryCool;
-import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryDairy;
-import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryInstant;
-import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryMasala;
-import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CatagoryTea;
-import com.example.gocart.UserListView.Customer.Catagory.CategoryList.CategoryVeg;
+
 import com.example.gocart.R;
 
-public class CatagoryPage extends AppCompatActivity {
+public class CatagoryList extends AppCompatActivity {
 
     CardView atta,meat,cool,dairy,instant,masala,tea,veg;
 
@@ -48,49 +41,66 @@ public class CatagoryPage extends AppCompatActivity {
         atta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CatagoryAtta.class));
+                Intent intent = new Intent(getApplicationContext(), CatagorySelector.class);
+                intent.putExtra("category","Atta, Rice & Dal");
+                startActivity(intent);
             }
         });
         meat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CatagoryChicken.class));
+
+                Intent intent = new Intent(getApplicationContext(), CatagorySelector.class);
+                intent.putExtra("category","");
+                startActivity(intent);
             }
         });
         cool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CatagoryCool.class));
+                Intent intent = new Intent(getApplicationContext(), CatagorySelector.class);
+                intent.putExtra("category","Cold Drinks & Juices");
+                startActivity(intent);
             }
         });
         dairy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CatagoryDairy.class));
+                Intent intent = new Intent(getApplicationContext(), CatagorySelector.class);
+                intent.putExtra("category","Dairy & Breakfast");
+                startActivity(intent);
             }
         });
         instant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CatagoryInstant.class));
+                Intent intent = new Intent(getApplicationContext(), CatagorySelector.class);
+                intent.putExtra("category","Instant & Frozen Food");
+                startActivity(intent);
             }
         });
         masala.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CatagoryMasala.class));
+                Intent intent = new Intent(getApplicationContext(), CatagorySelector.class);
+                intent.putExtra("category","");
+                startActivity(intent);
             }
         });
         tea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CatagoryTea.class));
+                Intent intent = new Intent(getApplicationContext(), CatagorySelector.class);
+                intent.putExtra("category","Tea & Coffee");
+                startActivity(intent);
             }
         });
         veg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CategoryVeg.class));
+                Intent intent = new Intent(getApplicationContext(), CatagorySelector.class);
+                intent.putExtra("category","Vegetables & Fruits");
+                startActivity(intent);
             }
         });
 

@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.Dashboard.Rep.Order2;
 import com.example.gocart.Stock.BestDealItem;
-import com.example.gocart.UserListView.Customer.Catagory.CatagoryPage;
+import com.example.gocart.UserListView.Customer.Catagory.CatagoryList;
 import com.example.gocart.R;
 import com.example.gocart.Stock.ListOfStock;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,7 +59,7 @@ public class RetailerDash extends AppCompatActivity {
         retail_item_catagory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RetailerDash.this, CatagoryPage.class));
+                startActivity(new Intent(RetailerDash.this, CatagoryList.class));
             }
         });
 
