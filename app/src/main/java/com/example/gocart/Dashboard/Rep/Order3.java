@@ -1,41 +1,51 @@
 package com.example.gocart.Dashboard.Rep;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gocart.Dashboard.Rep.Adapters.Order3Adapter;
 import com.example.gocart.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrdersByOrderDate extends AppCompatActivity {
+public class Order3 extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private OrderDateAdapter adapter;
+    private Order3Adapter adapter;
     private List<String> orderDates = new ArrayList<>();
     private DatabaseReference ordersRef;
-    private String userId = "ZkGWwrQPIkeFKzODjGodEEoeDYd2"; // Your userId
-    private String customerId = "JD9ti7asdadaasdQClJYEcwmt6kwG3"; // Your customerId
+    private String userId;
+    private String customerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_orders_by_order_date); // Your activity layout
+        setContentView(R.layout.activity_orders_by_order_date);
 
-        recyclerView = findViewById(R.id.recycsxslerView);
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("shopId");
+        customerId = intent.getStringExtra("customerId");
+
+        if (userId != null && customerId != null) {
+            Toast.makeText(this, userId + customerId, Toast.LENGTH_SHORT).show();
+        }
+
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new OrderDateAdapter(orderDates);
+        adapter = new Order3Adapter(this, orderDates, userId, customerId);
         recyclerView.setAdapter(adapter);
 
         ordersRef = FirebaseDatabase.getInstance().getReference("Customer").child(customerId).child("Orders");
@@ -65,7 +75,7 @@ public class OrdersByOrderDate extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(OrdersByOrderDate.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Order3.this, "Failed to load data", Toast.LENGTH_SHORT).show();
             }
         });
     }

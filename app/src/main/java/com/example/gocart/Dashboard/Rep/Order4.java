@@ -1,7 +1,7 @@
 package com.example.gocart.Dashboard.Rep;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gocart.Dashboard.Rep.Adapters.Order4Adapter;
 import com.example.gocart.Model.OrderDetail;
 import com.example.gocart.R;
 import com.google.firebase.database.DataSnapshot;
@@ -20,26 +21,34 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderListActivity extends AppCompatActivity {
+public class Order4 extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private OrderDetailAdapter adapter;
+    private Order4Adapter adapter;
     private List<OrderDetail> orderDetailsList;
 
-    private String userId = "wwww";  // User ID to filter item IDs
-    private String customerId = "JD9ti7rxfeSQYQClJYEcwmt6kwG3";  // Customer ID
-    private String specificDate = "2024-03-18";  // Specific order date
+    private String userId;  // User ID to filter item IDs
+    private String customerId;  // Customer ID
+    private String specificDate;  // Specific order date
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_list);
+        setContentView(R.layout.activity_order_list2);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            userId = intent.getStringExtra("userId");
+            customerId = intent.getStringExtra("customerId");
+            specificDate = intent.getStringExtra("specificDate");
+        }
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         orderDetailsList = new ArrayList<>();
-        adapter = new OrderDetailAdapter(orderDetailsList);
+        // Pass 'this' as the first parameter for Context
+        adapter = new Order4Adapter(this, orderDetailsList, userId, customerId, specificDate);
         recyclerView.setAdapter(adapter);
 
         fetchOrderDetails(customerId, specificDate);
@@ -78,7 +87,7 @@ public class OrderListActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(OrderListActivity.this, "Failed to load orders.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Order4.this, "Failed to load orders.", Toast.LENGTH_SHORT).show();
             }
         });
     }

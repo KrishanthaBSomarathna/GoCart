@@ -13,16 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="OrdersByCustomer">
+      <SelectionState runConfigName="OrderList">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="UserSelect">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="OrdersByOrderDate">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="OrdersByEachDate">
+      <SelectionState runConfigName="RepDash">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="OrderListActivity">
+      <SelectionState runConfigName="UserLogin">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

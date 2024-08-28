@@ -24,7 +24,7 @@
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
         <activity
-            android:name=".Dashboard.Rep.OrderListActivity"
+            android:name=".Dashboard.Rep.Order4"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,13 +38,13 @@
 
         </activity>
         <activity
-            android:name=".Dashboard.Rep.OrdersByOrderDate"
+            android:name=".Dashboard.Rep.Order3"
             android:exported="true"></activity>
         <activity
-            android:name=".Dashboard.Rep.OrdersByCustomer"
+            android:name=".Dashboard.Rep.Order2"
             android:exported="true" />
         <activity
-            android:name=".Dashboard.Rep.OrderList"
+            android:name=".Dashboard.Rep.Order1"
             android:exported="true" />
         <activity
             android:name=".Predictor.PredictorActivity"

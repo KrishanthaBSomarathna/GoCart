@@ -233,7 +233,7 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/user_hierarchy_card"
+                    android:id="@+id/order_card"
                     android:layout_width="165dp"
                     android:layout_height="165dp"
                     android:layout_marginStart="20dp"

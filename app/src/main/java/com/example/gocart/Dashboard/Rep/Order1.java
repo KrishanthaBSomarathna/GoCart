@@ -6,9 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gocart.Dashboard.Rep.ShopAdapter;
+import com.example.gocart.Dashboard.Rep.Adapters.Order1Adapter;
 import com.example.gocart.Model.Shop;
 import com.example.gocart.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,25 +21,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class OrderList extends AppCompatActivity {
+public class Order1 extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ShopAdapter shopAdapter;
+    private Order1Adapter order1Adapter;
     private List<Shop> shopList;
     private Set<String> uniqueShopIds;
     private List<String> assignedDivisions;
+    private String loggedUserUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_list);
-
-        // Example division string; this should be dynamically set
-        String divisionString = "Nikaweratiya,Wariyapola";
-        assignedDivisions = new ArrayList<>();
-        for (String division : divisionString.split(",")) {
-            assignedDivisions.add(division.trim());
-        }
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -46,7 +41,35 @@ public class OrderList extends AppCompatActivity {
         shopList = new ArrayList<>();
         uniqueShopIds = new HashSet<>();
 
-        fetchAllCustomers();
+        loggedUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        fetchUserDivision(loggedUserUid);
+    }
+
+    private void fetchUserDivision(String userId) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String divisionString = snapshot.child("divisional_secretariat").getValue(String.class);
+                    if (divisionString != null) {
+                        assignedDivisions = new ArrayList<>();
+                        for (String division : divisionString.split(",")) {
+                            assignedDivisions.add(division.trim());
+                        }
+                        fetchAllCustomers();
+                    } else {
+                        // Handle the case where division information is not available
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle possible errors.
+            }
+        });
     }
 
     private void fetchAllCustomers() {
@@ -96,11 +119,11 @@ public class OrderList extends AppCompatActivity {
     }
 
     private void updateRecyclerView() {
-        if (shopAdapter == null) {
-            shopAdapter = new ShopAdapter(OrderList.this, shopList);
-            recyclerView.setAdapter(shopAdapter);
+        if (order1Adapter == null) {
+            order1Adapter = new Order1Adapter(Order1.this, shopList);
+            recyclerView.setAdapter(order1Adapter);
         } else {
-            shopAdapter.notifyDataSetChanged();
+            order1Adapter.notifyDataSetChanged();
         }
     }
 }

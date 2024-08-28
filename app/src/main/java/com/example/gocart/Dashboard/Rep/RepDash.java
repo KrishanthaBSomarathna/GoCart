@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class RepDash extends AppCompatActivity {
 
-    CardView stock_card,rider_card,retailer_card;
+    CardView stock_card,order_card,retailer_card;
     TextView admin_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class RepDash extends AppCompatActivity {
             return insets;
         });
         stock_card = findViewById(R.id.stock_card);
-        rider_card = findViewById(R.id.delivery_riders_card);
+        order_card = findViewById(R.id.order_card);
         retailer_card = findViewById(R.id.retail_shops_card);
         admin_name = findViewById(R.id.adminname);
 
@@ -53,11 +53,11 @@ public class RepDash extends AppCompatActivity {
                 startActivity(intent = new Intent(RepDash.this, ListOfStock.class));
             }
         });
-        rider_card.setOnClickListener(new View.OnClickListener() {
+        order_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent;
-                startActivity(intent = new Intent(RepDash.this, DeliveryRiderListOfRep.class));
+                startActivity(intent = new Intent(RepDash.this, Order1.class));
             }
         });
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();

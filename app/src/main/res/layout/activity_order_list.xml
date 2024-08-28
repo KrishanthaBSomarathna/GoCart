@@ -5,13 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dashboard.Rep.OrderList">
+    tools:context=".Dashboard.Rep.Order1">
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Ordered List"
+        android:text="Shop List"
         android:textColor="@color/black"
         android:textSize="30dp"
         android:textStyle="bold"

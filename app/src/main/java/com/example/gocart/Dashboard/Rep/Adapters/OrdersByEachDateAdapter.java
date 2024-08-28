@@ -1,4 +1,4 @@
-package com.example.gocart.Dashboard.Rep;
+package com.example.gocart.Dashboard.Rep.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,6 +1,8 @@
 package com.example.gocart.Dashboard.Rep;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -11,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gocart.Model.OrderItem;
+import com.example.gocart.Dashboard.Rep.Adapters.Order2Adapter;
 import com.example.gocart.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,13 +25,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-public class OrdersByCustomer extends AppCompatActivity {
+public class Order2 extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private OrdersAdapter ordersAdapter;
+    private Order2Adapter order2Adapter;
     private List<String> uniqueCustomerIds;
-    private String targetUserId = "wwww"; // Replace with the desired userId
+    private String targetUserId; // Make this a class member
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +47,15 @@ public class OrdersByCustomer extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         uniqueCustomerIds = new ArrayList<>();
-        ordersAdapter = new OrdersAdapter(this, uniqueCustomerIds);
-        recyclerView.setAdapter(ordersAdapter);
 
-        fetchOrders();
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("shopId")) {
+            targetUserId = intent.getStringExtra("shopId");
+            Log.d("OrdersByCustomer", "Received targetUserId: " + targetUserId); // Add this line
+            order2Adapter = new Order2Adapter(this, uniqueCustomerIds, targetUserId);
+            recyclerView.setAdapter(order2Adapter);
+            fetchOrders();
+        }
     }
 
     private void fetchOrders() {
@@ -83,7 +90,7 @@ public class OrdersByCustomer extends AppCompatActivity {
 
                 uniqueCustomerIds.clear();
                 uniqueCustomerIds.addAll(customerIdSet);
-                ordersAdapter.notifyDataSetChanged();
+                order2Adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -91,5 +98,9 @@ public class OrdersByCustomer extends AppCompatActivity {
                 // Handle possible errors.
             }
         });
+    }
+
+    public String getTargetUserId() {
+        return targetUserId;
     }
 }
