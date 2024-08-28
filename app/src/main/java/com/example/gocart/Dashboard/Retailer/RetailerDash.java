@@ -11,14 +11,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.gocart.Dashboard.Rep.Order2;
 import com.example.gocart.Stock.BestDealItem;
 import com.example.gocart.UserListView.Customer.Catagory.CatagoryPage;
 import com.example.gocart.R;
 import com.example.gocart.Stock.ListOfStock;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RetailerDash extends AppCompatActivity {
 
-    CardView stock_card,retail_item_catagory,bestDealcard;
+    CardView stock_card, retail_item_catagory, bestDealcard, Orders_card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,27 +36,39 @@ public class RetailerDash extends AppCompatActivity {
 
         retail_item_catagory = findViewById(R.id.retail_item_catagory);
         stock_card = findViewById(R.id.stock_card);
-        bestDealcard= findViewById(R.id.bestDealcard);
+        bestDealcard = findViewById(R.id.bestDealcard);
+        Orders_card = findViewById(R.id.orderscard);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        String targetUserId = user.getUid();
 
         stock_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ListOfStock.class));
+                startActivity(new Intent(RetailerDash.this, ListOfStock.class));
             }
         });
 
         bestDealcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), BestDealItem.class));
+                startActivity(new Intent(RetailerDash.this, BestDealItem.class));
             }
         });
-
 
         retail_item_catagory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CatagoryPage.class));
+                startActivity(new Intent(RetailerDash.this, CatagoryPage.class));
+            }
+        });
+
+        Orders_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RetailerDash.this, Order2.class);
+                intent.putExtra("shopId", targetUserId);
+                startActivity(intent);
             }
         });
     }

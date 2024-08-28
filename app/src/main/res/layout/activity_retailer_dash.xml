@@ -189,7 +189,7 @@
                             android:layout_height="100dp"
                             android:layout_gravity="center"
                             android:layout_marginBottom="20dp"
-                            android:background="@drawable/deliverybike" />
+                            android:background="@drawable/img_8" />
 
                     </androidx.cardview.widget.CardView>
 
@@ -232,7 +232,7 @@
                     android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/user_hierarchy_card"
+                        android:id="@+id/orderscard"
                         android:layout_width="165dp"
                         android:layout_height="165dp"
                         android:layout_marginStart="20dp"
@@ -322,11 +322,11 @@
                             android:textStyle="bold" />
 
                         <ImageView
-                            android:layout_width="70dp"
+                            android:layout_width="106dp"
                             android:layout_height="100dp"
                             android:layout_gravity="center"
                             android:layout_marginBottom="20dp"
-                            android:background="@drawable/order" />
+                            android:background="@drawable/img_6" />
 
                     </androidx.cardview.widget.CardView>
 
@@ -355,7 +355,7 @@
                             android:layout_height="100dp"
                             android:layout_gravity="center"
                             android:layout_marginBottom="20dp"
-                            android:background="@drawable/stockcount" />
+                            android:background="@drawable/img_7" />
 
                     </androidx.cardview.widget.CardView>
 
