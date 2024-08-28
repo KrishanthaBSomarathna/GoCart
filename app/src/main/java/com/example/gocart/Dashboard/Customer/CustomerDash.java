@@ -1,7 +1,11 @@
 package com.example.gocart.Dashboard.Customer;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,10 +50,12 @@ public class CustomerDash extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private DatabaseReference customerReference;
-    TextView district,bestDeal;
-    LinearLayout veg, drinks, dairy, instant, tea, atta, masala, chicken, other;
-    ImageView cart,setting;
-
+    private TextView district, bestDeal;
+    private LinearLayout veg, drinks, dairy, instant, tea, atta, masala, chicken, other;
+    private ImageView cart, setting, pageview;
+    private FloatingActionButton fab;
+    private float dX, dY;
+    private int lastAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,7 @@ public class CustomerDash extends AppCompatActivity {
         bestDeal = findViewById(R.id.bestDeal);
         district = findViewById(R.id.textView4);
         setting = findViewById(R.id.setting);
+        pageview = findViewById(R.id.pageview);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -78,7 +85,7 @@ public class CustomerDash extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("shopitem");
         customerReference = FirebaseDatabase.getInstance().getReference("Customer");
 
-        // Assuming you have already initialized these views and set up the intent
+        // Initialize views
         veg = findViewById(R.id.category_vegetables);
         dairy = findViewById(R.id.category_dairy_breakfast);
         drinks = findViewById(R.id.category_cold_drinks);
@@ -89,104 +96,74 @@ public class CustomerDash extends AppCompatActivity {
         chicken = findViewById(R.id.category_meat_fish);
         other = findViewById(R.id.linearLayout);
 
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),SelectDistrict.class));
-            }
-        });
+        // Set up SharedPreferences to check first-time login
+        SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        boolean isFirstLogin = prefs.getBoolean("isFirstLogin", true);
 
-        cart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(
-                        new Intent(CustomerDash.this, CartActivity.class)
-                );
-            }
-        });
+        if (isFirstLogin) {
+            pageview.setVisibility(View.VISIBLE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("isFirstLogin", false);
+            editor.apply();
+
+            // Hide pageview after 3 seconds
+            new Handler().postDelayed(() -> pageview.setVisibility(View.GONE), 3000);
+        } else {
+            pageview.setVisibility(View.GONE);
+        }
+
+        setting.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SelectDistrict.class)));
+
+        cart.setOnClickListener(v -> startActivity(new Intent(CustomerDash.this, CartActivity.class)));
 
         Intent intent = new Intent(CustomerDash.this, CustomerCategory.class);
 
-        bestDeal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), BestDeal.class));
-            }
+        bestDeal.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), BestDeal.class)));
+
+        veg.setOnClickListener(v -> {
+            intent.putExtra("category", "Vegetables & Fruits");
+            startActivity(intent);
         });
 
-        veg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("category", "Vegetables & Fruits");
-                startActivity(intent); // Assuming you want to start an activity
-            }
+        dairy.setOnClickListener(v -> {
+            intent.putExtra("category", "Dairy & Breakfast");
+            startActivity(intent);
         });
 
-        dairy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("category", "Dairy & Breakfast");
-                startActivity(intent); // Assuming you want to start an activity
-            }
+        drinks.setOnClickListener(v -> {
+            intent.putExtra("category", "Cold Drinks & Juices");
+            startActivity(intent);
         });
 
-        drinks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("category", "Cold Drinks & Juices");
-                startActivity(intent); // Assuming you want to start an activity
-            }
+        instant.setOnClickListener(v -> {
+            intent.putExtra("category", "Instant & Frozen Food");
+            startActivity(intent);
         });
 
-        instant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("category", "Instant & Frozen Food");
-                startActivity(intent); // Assuming you want to start an activity
-            }
+        tea.setOnClickListener(v -> {
+            intent.putExtra("category", "Tea & Coffee");
+            startActivity(intent);
         });
 
-        tea.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("category", "Tea & Coffee");
-                startActivity(intent); // Assuming you want to start an activity
-            }
+        atta.setOnClickListener(v -> {
+            intent.putExtra("category", "Atta, Rice & Dal");
+            startActivity(intent);
         });
 
-        atta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("category", "Atta, Rice & Dal");
-                startActivity(intent); // Assuming you want to start an activity
-            }
+        masala.setOnClickListener(v -> {
+            intent.putExtra("category", "Masala, Oil & Dry Fruits");
+            startActivity(intent);
         });
 
-        masala.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("category", "Masala, Oil & Dry Fruits");
-                startActivity(intent); // Assuming you want to start an activity
-            }
+        chicken.setOnClickListener(v -> {
+            intent.putExtra("category", "Chicken, Meat & Fish");
+            startActivity(intent);
         });
 
-        chicken.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("category", "Chicken, Meat & Fish");
-                startActivity(intent); // Assuming you want to start an activity
-            }
+        other.setOnClickListener(v -> {
+            intent.putExtra("category", "Other");
+            startActivity(intent);
         });
-
-        other.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("category", "Other");
-                startActivity(intent); // Assuming you want to start an activity
-            }
-        });
-
-
 
         // Fetch customer data
         String currentUserUID = getCurrentUserUID();
@@ -203,11 +180,6 @@ public class CustomerDash extends AppCompatActivity {
                             // Split the divisions string into a list
                             customerDivisions = Arrays.asList(divisionsString.split("\\s*,\\s*"));
                             fetchAndFilterItems();
-
-                            // Show district in a Toast
-//                            if (customerDistrict != null) {
-//                                Toast.makeText(CustomerDash.this, "District: " + customerDistrict, Toast.LENGTH_SHORT).show();
-//                            }
                         }
                     }
                 }
@@ -219,10 +191,40 @@ public class CustomerDash extends AppCompatActivity {
             });
         }
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             Intent inten = new Intent(CustomerDash.this, PredictorActivity.class);
             startActivity(inten);
+        });
+
+        fab.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        dX = view.getX() - event.getRawX();
+                        dY = view.getY() - event.getRawY();
+                        lastAction = MotionEvent.ACTION_DOWN;
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        view.setX(event.getRawX() + dX);
+                        view.setY(event.getRawY() + dY);
+                        lastAction = MotionEvent.ACTION_MOVE;
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        if (lastAction == MotionEvent.ACTION_DOWN) {
+                            view.performClick();
+                        }
+                        break;
+
+                    default:
+                        return false;
+                }
+                return true;
+            }
         });
     }
 
@@ -261,13 +263,6 @@ public class CustomerDash extends AppCompatActivity {
     }
 
     private String getCurrentUserUID() {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() != null) {
-            return firebaseAuth.getCurrentUser().getUid();
-        } else {
-            // Handle the case where the user is not authenticated
-            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
-            return null;
-        }
+        return FirebaseAuth.getInstance().getCurrentUser() != null ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
     }
 }

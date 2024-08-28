@@ -24,6 +24,7 @@
         android:layout_marginLeft="3dp"
         android:hint="name"
         android:text="Name"
+        android:textStyle="bold"
         android:layout_marginTop="130dp"
         android:textColor="@color/black" />
     <TextView

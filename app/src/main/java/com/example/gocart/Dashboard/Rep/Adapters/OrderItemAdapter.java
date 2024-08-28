@@ -47,6 +47,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
             Glide.with(context)
                     .load(imageUrl)
                     .placeholder(R.drawable.placeholder_image)
+                    .error(R.drawable.placeholder_image) // Handle loading error
                     .into(holder.imageView);
         } else {
             holder.imageView.setImageResource(R.drawable.placeholder_image); // Optional placeholder

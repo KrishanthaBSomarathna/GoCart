@@ -1,5 +1,6 @@
 package com.example.gocart.Dashboard.Rep;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,10 @@ public class OrderItemListView extends AppCompatActivity {
     private RecyclerView recyclerView;
     private OrderItemAdapter adapter;
     private List<OrderItem> orderItemList;
+    private String orderId;
+    private String customerId;
+    private String date;
+    private String TARGET_USER_ID; // Target user ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +40,20 @@ public class OrderItemListView extends AppCompatActivity {
         adapter = new OrderItemAdapter(this, orderItemList);
         recyclerView.setAdapter(adapter);
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            orderId = intent.getStringExtra("orderId");
+            customerId = intent.getStringExtra("customerId");
+            date = intent.getStringExtra("specificDate");
+            TARGET_USER_ID = intent.getStringExtra("userId");
+        }
+
         // Fetch data from Firebase
         DatabaseReference orderRef = FirebaseDatabase.getInstance().getReference("Customer")
-                .child("JD9ti7asdadaasdQClJYEcwmt6kwG3")
+                .child(customerId)
                 .child("Orders")
-                .child("2024-02-17")
-                .child("2024-02-17-2067119000001")
+                .child(date)
+                .child(orderId)
                 .child("items");
 
         orderRef.addValueEventListener(new ValueEventListener() {
@@ -47,15 +61,18 @@ public class OrderItemListView extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 orderItemList.clear();
                 for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
-                    String itemName = itemSnapshot.getKey(); // or get specific field if needed
-                    String division = itemSnapshot.child("division").getValue(String.class);
-                    int quantity = itemSnapshot.child("quantity").getValue(Integer.class);
-                    double total = itemSnapshot.child("total").getValue(Double.class);
-                    double unitPrice = itemSnapshot.child("unitPrice").getValue(Double.class);
-                    String imageUrl = ""; // Add URL path if needed
+                    String userId = itemSnapshot.child("userId").getValue(String.class);
+                    if (TARGET_USER_ID.equals(userId)) {
+                        String itemName = itemSnapshot.getKey(); // or get specific field if needed
+                        String division = itemSnapshot.child("division").getValue(String.class);
+                        int quantity = itemSnapshot.child("quantity").getValue(Integer.class);
+                        double total = itemSnapshot.child("total").getValue(Double.class);
+                        double unitPrice = itemSnapshot.child("unitPrice").getValue(Double.class);
+                        String imageUrl = itemSnapshot.child("imageUrl").getValue(String.class); // Fetch imageUrl
 
-                    OrderItem orderItem = new OrderItem(itemName, division, quantity, total, unitPrice, imageUrl);
-                    orderItemList.add(orderItem);
+                        OrderItem orderItem = new OrderItem(itemName, division, quantity, total, unitPrice, imageUrl);
+                        orderItemList.add(orderItem);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }
