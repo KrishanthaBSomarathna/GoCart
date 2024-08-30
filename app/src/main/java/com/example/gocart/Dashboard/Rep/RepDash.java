@@ -14,7 +14,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gocart.R;
 import com.example.gocart.Stock.ListOfStock;
-import com.example.gocart.UserListView.DeliveryRider.DeliveryRiderListOfRep;
 import com.example.gocart.UserListView.Retailer.RetailerListOfRep;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

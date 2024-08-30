@@ -6,10 +6,9 @@
 
     <ImageView
         android:id="@+id/successImage"
-        android:layout_width="354dp"
-        android:layout_height="277dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/orderplaced" />
+        android:layout_width="wrap_content"
+        android:layout_height="295dp"
+        android:src="@drawable/img_10" />
 
     <TextView
         android:id="@+id/textView15"
@@ -23,24 +22,13 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/myOrdersButton"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:id="@+id/okButton"
+        android:layout_width="61dp"
+        android:layout_height="30dp"
         android:layout_alignEnd="@+id/successImage"
         android:layout_alignBottom="@+id/successImage"
-
-        android:background="@drawable/myorder"
-        android:padding="10dp"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/okButton"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_alignStart="@+id/successImage"
-        android:layout_alignBottom="@+id/successImage"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="1dp"
         android:background="@drawable/cancel2"
         android:padding="10dp"
         android:textColor="#FFFFFF"

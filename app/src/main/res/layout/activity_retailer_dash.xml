@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="50dp"
-                    android:text="40"
+                    android:text="13"
                     android:textSize="20sp" />
 
             </androidx.cardview.widget.CardView>
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="50dp"
-                    android:text="40"
+                    android:text="5000"
                     android:textSize="20sp" />
 
             </androidx.cardview.widget.CardView>

@@ -236,17 +236,10 @@ public class CartActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_order_success);
 
-        // Find views in the dialog layout
-        TextView myOrdersButton = dialog.findViewById(R.id.myOrdersButton);
+
         TextView okButton = dialog.findViewById(R.id.okButton);
 
-        // Handle My Orders button click
-        myOrdersButton.setOnClickListener(v -> {
-            // Open MyOrdersActivity (Assume you have this activity)
-            startActivity(new Intent(CartActivity.this, CustomerDash.class));
-            finish();
-            dialog.dismiss();
-        });
+
 
         // Handle OK button click
 

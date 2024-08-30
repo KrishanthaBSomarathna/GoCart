@@ -14,7 +14,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.gocart.R;
 import com.example.gocart.UserListView.Admin.AdminList;
 import com.example.gocart.UserListView.Customer.CustomerList;
-import com.example.gocart.UserListView.DeliveryRider.DeliveryRiderList;
 import com.example.gocart.UserListView.Rep.DeliveryRepList;
 import com.example.gocart.UserListView.Retailer.RetailerList;
 import com.google.firebase.auth.FirebaseAuth;
@@ -70,13 +69,7 @@ public class AdminDash extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.delivery_riders_card).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AdminDash.this, DeliveryRiderList.class);
-                startActivity(intent);
-            }
-        });
+
 
         findViewById(R.id.retail_shops_card).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,13 +79,7 @@ public class AdminDash extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.user_hierarchy_card).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AdminDash.this, AdminDash.class);
-                startActivity(intent);
-            }
-        });
+
 
         findViewById(R.id.customer_card).setOnClickListener(new View.OnClickListener() {
             @Override

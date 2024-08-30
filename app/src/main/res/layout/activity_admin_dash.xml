@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="50dp"
-                android:text="40"
+                android:text="23"
                 android:textSize="20sp" />
 
         </androidx.cardview.widget.CardView>
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="50dp"
-                android:text="40"
+                android:text="16500"
                 android:textSize="20sp" />
 
         </androidx.cardview.widget.CardView>
@@ -232,35 +232,6 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/delivery_riders_card"
-                    android:layout_width="165dp"
-                    android:layout_height="165dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="12dp">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/backg" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:layout_marginBottom="10dp"
-                        android:text="Delivery Riders"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="20dp"
-                        android:background="@drawable/deliverybike" />
-
-                </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/retail_shops_card"
@@ -291,46 +262,6 @@
                         android:background="@drawable/store" />
 
                 </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="50dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/user_hierarchy_card"
-                    android:layout_width="165dp"
-                    android:layout_height="165dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="12dp">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/backg" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:layout_marginBottom="10dp"
-                        android:text="User Hierarchy"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="20dp"
-                        android:background="@drawable/organizationstructure" />
-
-                </androidx.cardview.widget.CardView>
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/customer_card"
                     android:layout_width="165dp"
@@ -362,6 +293,7 @@
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
