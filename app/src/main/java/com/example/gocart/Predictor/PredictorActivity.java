@@ -259,6 +259,7 @@ public class PredictorActivity extends AppCompatActivity {
             public void onSuccess(JSONObject response) {
                 try {
                     String result = response.toString(4);
+                    Log.d(TAG, "Prediction response: " + result);
                     // Once prediction is done, fetch cart items to display in RecyclerView
                     fetchCartItemsRealtime();
                 } catch (JSONException e) {
@@ -270,7 +271,15 @@ public class PredictorActivity extends AppCompatActivity {
 
             @Override
             public void onError(VolleyError error) {
-                Log.e(TAG, "Error making prediction request: " + error.getMessage());
+                // Log the full error message
+                Log.e(TAG, "Error making prediction request: " + error.toString());
+
+                // Additional logging of status code and network response (if available)
+                if (error.networkResponse != null) {
+                    Log.e(TAG, "HTTP Status Code: " + error.networkResponse.statusCode);
+                    Log.e(TAG, "Network Response: " + new String(error.networkResponse.data));
+                }
+
                 progressDialog.dismiss();
                 Toast.makeText(PredictorActivity.this, "Failed to make prediction request", Toast.LENGTH_SHORT).show();
             }

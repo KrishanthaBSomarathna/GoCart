@@ -196,6 +196,7 @@ public class CartActivity extends AppCompatActivity {
                         itemDetails.put("imageUrl", imageUrl);
                         itemDetails.put("division", snapshot.child("division").getValue());
                         itemDetails.put("userId",snapshot.child("userId").getValue());
+                        itemDetails.put("itemName",snapshot.child("itemName").getValue());
 
                         // Add the item details to the orderedItems map
                         orderedItems.put(itemId, itemDetails);

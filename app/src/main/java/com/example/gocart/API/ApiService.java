@@ -11,7 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ApiService {
-    private static final String BASE_URL = "http://192.168.254.115:8501";
+    private static final String BASE_URL = "http://192.168.8.115:8501";
     private RequestQueue requestQueue;
 
     public ApiService(Context context) {
