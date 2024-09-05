@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvOrderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order ID" />
+
+    <TextView
+        android:id="@+id/tvOrderDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order Date" />
+
+    <TextView
+        android:id="@+id/tvOrderAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order Address" />
+
+    <TextView
+        android:id="@+id/tvOrderDivision"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order Division" />
+
+    <TextView
+        android:id="@+id/tvTotalPayment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Payment" />
+
+</LinearLayout>

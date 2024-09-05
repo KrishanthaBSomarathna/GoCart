@@ -32,7 +32,6 @@ public class RepDash extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        stock_card = findViewById(R.id.stock_card);
         order_card = findViewById(R.id.order_card);
         retailer_card = findViewById(R.id.retail_shops_card);
         admin_name = findViewById(R.id.adminname);
@@ -45,13 +44,7 @@ public class RepDash extends AppCompatActivity {
             }
         });
 
-        stock_card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent;
-                startActivity(intent = new Intent(RepDash.this, ListOfStock.class));
-            }
-        });
+
         order_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

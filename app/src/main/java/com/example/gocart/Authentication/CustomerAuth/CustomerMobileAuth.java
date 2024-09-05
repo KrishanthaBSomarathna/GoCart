@@ -39,7 +39,7 @@ public class CustomerMobileAuth extends AppCompatActivity {
     private String name, email, phone, password;
     private EditText otpEditText;
     private ImageView verifyButton;
-    private TextView resendTextView, phoneNumber1, phoneNumber2;
+    private TextView  phoneNumber1, phoneNumber2;
     private FirebaseAuth mAuth;
     private String verificationId;
     private RelativeLayout sendOtp, verifyOtp;
@@ -53,7 +53,6 @@ public class CustomerMobileAuth extends AppCompatActivity {
 
         otpEditText = findViewById(R.id.editText8);
         verifyButton = findViewById(R.id.verifyButton);
-        resendTextView = findViewById(R.id.resendTextView);
         sendOtp = findViewById(R.id.sentOtp);
         verifyOtp = findViewById(R.id.verifyOtp);
         sendOtpbtn = findViewById(R.id.sendOtpbtn);

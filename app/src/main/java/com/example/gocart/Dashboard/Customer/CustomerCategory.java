@@ -39,6 +39,7 @@ public class CustomerCategory extends AppCompatActivity {
 
     private List<String> customerDivisions = new ArrayList<>();
     private String categoryFilter = "Vegetables & Fruits";
+    private EditText searchEditText; // Reference to the search EditText
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,28 @@ public class CustomerCategory extends AppCompatActivity {
         if (intent != null && intent.hasExtra("category")) {
             categoryFilter = intent.getStringExtra("category");
         }
+
+        // Initialize the search EditText
+        searchEditText = findViewById(R.id.entersearch);
+
+        // Set up the search functionality using TextWatcher
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Do nothing before text changes
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Filter the list based on the search input
+                filterItemList(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Do nothing after text changes
+            }
+        });
 
         // Fetch customer divisions and then items
         fetchCustomerDivisions();

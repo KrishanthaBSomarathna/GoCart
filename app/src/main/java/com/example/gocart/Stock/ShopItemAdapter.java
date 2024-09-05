@@ -71,7 +71,6 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.ItemVi
             imageView = itemView.findViewById(R.id.imageView);
             itemName = itemView.findViewById(R.id.itemName);
             price = itemView.findViewById(R.id.price);
-            quantity = itemView.findViewById(R.id.quantity);
             value = itemView.findViewById(R.id.itemValue);
             bestDeal = itemView.findViewById(R.id.bestDeal);
         }

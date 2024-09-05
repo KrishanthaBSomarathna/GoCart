@@ -68,9 +68,11 @@ public class OrderItemListView extends AppCompatActivity {
                         int quantity = itemSnapshot.child("quantity").getValue(Integer.class);
                         double total = itemSnapshot.child("total").getValue(Double.class);
                         double unitPrice = itemSnapshot.child("unitPrice").getValue(Double.class);
-                        String imageUrl = itemSnapshot.child("imageUrl").getValue(String.class); // Fetch imageUrl
+                        String imageUrl = itemSnapshot.child("imageUrl").getValue(String.class);
+                        String value = itemSnapshot.child("value").getValue(String.class);// Fetch imageUrl
+                        String status = itemSnapshot.child("status").getValue(String.class);
 
-                        OrderItem orderItem = new OrderItem(itemName, division, quantity, total, unitPrice, imageUrl);
+                        OrderItem orderItem = new OrderItem(itemName, division, quantity, total, unitPrice, imageUrl,value,status);
                         orderItemList.add(orderItem);
                     }
                 }

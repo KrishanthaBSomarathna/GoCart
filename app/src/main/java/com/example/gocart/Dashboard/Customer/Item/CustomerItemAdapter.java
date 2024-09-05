@@ -67,6 +67,7 @@ public class CustomerItemAdapter extends RecyclerView.Adapter<CustomerItemAdapte
                 databaseReference.child(userId).child("Cart").child(item.getItemId()).child("division").setValue(item.getDivision());
                 databaseReference.child(userId).child("Cart").child(item.getItemId()).child("imageUrl").setValue(item.getImageUrl());
                 databaseReference.child(userId).child("Cart").child(item.getItemId()).child("itemName").setValue(item.getItemName());
+                databaseReference.child(userId).child("Cart").child(item.getItemId()).child("value").setValue(item.getValue());
             }
         });
 
@@ -88,7 +89,6 @@ public class CustomerItemAdapter extends RecyclerView.Adapter<CustomerItemAdapte
             imageView = itemView.findViewById(R.id.imageView);
             itemName = itemView.findViewById(R.id.itemName);
             price = itemView.findViewById(R.id.price);
-            quantity = itemView.findViewById(R.id.quantity);
             value = itemView.findViewById(R.id.itemValue);
             add = itemView.findViewById(R.id.add);
         }

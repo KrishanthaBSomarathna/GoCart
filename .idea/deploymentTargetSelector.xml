@@ -13,19 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="RetailerLogin">
+      <SelectionState runConfigName="UserSelect">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SplashScreen">
+      <SelectionState runConfigName="RetailerDash">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="OrderItemListView">
+      <SelectionState runConfigName="CustomerDash">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="CatagoryAtta">
+      <SelectionState runConfigName="Setting">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="ListOfStock">
+      <SelectionState runConfigName="CustomerOrderList">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

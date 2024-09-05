@@ -1,31 +1,84 @@
 package com.example.gocart.Model;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Order {
-    private String itemId;
-    private int quantity;
+    public String status;
+    public Map<String, Item> items;
+    private String orderId;
+    private String date;
+    private String address;
+    private String division;
+    private double totalPayment;
+    private List<OrderItem> orderItems;  // Represents the list of ordered items (itemId, quantity)
 
     public Order() {
-        // Default constructor required for calls to DataSnapshot.getValue(Order.class)
+        // Default constructor required for Firebase
     }
 
-    public Order(String itemId, int quantity) {
-        this.itemId = itemId;
-        this.quantity = quantity;
+    public Order(String orderId, String date, String address, String division, double totalPayment, List<OrderItem> orderItems) {
+        this.orderId = orderId;
+        this.date = date;
+        this.address = address;
+        this.division = division;
+        this.totalPayment = totalPayment;
+        this.orderItems = orderItems;
     }
 
-    public String getItemId() {
-        return itemId;
+    public Order(String orderId, String date, List<OrderItem> orderItems) {
+        this.orderId = orderId;
+        this.date = date;
+        this.orderItems = orderItems;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    // Getters and Setters for each field
+    public String getOrderId() {
+        return orderId;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getDivision() {
+        return division;
+    }
+
+    public void setDivision(String division) {
+        this.division = division;
+    }
+
+    public double getTotalPayment() {
+        return totalPayment;
+    }
+
+    public void setTotalPayment(double totalPayment) {
+        this.totalPayment = totalPayment;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 }

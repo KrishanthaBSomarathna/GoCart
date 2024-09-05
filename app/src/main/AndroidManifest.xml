@@ -13,7 +13,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -26,6 +25,15 @@
         android:theme="@style/Theme.GoCart"
         tools:targetApi="31">
         <activity
+            android:name=".Dashboard.Customer.OrderDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Dashboard.Customer.CustomerOrderList"
+            android:exported="false" />
+        <activity
+            android:name=".Dashboard.Customer.Setting"
+            android:exported="false" />
+        <activity
             android:name=".Dashboard.Rep.OrderItemListView"
             android:exported="false" />
         <activity
@@ -33,7 +41,7 @@
             android:exported="false" />
         <activity
             android:name=".Dashboard.Rep.Order4"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".Dashboard.Rep.OrdersByEachDate"
             android:exported="true" />

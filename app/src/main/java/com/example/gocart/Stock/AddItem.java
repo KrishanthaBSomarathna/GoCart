@@ -66,7 +66,6 @@ public class AddItem extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
 
         itemNameEditText = findViewById(R.id.name);
-        quantityEditText = findViewById(R.id.quantity);
         priceEditText = findViewById(R.id.price);
         valueEditText = findViewById(R.id.value);
         selectedImage = findViewById(R.id.selected_image);
@@ -138,13 +137,12 @@ public class AddItem extends AppCompatActivity {
         }
 
         String itemName = itemNameEditText.getText().toString().trim();
-        String quantity = quantityEditText.getText().toString().trim();
         String price = priceEditText.getText().toString().trim();
         String value = valueEditText.getText().toString().trim();
         String category = categorySpinner.getSelectedItem().toString();
         String division = retailerDivision;
 
-        if (itemName.isEmpty() || quantity.isEmpty() || price.isEmpty() || value.isEmpty() || category.isEmpty()) {
+        if (itemName.isEmpty() || price.isEmpty() || value.isEmpty() || category.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -178,31 +176,38 @@ public class AddItem extends AppCompatActivity {
             dismissUploadDialog();
             if (task.isSuccessful()) {
                 Uri downloadUri = task.getResult();
-                addItemToDatabase(itemName, quantity, price, value, category, downloadUri.toString(), userId, division);
+                addItemToDatabase(itemName, price, value, category, "Processing", downloadUri.toString(), userId, division);
+
             } else {
                 Toast.makeText(AddItem.this, "Image upload failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void addItemToDatabase(String itemName, String quantity, String price, String value, String category, String imageUrl, String userId, String division) {
+    private void addItemToDatabase(String itemName, String price, String value, String category, String status, String imageUrl, String userId, String division) {
         String itemId = databaseReference.child(DATABASE_PATH).push().getKey();
+
         if (itemId != null) {
-            Item item = new Item(itemId, imageUrl, itemName, price, quantity, userId, value, category, false, division, 0);
+            // Initializing the Item object with all the necessary fields
+            Item item = new Item(itemId, imageUrl, itemName, price, userId, value, category, false, division, status, 0, 0, 0);
 
+            // Creating a map for updating the database with all fields
             Map<String, Object> itemUpdates = new HashMap<>();
-            itemUpdates.put("itemName", itemName);
-            itemUpdates.put("quantity", quantity);
-            itemUpdates.put("price", price);
-            itemUpdates.put("value", value);
-            itemUpdates.put("category", category);
-            itemUpdates.put("imageUrl", imageUrl);
-            itemUpdates.put("division", division);
-            itemUpdates.put("bestdeal", false);
-            itemUpdates.put("userId", userId);
-            itemUpdates.put("itemId", itemId);
-            itemUpdates.put("cartQty", 0); // Ensure to add cartQty to the database update
+            itemUpdates.put("itemId", item.getItemId());
+            itemUpdates.put("itemName", item.getItemName());
+            itemUpdates.put("price", item.getPrice());
+            itemUpdates.put("value", item.getValue());
+            itemUpdates.put("category", item.getCategory());
+            itemUpdates.put("imageUrl", item.getImageUrl());
+            itemUpdates.put("division", item.getDivision());
+            itemUpdates.put("bestdeal", item.isBestdeal());
+            itemUpdates.put("userId", item.getUserId());
+            itemUpdates.put("status", item.getStatus());
+            itemUpdates.put("cartQty", item.getCartQty());  // cartQty set to 0 initially
+            itemUpdates.put("total", item.getTotal());      // total set to 0 initially
+            itemUpdates.put("unitPrice", item.getUnitPrice()); // unitPrice set to 0 initially
 
+            // Updating the Firebase Realtime Database
             databaseReference.child(DATABASE_PATH).child(userId).child(itemId).updateChildren(itemUpdates)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -243,7 +248,6 @@ public class AddItem extends AppCompatActivity {
 
     private void clearFields() {
         itemNameEditText.setText("");
-        quantityEditText.setText("");
         priceEditText.setText("");
         valueEditText.setText("");
         selectedImage.setImageResource(R.drawable.placeholder);

@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <androidx.cardview.widget.CardView
+            <!-- Changed to MaterialCardView -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,7 +40,7 @@
                     android:layout_height="81dp"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop" />
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -56,13 +57,7 @@
                     android:text="Vegetables Fruits"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/itemValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="100g" />
+
 
                 <TextView
                     android:id="@+id/price"
@@ -71,39 +66,13 @@
                     android:layout_marginLeft="10dp"
                     android:text="Rs:500.00" />
                 <TextView
-                    android:id="@+id/qty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="3" />
-                <TextView
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="processing" />
+                    android:text="status" />
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/notAvailble"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/img_12"/>
-                <ImageView
-                    android:id="@+id/add"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/img_13"/>
-            </LinearLayout>
-
 
         </LinearLayout>
-
-
     </FrameLayout>
 </LinearLayout>

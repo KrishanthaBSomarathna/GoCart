@@ -37,9 +37,10 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
     public void onBindViewHolder(@NonNull OrderItemViewHolder holder, int position) {
         OrderItem orderItem = orderItemList.get(position);
         holder.itemName.setText(orderItem.getItemName());
-        holder.itemValue.setText(orderItem.getDivision());
+        holder.itemValue.setText(orderItem.getValue());
         holder.price.setText("Rs: " + orderItem.getUnitPrice());
         holder.qty.setText("Qty: " + orderItem.getQuantity());
+        holder.status.setText("Status: "+orderItem.getStatus());
 
         // Load image using Glide
         String imageUrl = orderItem.getImageUrl();
@@ -65,6 +66,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         TextView price;
         TextView qty;
         ImageView imageView;
+        TextView status;
 
         public OrderItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,6 +75,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
             price = itemView.findViewById(R.id.price);
             qty = itemView.findViewById(R.id.qty);
             imageView = itemView.findViewById(R.id.imageView);
+            status = itemView.findViewById(R.id.status);
         }
     }
 }

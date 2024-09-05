@@ -52,7 +52,7 @@ public class CustomerDash extends AppCompatActivity {
     private DatabaseReference customerReference;
     private TextView district, bestDeal;
     private LinearLayout veg, drinks, dairy, instant, tea, atta, masala, chicken, other;
-    private ImageView cart, setting, pageview;
+    private ImageView cart, setting, ordered;
     private FloatingActionButton fab;
     private float dX, dY;
     private int lastAction;
@@ -72,7 +72,7 @@ public class CustomerDash extends AppCompatActivity {
         bestDeal = findViewById(R.id.bestDeal);
         district = findViewById(R.id.textView4);
         setting = findViewById(R.id.setting);
-        pageview = findViewById(R.id.pageview);
+        ordered = findViewById(R.id.ordered_history);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -100,19 +100,9 @@ public class CustomerDash extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         boolean isFirstLogin = prefs.getBoolean("isFirstLogin", true);
 
-        if (isFirstLogin) {
-            pageview.setVisibility(View.VISIBLE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("isFirstLogin", false);
-            editor.apply();
 
-            // Hide pageview after 3 seconds
-            new Handler().postDelayed(() -> pageview.setVisibility(View.GONE), 5000);
-        } else {
-            pageview.setVisibility(View.GONE);
-        }
 
-        setting.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SelectDistrict.class)));
+        setting.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Setting.class)));
 
         cart.setOnClickListener(v -> startActivity(new Intent(CustomerDash.this, CartActivity.class)));
 
@@ -120,6 +110,12 @@ public class CustomerDash extends AppCompatActivity {
 
         bestDeal.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), BestDeal.class)));
 
+        ordered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), CustomerOrderList.class));
+            }
+        });
         veg.setOnClickListener(v -> {
             intent.putExtra("category", "Vegetables & Fruits");
             startActivity(intent);

@@ -5,41 +5,38 @@ public class Item {
     private String imageUrl;
     private String itemName;
     private String price;
-    private String quantity;
     private String userId;
     private String value;
     private String category;
     private boolean bestdeal;
     private String division;
+    private String status;  // Added status field
     private int cartQty;
     private int total;
     private int unitPrice;
 
+    // Default constructor required for calls to DataSnapshot.getValue(Item.class)
     public Item() {
-        // Default constructor required for calls to DataSnapshot.getValue(Item.class)
     }
 
-    public Item(int quantity, int total, int unitPrice) {
-        this.quantity = String.valueOf(quantity);
-        this.total = total;
-        this.unitPrice = unitPrice;
-    }
-
-    public Item(String itemId, String imageUrl, String itemName, String price, String quantity, String userId, String value, String category, boolean bestdeal, String division, int cartQty) {
+    // Constructor for initializing item with essential fields
+    public Item(String itemId, String imageUrl, String itemName, String price, String userId, String value, String category, boolean bestdeal, String division, String status, int cartQty, int unitPrice, int total) {
         this.itemId = itemId;
         this.imageUrl = imageUrl;
         this.itemName = itemName;
         this.price = price;
-        this.quantity = quantity;
         this.userId = userId;
         this.value = value;
         this.category = category;
         this.bestdeal = bestdeal;
         this.division = division;
+        this.status = status;  // Initialize status
         this.cartQty = cartQty;
+        this.unitPrice = unitPrice;
+        this.total = total;
     }
 
-    // Getters and setters
+    // Getters and Setters
     public String getItemId() {
         return itemId;
     }
@@ -70,14 +67,6 @@ public class Item {
 
     public void setPrice(String price) {
         this.price = price;
-    }
-
-    public String getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
     }
 
     public String getUserId() {
@@ -118,6 +107,14 @@ public class Item {
 
     public void setDivision(String division) {
         this.division = division;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getCartQty() {

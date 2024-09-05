@@ -6,18 +6,42 @@ public class OrderItem {
     private int quantity;
     private double total;
     private double unitPrice;
-    private String imageUrl; // Add this if you have images associated with the items
+    private String imageUrl;  // URL to the image
+    private String address;   // Address for the order
+    private double totalPayment;
+    private  String value;// Total payment for the order
+    private String status;
 
-    // Constructor, Getters, and Setters
-    public OrderItem(String itemName, String division, int quantity, double total, double unitPrice, String imageUrl) {
+    // Default constructor required for Firebase deserialization
+    public OrderItem() {
+    }
+
+    // Constructor with all fields
+    public OrderItem(String itemName, String division, int quantity, double total, double unitPrice, String imageUrl, String address, double totalPayment,String value, String status) {
         this.itemName = itemName;
         this.division = division;
         this.quantity = quantity;
         this.total = total;
         this.unitPrice = unitPrice;
         this.imageUrl = imageUrl;
+        this.address = address;
+        this.totalPayment = totalPayment;
+        this.value = value;
+
     }
 
+    public OrderItem(String itemName, String division, int quantity, double total, double unitPrice, String imageUrl, String value, String status) {
+        this.itemName = itemName;
+        this.division = division;
+        this.quantity = quantity;
+        this.total = total;
+        this.unitPrice = unitPrice;
+        this.imageUrl = imageUrl;
+        this.value = value;
+        this.status = status;
+    }
+
+    // Getters and Setters
     public String getItemName() {
         return itemName;
     }
@@ -65,5 +89,33 @@ public class OrderItem {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-// Getters and Setters
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public double getTotalPayment() {
+        return totalPayment;
+    }
+
+    public void setTotalPayment(double totalPayment) {
+        this.totalPayment = totalPayment;
+    }
+
+    // Additional helper methods (optional)
+    public double calculateTotal() {
+        return this.quantity * this.unitPrice;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public String getStatus() {
+        return status;
+    }
 }
