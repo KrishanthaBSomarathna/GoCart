@@ -11,7 +11,7 @@ public class Item {
     private boolean bestdeal;
     private String division;
     private String status;  // Added status field
-    private int cartQty;
+    private int quantity;
     private int total;
     private int unitPrice;
 
@@ -20,7 +20,7 @@ public class Item {
     }
 
     // Constructor for initializing item with essential fields
-    public Item(String itemId, String imageUrl, String itemName, String price, String userId, String value, String category, boolean bestdeal, String division, String status, int cartQty, int unitPrice, int total) {
+    public Item(String itemId, String imageUrl, String itemName, String price, String userId, String value, String category, boolean bestdeal, String division, String status, int quantity, int unitPrice, int total) {
         this.itemId = itemId;
         this.imageUrl = imageUrl;
         this.itemName = itemName;
@@ -31,7 +31,7 @@ public class Item {
         this.bestdeal = bestdeal;
         this.division = division;
         this.status = status;  // Initialize status
-        this.cartQty = cartQty;
+        this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.total = total;
     }
@@ -118,11 +118,11 @@ public class Item {
     }
 
     public int getCartQty() {
-        return cartQty;
+        return quantity;
     }
 
     public void setCartQty(int cartQty) {
-        this.cartQty = cartQty;
+        this.quantity = cartQty;
     }
 
     public int getTotal() {

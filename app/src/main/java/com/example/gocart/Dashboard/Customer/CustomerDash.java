@@ -50,7 +50,7 @@ public class CustomerDash extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private DatabaseReference customerReference;
-    private TextView district, bestDeal;
+    private TextView district, bestDeal,all;
     private LinearLayout veg, drinks, dairy, instant, tea, atta, masala, chicken, other;
     private ImageView cart, setting, ordered;
     private FloatingActionButton fab;
@@ -67,7 +67,7 @@ public class CustomerDash extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+all = findViewById(R.id.all);
         cart = findViewById(R.id.cartPage);
         bestDeal = findViewById(R.id.bestDeal);
         district = findViewById(R.id.textView4);
@@ -109,6 +109,7 @@ public class CustomerDash extends AppCompatActivity {
         Intent intent = new Intent(CustomerDash.this, CustomerCategory.class);
 
         bestDeal.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), BestDeal.class)));
+        all.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SearchActivity.class)));
 
         ordered.setOnClickListener(new View.OnClickListener() {
             @Override

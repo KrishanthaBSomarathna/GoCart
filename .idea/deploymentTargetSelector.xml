@@ -22,10 +22,10 @@
       <SelectionState runConfigName="CustomerDash">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="Setting">
+      <SelectionState runConfigName="OrderItemListView">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="CustomerOrderList">
+      <SelectionState runConfigName="Order1">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

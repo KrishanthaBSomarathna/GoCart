@@ -1,6 +1,7 @@
 package com.example.gocart.Dashboard.Customer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,20 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.itemName.setText(item.getItemName());
         holder.price.setText("Price: Rs." + item.getTotal());
         holder.status.setText("Status: "+item.getStatus());
+        if(item.getStatus().equals("Item Not Available")){
+            holder.nt.setVisibility(View.VISIBLE);
+            holder.search.setVisibility(View.VISIBLE);
+
+            holder.search.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, SearchActivity.class);
+                    intent.putExtra("item_name",item.getItemName());
+                    context.startActivity(intent);
+                }
+            });
+        }
+
 
         Glide.with(context).load(item.getImageUrl()).into(holder.imageView);
     }
@@ -49,11 +64,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         MaterialCardView cardView;
-        ImageView imageView;
-        TextView itemName;
+        ImageView imageView,search;
+        TextView itemName,nt;
         TextView itemValue,status;
         TextView price;
-        TextView qty;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,8 +76,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             itemName = itemView.findViewById(R.id.itemName);
             itemValue = itemView.findViewById(R.id.itemValue);
             price = itemView.findViewById(R.id.price);
-            qty = itemView.findViewById(R.id.qty);
             status = itemView.findViewById(R.id.status);
+            nt = itemView.findViewById(R.id.nt);
+            search = itemView.findViewById(R.id.search);
+            search.setVisibility(View.GONE);
+            nt.setVisibility(View.GONE);
         }
     }
 }

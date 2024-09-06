@@ -37,8 +37,7 @@ public class OrderItemListView extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderItemList = new ArrayList<>();
-        adapter = new OrderItemAdapter(this, orderItemList);
-        recyclerView.setAdapter(adapter);
+
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -47,7 +46,8 @@ public class OrderItemListView extends AppCompatActivity {
             date = intent.getStringExtra("specificDate");
             TARGET_USER_ID = intent.getStringExtra("userId");
         }
-
+        adapter = new OrderItemAdapter(this, orderItemList,customerId,orderId,date);
+        recyclerView.setAdapter(adapter);
         // Fetch data from Firebase
         DatabaseReference orderRef = FirebaseDatabase.getInstance().getReference("Customer")
                 .child(customerId)

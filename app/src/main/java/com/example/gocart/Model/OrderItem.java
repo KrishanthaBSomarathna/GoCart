@@ -118,4 +118,12 @@ public class OrderItem {
     public String getStatus() {
         return status;
     }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
