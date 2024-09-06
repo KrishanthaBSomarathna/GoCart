@@ -19,10 +19,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private Context context;
     private List<Item> itemList;
+    private String role;
 
-    public ItemAdapter(Context context, List<Item> itemList) {
+    public ItemAdapter(Context context, List<Item> itemList, String role) {
         this.context = context;
         this.itemList = itemList;
+        this.role = role;
     }
 
     @NonNull

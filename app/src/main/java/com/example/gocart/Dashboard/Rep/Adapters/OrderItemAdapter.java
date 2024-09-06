@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,14 +23,16 @@ import java.util.List;
 public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.OrderItemViewHolder> {
     private Context context;
     private List<OrderItem> orderItemList;
-    private String customerId, orderId, date;
+    private String customerId, orderId, date, role;
+    String newStatus = "Item Confirmed";
 
-    public OrderItemAdapter(Context context, List<OrderItem> orderItemList, String customerId, String orderId, String date) {
+    public OrderItemAdapter(Context context, List<OrderItem> orderItemList, String customerId, String orderId, String date, String role) {
         this.context = context;
         this.orderItemList = orderItemList;
         this.customerId = customerId;
         this.orderId = orderId;
         this.date = date;
+        this.role = role;
     }
 
     @NonNull
@@ -52,6 +55,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         holder.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String newStatus = "Item Confirmed";
                 updateItemStatus(orderItem, newStatus);
                 orderItem.setStatus(newStatus);

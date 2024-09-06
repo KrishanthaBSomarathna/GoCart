@@ -2,6 +2,7 @@ package com.example.gocart.Dashboard.Rep;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gocart.Dashboard.Rep.Adapters.OrderItemAdapter;
 import com.example.gocart.Model.OrderItem;
 import com.example.gocart.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +30,7 @@ public class OrderItemListView extends AppCompatActivity {
     private String customerId;
     private String date;
     private String TARGET_USER_ID; // Target user ID
-
+    String role;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,6 @@ public class OrderItemListView extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderItemList = new ArrayList<>();
 
-
         Intent intent = getIntent();
         if (intent != null) {
             orderId = intent.getStringExtra("orderId");
@@ -46,9 +47,36 @@ public class OrderItemListView extends AppCompatActivity {
             date = intent.getStringExtra("specificDate");
             TARGET_USER_ID = intent.getStringExtra("userId");
         }
-        adapter = new OrderItemAdapter(this, orderItemList,customerId,orderId,date);
+        adapter = new OrderItemAdapter(this, orderItemList, customerId, orderId, date,role);
         recyclerView.setAdapter(adapter);
-        // Fetch data from Firebase
+
+        // Get current user ID
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Reference to users node
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users/" + userId);
+
+        usersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Get user role
+                     role = dataSnapshot.child("role").getValue(String.class);
+
+                    // Toast user ID and role
+                    Toast.makeText(OrderItemListView.this, "Role: " + role, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(OrderItemListView.this, "User not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(OrderItemListView.this, "Error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Fetch order items from Firebase
         DatabaseReference orderRef = FirebaseDatabase.getInstance().getReference("Customer")
                 .child(customerId)
                 .child("Orders")
@@ -72,7 +100,7 @@ public class OrderItemListView extends AppCompatActivity {
                         String value = itemSnapshot.child("value").getValue(String.class);// Fetch imageUrl
                         String status = itemSnapshot.child("status").getValue(String.class);
 
-                        OrderItem orderItem = new OrderItem(itemName, division, quantity, total, unitPrice, imageUrl,value,status);
+                        OrderItem orderItem = new OrderItem(itemName, division, quantity, total, unitPrice, imageUrl, value, status);
                         orderItemList.add(orderItem);
                     }
                 }
